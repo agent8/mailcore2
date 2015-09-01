@@ -2027,6 +2027,11 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                 msg->setMainPart(mainPart);
                 hasBody = true;
             }
+            else if (att_static->att_type == MAILIMAP_MSG_ATT_PLAIN_BODY) {
+                size_t len = att_static->att_data.att_rfc822_text.att_length;
+                char *content = att_static->att_data.att_rfc822_text.att_content;
+                msg->setPlainBody(content);
+            }
         }
         else if (att_item->att_type == MAILIMAP_MSG_ATT_ITEM_EXTENSION) {
             struct mailimap_extension_data * ext_data;
@@ -2256,7 +2261,12 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         fetch_att = mailimap_fetch_att_new_rfc822_size();
         mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
     }
-    
+    if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
+        // message structure
+        MCLog("request size");
+        fetch_att = mailimap_fetch_att_new_plain_body();
+        mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
+    }
     if ((requestKind & IMAPMessagesRequestKindStructure) != 0) {
         // message structure
         MCLog("request bodystructure");

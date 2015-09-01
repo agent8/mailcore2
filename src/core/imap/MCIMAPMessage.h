@@ -53,6 +53,9 @@ namespace mailcore {
         virtual void setGmailThreadID(uint64_t threadID);
         virtual uint64_t gmailThreadID();
         
+        virtual void setPlainBody(char *content);
+        virtual String *plainBody();
+        
         virtual AbstractPart * partForPartID(String * partID);
         
         virtual AbstractPart * partForContentID(String * contentID);
@@ -82,6 +85,7 @@ namespace mailcore {
         Array * /* String */ mGmailLabels;
         uint64_t mGmailMessageID;
         uint64_t mGmailThreadID;
+        String *mPlainBody;
         void init();
     };
     

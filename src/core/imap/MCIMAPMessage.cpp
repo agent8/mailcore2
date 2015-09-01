@@ -26,6 +26,7 @@ void IMAPMessage::init()
     mModSeqValue = 0;
     mGmailThreadID = 0;
     mGmailMessageID = 0;
+    mPlainBody = NULL;
     mSize = 0;
 }
 
@@ -58,6 +59,7 @@ IMAPMessage::~IMAPMessage()
     MC_SAFE_RELEASE(mMainPart);
     MC_SAFE_RELEASE(mGmailLabels);
     MC_SAFE_RELEASE(mCustomFlags);
+    MC_SAFE_RELEASE(mPlainBody);
 }
 
 Object * IMAPMessage::copy()
@@ -233,6 +235,19 @@ static AbstractPart * partForPartIDInMultipart(AbstractMultipart * part, String 
             return result;
     }
     return NULL;
+}
+
+void IMAPMessage::setPlainBody(char *plainBody)
+{
+    if (plainBody != NULL) {
+        String *body = new String(plainBody);
+        MC_SAFE_REPLACE_COPY(String, mPlainBody, body);
+    }
+}
+
+String * IMAPMessage::plainBody()
+{
+    return mPlainBody;
 }
 
 AbstractPart * IMAPMessage::partForContentID(String * contentID)
