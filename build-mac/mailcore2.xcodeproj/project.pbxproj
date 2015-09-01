@@ -955,6 +955,34 @@
 			remoteGlobalIDString = C6BA2B091705F4E6003F0E9E;
 			remoteInfo = "static mailcore2 ios";
 		};
+		A17A190C1B956AE900F961EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A17A19041B956AE800F961EC /* libetpan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = libetpan;
+		};
+		A17A190E1B956AE900F961EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A17A19041B956AE800F961EC /* libetpan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C69AB10A10546FE500F32FBD;
+			remoteInfo = "static libetpan";
+		};
+		A17A19101B956AE900F961EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A17A19041B956AE800F961EC /* libetpan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C682E2C015B315EF00BE9DA7;
+			remoteInfo = "libetpan ios";
+		};
+		A17A19121B956B2D00F961EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A17A19041B956AE800F961EC /* libetpan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C682E21815B315EF00BE9DA7;
+			remoteInfo = "libetpan ios";
+		};
 		C600B61E1A244BD8000728F1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C64EA52E169E772200778456 /* Project object */;
@@ -1556,6 +1584,7 @@
 		9EF9AB10175F319A0027FA3B /* MCIMAPFolderStatusOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPFolderStatusOperation.cpp; sourceTree = "<group>"; };
 		9EF9AB16175F35C60027FA3B /* MCOIMAPFolderStatusOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPFolderStatusOperation.h; sourceTree = "<group>"; };
 		9EF9AB18175F36600027FA3B /* MCOIMAPFolderStatusOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPFolderStatusOperation.mm; sourceTree = "<group>"; };
+		A17A19041B956AE800F961EC /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "../../libetpan/build-mac/libetpan.xcodeproj"; sourceTree = "<group>"; };
 		BD49963519FEC6DD000945BC /* ConvertUTF.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ConvertUTF.c; sourceTree = "<group>"; };
 		BD49963619FEC6DD000945BC /* ConvertUTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertUTF.h; sourceTree = "<group>"; };
 		BD6272961A13FF2A00129AA8 /* test-all-mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "test-all-mac.mm"; sourceTree = "<group>"; };
@@ -2264,6 +2293,16 @@
 			path = nntp;
 			sourceTree = "<group>";
 		};
+		A17A19051B956AE800F961EC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A17A190D1B956AE900F961EC /* libetpan.framework */,
+				A17A190F1B956AE900F961EC /* libetpan.a */,
+				A17A19111B956AE900F961EC /* libetpan-ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BDCD7C691A70771B0001DCC3 /* icu-ucsdet */ = {
 			isa = PBXGroup;
 			children = (
@@ -2449,6 +2488,7 @@
 		C64EA52C169E772200778456 = {
 			isa = PBXGroup;
 			children = (
+				A17A19041B956AE800F961EC /* libetpan.xcodeproj */,
 				C6BD28A1170BD78E00A91AC1 /* mailcore-framework */,
 				C64EA545169E78B100778456 /* src */,
 				C64EA7A916A00AF400778456 /* tests */,
@@ -3239,6 +3279,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A17A19131B956B2D00F961EC /* PBXTargetDependency */,
 			);
 			name = "static mailcore2 ios";
 			productName = mailcore;
@@ -3292,6 +3333,12 @@
 			mainGroup = C64EA52C169E772200778456;
 			productRefGroup = C64EA538169E772200778456 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A17A19051B956AE800F961EC /* Products */;
+					ProjectRef = A17A19041B956AE800F961EC /* libetpan.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				C64EA536169E772200778456 /* static mailcore2 osx */,
@@ -3305,6 +3352,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		A17A190D1B956AE900F961EC /* libetpan.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = libetpan.framework;
+			remoteRef = A17A190C1B956AE900F961EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A17A190F1B956AE900F961EC /* libetpan.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libetpan.a;
+			remoteRef = A17A190E1B956AE900F961EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A17A19111B956AE900F961EC /* libetpan-ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libetpan-ios.a";
+			remoteRef = A17A19101B956AE900F961EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		27780C3519CF9CD100C77E44 /* Resources */ = {
@@ -3958,6 +4029,11 @@
 			target = C6BA2B091705F4E6003F0E9E /* static mailcore2 ios */;
 			targetProxy = 27780C3F19CF9DE600C77E44 /* PBXContainerItemProxy */;
 		};
+		A17A19131B956B2D00F961EC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libetpan ios";
+			targetProxy = A17A19121B956B2D00F961EC /* PBXContainerItemProxy */;
+		};
 		C600B61F1A244BD8000728F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C64EA536169E772200778456 /* static mailcore2 osx */;
@@ -4391,7 +4467,12 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				DEAD_CODE_STRIPPING = NO;
 				EXECUTABLE_PREFIX = lib;
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
 				ONLY_ACTIVE_ARCH = NO;
+				OSX_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  \"$(SRCROOT)/../Externals/ctemplate-osx/include\" /usr/include/tidy /usr/include/libxml2";
+				OSX_LIBRARY_SEARCH_PATHS = " \"$(SRCROOT)/../Externals/ctemplate-osx/lib\"";
+				OTHER_LDFLAGS = "-lsasl2";
 				PRODUCT_NAME = "MailCore-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -4404,7 +4485,12 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				DEAD_CODE_STRIPPING = NO;
 				EXECUTABLE_PREFIX = lib;
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
 				ONLY_ACTIVE_ARCH = NO;
+				OSX_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  \"$(SRCROOT)/../Externals/ctemplate-osx/include\" /usr/include/tidy /usr/include/libxml2";
+				OSX_LIBRARY_SEARCH_PATHS = " \"$(SRCROOT)/../Externals/ctemplate-osx/lib\"";
+				OTHER_LDFLAGS = "-lsasl2";
 				PRODUCT_NAME = "MailCore-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
