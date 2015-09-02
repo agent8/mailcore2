@@ -2284,7 +2284,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
 
         //rfc822
         //fetch_att = mailimap_fetch_att_new_rfc822_text();
-        mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
+        //mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
     }
     if ((requestKind & IMAPMessagesRequestKindStructure) != 0) {
         // message structure
