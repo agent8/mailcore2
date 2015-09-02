@@ -2004,9 +2004,13 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                     
                     bytes = att_static->att_data.att_body_section->sec_body_part;
                     length = att_static->att_data.att_body_section->sec_length;
-                    
-                    msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
-                    hasHeader = true;
+                    //SZ: BODY[1]
+                    if (att_static->att_data.att_body_section->sec_section->sec_spec->sec_type == MAILIMAP_SECTION_SPEC_SECTION_PART) {
+                        msg->setPlainBody(bytes);
+                    } else {
+                        msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
+                        hasHeader = true;
+                    }
                 }
                 else {
                     char * references;
@@ -2027,11 +2031,11 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                 msg->setMainPart(mainPart);
                 hasBody = true;
             }
-            else if (att_static->att_type == MAILIMAP_MSG_ATT_PLAIN_BODY) {
-                size_t len = att_static->att_data.att_rfc822_text.att_length;
-                char *content = att_static->att_data.att_rfc822_text.att_content;
-                msg->setPlainBody(content);
-            }
+//            else if (att_static->att_type == MAILIMAP_MSG_ATT_RFC822_TEXT) {
+//                //SZ: rfc822
+//                char *content = att_static->att_data.att_rfc822_text.att_content;
+//                msg->setPlainBody(content);
+//            }
         }
         else if (att_item->att_type == MAILIMAP_MSG_ATT_ITEM_EXTENSION) {
             struct mailimap_extension_data * ext_data;
@@ -2264,7 +2268,22 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
         // message structure
         MCLog("request size");
-        fetch_att = mailimap_fetch_att_new_plain_body();
+        //SZ: BODY[1] text/plain
+        clist *sec_list;
+        uint32_t * value;
+        struct mailimap_section_part *part;
+        struct mailimap_section *section;
+        sec_list = clist_new();
+        value = (uint32_t *) malloc(sizeof(* value));
+        * value = 1;
+        clist_append(sec_list, value);
+        part = mailimap_section_part_new(sec_list);
+        section = mailimap_section_new_part(part);
+        fetch_att = mailimap_fetch_att_new_body_peek_section(section);
+        mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
+
+        //rfc822
+        //fetch_att = mailimap_fetch_att_new_rfc822_text();
         mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
     }
     if ((requestKind & IMAPMessagesRequestKindStructure) != 0) {
