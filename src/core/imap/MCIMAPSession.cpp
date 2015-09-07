@@ -2267,7 +2267,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     }
     if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
         // message structure
-        MCLog("request size");
+        MCLog("request plain body");
         //SZ: BODY[1] text/plain
         clist *sec_list;
         uint32_t * value;
