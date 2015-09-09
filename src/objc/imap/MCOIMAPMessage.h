@@ -67,6 +67,7 @@
 
 /** Plain body */
 - (NSString *)plainBody;
+- (NSData *) partData;
 
 /**
  Returns the part with the given part identifier.

@@ -2004,9 +2004,13 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                     
                     bytes = att_static->att_data.att_body_section->sec_body_part;
                     length = att_static->att_data.att_body_section->sec_length;
-                    //SZ: BODY[1]
+                    //SZ: BODY[x.x]
                     if (att_static->att_data.att_body_section->sec_section->sec_spec->sec_type == MAILIMAP_SECTION_SPEC_SECTION_PART) {
+                        //Weicheng: the encoding can not be gotten here, so the plain body should keep char* type, and convert to String at a higher level
+                        //Data* data = Data::dataWithBytes(bytes, (unsigned int) length)
+                        //data = data->decodedDataUsingEncoding(encoding);
                         msg->setPlainBody(bytes);
+                        msg->setPartData(Data::dataWithBytes(bytes, (unsigned int) length));
                     } else {
                         msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
                         hasHeader = true;
@@ -2145,7 +2149,7 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
     msg_att_context->mLastFetchedSequenceNumber = mLastFetchedSequenceNumber;
 }
 
-IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequestKind requestKind, bool fetchByUID,
+IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequestKind requestKind, String * partID, bool fetchByUID,
                                             struct mailimap_set * imapset, IndexSet * uidsFilter, IndexSet * numbersFilter,
                                             uint64_t modseq, HashMap * mapping,
                                             IMAPProgressCallback * progressCallback, Array * extraHeaders, ErrorCode * pError)
@@ -2267,6 +2271,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     }
     if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
         // message structure
+        //char * header;
         MCLog("request plain body");
         //SZ: BODY[1] text/plain
         clist *sec_list;
@@ -2276,6 +2281,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         sec_list = clist_new();
         value = (uint32_t *) malloc(sizeof(* value));
         * value = 1;
+        //Weicheng: TODO, use partID instead of hard code
         clist_append(sec_list, value);
         part = mailimap_section_part_new(sec_list);
         section = mailimap_section_new_part(part);
@@ -2423,7 +2429,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
                 requestKind = (IMAPMessagesRequestKind) (requestKind & ~IMAPMessagesRequestKindHeaders);
                 requestKind = (IMAPMessagesRequestKind) (requestKind | IMAPMessagesRequestKindFullHeaders);
 
-                result = fetchMessages(folder, requestKind, fetchByUID,
+                result = fetchMessages(folder, requestKind,partID, fetchByUID,
                     imapset, uidsFilter, numbersFilter,
                     modseq, NULL, progressCallback, extraHeaders, pError);
                 if (result != NULL) {
@@ -2446,16 +2452,24 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
 Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                         IndexSet * uids, IMAPProgressCallback * progressCallback, ErrorCode * pError)
 {
-    return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, uids, progressCallback, NULL, pError);
+    return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, NULL, pError);
 }
 
+Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
+                                             String * partID,
+                                             IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                             ErrorCode * pError)
+{
+    return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, partID, uids, progressCallback, NULL, pError);
+}
 
 Array * IMAPSession::fetchMessagesByUIDWithExtraHeaders(String * folder, IMAPMessagesRequestKind requestKind,
+                                                        String * partID,
                                                         IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                         Array * extraHeaders, ErrorCode * pError)
 {
     struct mailimap_set * imapset = setFromIndexSet(uids);
-    IMAPSyncResult * syncResult = fetchMessages(folder, requestKind, true, imapset, uids, NULL, 0, NULL,
+    IMAPSyncResult * syncResult = fetchMessages(folder, requestKind, partID, true, imapset, uids, NULL, 0, NULL,
                                                 progressCallback, extraHeaders, pError);
     if (syncResult == NULL) {
         mailimap_set_free(imapset);
@@ -2479,7 +2493,7 @@ Array * IMAPSession::fetchMessagesByNumberWithExtraHeaders(String * folder, IMAP
                                                            Array * extraHeaders, ErrorCode * pError)
 {
     struct mailimap_set * imapset = setFromIndexSet(numbers);
-    IMAPSyncResult * syncResult = fetchMessages(folder, requestKind, false, imapset, NULL, numbers, 0, NULL,
+    IMAPSyncResult * syncResult = fetchMessages(folder, requestKind, NULL, false, imapset, NULL, numbers, 0, NULL,
                                                 progressCallback, extraHeaders, pError);
     if (syncResult == NULL) {
         mailimap_set_free(imapset);
@@ -3647,12 +3661,12 @@ IMAPSyncResult * IMAPSession::syncMessagesByUID(String * folder, IMAPMessagesReq
 }
 
 IMAPSyncResult * IMAPSession::syncMessagesByUIDWithExtraHeaders(String * folder, IMAPMessagesRequestKind requestKind,
-                                                IndexSet * uids, uint64_t modseq,
-                                                IMAPProgressCallback * progressCallback, Array * extraHeaders,
-                                                ErrorCode * pError)
+                                                                IndexSet * uids, uint64_t modseq,
+                                                                IMAPProgressCallback * progressCallback, Array * extraHeaders,
+                                                                ErrorCode * pError)
 {
     struct mailimap_set * imapset = setFromIndexSet(uids);
-    IMAPSyncResult * result = fetchMessages(folder, requestKind, true, imapset,
+    IMAPSyncResult * result = fetchMessages(folder, requestKind, NULL, true, imapset,
                                             uids, NULL,
                                             modseq, NULL,
                                             progressCallback, extraHeaders, pError);

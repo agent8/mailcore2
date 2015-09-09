@@ -58,6 +58,10 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->plainBody());
 }
 
+- (NSData *)partData{
+    return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partData());
+}
+
 - (MCOAbstractPart *) partForPartID:(NSString *)partID
 {
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partForPartID([partID mco_mcString]));

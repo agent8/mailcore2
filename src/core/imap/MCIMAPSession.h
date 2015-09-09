@@ -94,8 +94,13 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                              ErrorCode * pError);
+        virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
+                                                             String * partID,
+                                                             IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                                             ErrorCode * pError);
         virtual Array * /* IMAPMessage */ fetchMessagesByUIDWithExtraHeaders(String * folder,
                                                                              IMAPMessagesRequestKind requestKind,
+                                                                             String * partID,
                                                                              IndexSet * uids,
                                                                              IMAPProgressCallback * progressCallback,
                                                                              Array * extraHeaders, ErrorCode * pError);
@@ -271,7 +276,7 @@ namespace mailcore {
         void setup();
         void unsetup();
         char fetchDelimiterIfNeeded(char defaultDelimiter, ErrorCode * pError);
-        IMAPSyncResult * fetchMessages(String * folder, IMAPMessagesRequestKind requestKind,
+        IMAPSyncResult * fetchMessages(String * folder, IMAPMessagesRequestKind requestKind,String * partID,
                                        bool fetchByUID, struct mailimap_set * imapset,
                                        IndexSet * uidsFilter, IndexSet * numbersFilter,
                                        uint64_t modseq,
