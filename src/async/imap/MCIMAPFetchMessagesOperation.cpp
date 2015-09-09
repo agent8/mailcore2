@@ -90,6 +90,14 @@ IndexSet * IMAPFetchMessagesOperation::vanishedMessages()
     return mVanishedMessages;
 }
 
+void IMAPFetchMessagesOperation::setPartID(String * partID)
+{
+    mPartID = partID;
+}
+String* IMAPFetchMessagesOperation::partID()
+{
+    return mPartID;
+}
 void IMAPFetchMessagesOperation::main()
 {
     ErrorCode error;
@@ -106,7 +114,7 @@ void IMAPFetchMessagesOperation::main()
             }
         }
         else {
-            mMessages = session()->session()->fetchMessagesByUIDWithExtraHeaders(folder(), mKind, mIndexes, this,
+            mMessages = session()->session()->fetchMessagesByUIDWithExtraHeaders(folder(), mKind, mPartID, mIndexes, this,
                                                                                  mExtraHeaders, &error);
         }
     }

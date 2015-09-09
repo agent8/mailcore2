@@ -40,6 +40,9 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ messages();
         virtual IndexSet * vanishedMessages();
         
+        virtual void setPartID(String * partID);
+        virtual String * partID();
+        
     public: // subclass behavior
         virtual void main();
         
@@ -51,6 +54,7 @@ namespace mailcore {
         Array * /* IMAPMessage */ mMessages;
         IndexSet * mVanishedMessages;
         uint64_t mModSequenceValue;
+        String * mPartID;
         
     };
     
