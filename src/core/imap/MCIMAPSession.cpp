@@ -1998,7 +1998,8 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
             }
             else if (att_static->att_type == MAILIMAP_MSG_ATT_BODY_SECTION) {
                 if ((requestKind & IMAPMessagesRequestKindFullHeaders) != 0 ||
-                    (requestKind & IMAPMessagesRequestKindExtraHeaders) != 0) {
+                    (requestKind & IMAPMessagesRequestKindExtraHeaders) != 0 ||
+                    (requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
                     char * bytes;
                     size_t length;
                     
