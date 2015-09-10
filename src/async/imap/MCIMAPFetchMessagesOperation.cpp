@@ -22,6 +22,7 @@ IMAPFetchMessagesOperation::IMAPFetchMessagesOperation()
     mVanishedMessages = NULL;
     mModSequenceValue = 0;
     mExtraHeaders = NULL;
+    mPartID = NULL;
 }
 
 IMAPFetchMessagesOperation::~IMAPFetchMessagesOperation()
@@ -30,6 +31,7 @@ IMAPFetchMessagesOperation::~IMAPFetchMessagesOperation()
     MC_SAFE_RELEASE(mMessages);
     MC_SAFE_RELEASE(mVanishedMessages);
     MC_SAFE_RELEASE(mExtraHeaders);
+    MC_SAFE_RELEASE(mPartID);
 }
 
 void IMAPFetchMessagesOperation::setFetchByUidEnabled(bool enabled)
@@ -92,7 +94,7 @@ IndexSet * IMAPFetchMessagesOperation::vanishedMessages()
 
 void IMAPFetchMessagesOperation::setPartID(String * partID)
 {
-    mPartID = partID;
+    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
 }
 String* IMAPFetchMessagesOperation::partID()
 {

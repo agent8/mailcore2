@@ -2008,10 +2008,8 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                     //SZ: BODY[x.x]
                     if (att_static->att_data.att_body_section->sec_section->sec_spec->sec_type == MAILIMAP_SECTION_SPEC_SECTION_PART) {
                         //Weicheng: the encoding can not be gotten here, so the plain body should keep char* type, and convert to String at a higher level
-                        //Data* data = Data::dataWithBytes(bytes, (unsigned int) length)
-                        //data = data->decodedDataUsingEncoding(encoding);
-                        msg->setPlainBody(bytes);
                         msg->setPartData(Data::dataWithBytes(bytes, (unsigned int) length));
+                        hasBody = true;
                     } else {
                         msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
                         hasHeader = true;
@@ -2026,6 +2024,7 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                     ref_size = att_static->att_data.att_body_section->sec_length;
                     
                     msg->header()->importIMAPReferences(Data::dataWithBytes(references, (unsigned int) ref_size));
+                    hasHeader = true;
                 }
             }
             else if (att_static->att_type == MAILIMAP_MSG_ATT_BODYSTRUCTURE) {
@@ -2270,28 +2269,32 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         fetch_att = mailimap_fetch_att_new_rfc822_size();
         mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
     }
-    if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
+    if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0 && partID != NULL) {
         // message structure
-        //char * header;
-        MCLog("request plain body");
-        //SZ: BODY[1] text/plain
+        MCLog("request part");
+        //SZ: BODY[x.x]
         clist *sec_list;
-        uint32_t * value;
+        Array * partIDArray;
+        partIDArray = partID->componentsSeparatedByString(MCSTR("."));
+        sec_list = clist_new();
+        for(unsigned int i = 0 ; i < partIDArray->count() ; i ++) {
+            uint32_t * value;
+            String * element;
+            
+            element = (String *) partIDArray->objectAtIndex(i);
+            value = (uint32_t *) malloc(sizeof(* value));
+            * value = element->intValue();
+            clist_append(sec_list, value);
+        }
+        
         struct mailimap_section_part *part;
         struct mailimap_section *section;
-        sec_list = clist_new();
-        value = (uint32_t *) malloc(sizeof(* value));
-        * value = 1;
-        //Weicheng: TODO, use partID instead of hard code
-        clist_append(sec_list, value);
         part = mailimap_section_part_new(sec_list);
         section = mailimap_section_new_part(part);
+        
         fetch_att = mailimap_fetch_att_new_body_peek_section(section);
         mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
-
-        //rfc822
-        //fetch_att = mailimap_fetch_att_new_rfc822_text();
-        //mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
+        needsBody = true;
     }
     if ((requestKind & IMAPMessagesRequestKindStructure) != 0) {
         // message structure

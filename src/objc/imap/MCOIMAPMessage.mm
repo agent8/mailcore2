@@ -15,7 +15,8 @@
 #import "MCOAbstractMessageRendererCallback.h"
 #import "MCOHTMLRendererDelegate.h"
 #import "MCOHTMLRendererIMAPDelegate.h"
-
+#import <MailCore/MCMessageConstants.h>
+using namespace mailcore;
 @implementation MCOIMAPMessage
 
 #define nativeType mailcore::IMAPMessage
@@ -53,13 +54,14 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setGmailLabels, gmailLabels)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailThreadID, gmailThreadID)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID)
 
-- (NSString *)plainBody
-{
-    return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->plainBody());
-}
 
 - (NSData *)partData{
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partData());
+}
+
+- (NSString *)decodePart:(MCOEncoding) encoding charset:(NSString *)charset isHTML:(BOOL) isHTML{
+    NSString * str = MCO_TO_OBJC(MCO_NATIVE_INSTANCE->decodePart((Encoding)encoding, [charset mco_mcString], isHTML));
+    return str;
 }
 
 - (MCOAbstractPart *) partForPartID:(NSString *)partID

@@ -26,7 +26,6 @@ void IMAPMessage::init()
     mModSeqValue = 0;
     mGmailThreadID = 0;
     mGmailMessageID = 0;
-    mPlainBody = NULL;
     mPartData = NULL;
     mSize = 0;
 }
@@ -60,7 +59,6 @@ IMAPMessage::~IMAPMessage()
     MC_SAFE_RELEASE(mMainPart);
     MC_SAFE_RELEASE(mGmailLabels);
     MC_SAFE_RELEASE(mCustomFlags);
-    MC_SAFE_RELEASE(mPlainBody);
     MC_SAFE_RELEASE(mPartData);
 }
 
@@ -239,19 +237,6 @@ static AbstractPart * partForPartIDInMultipart(AbstractMultipart * part, String 
     return NULL;
 }
 
-void IMAPMessage::setPlainBody(char *plainBody)
-{
-    if (plainBody != NULL) {
-        String *body = new String(plainBody);
-        MC_SAFE_REPLACE_COPY(String, mPlainBody, body);
-    }
-}
-
-String * IMAPMessage::plainBody()
-{
-    return mPlainBody;
-}
-
 void IMAPMessage::setPartData(Data * content){
     //Weicheng: risk!!!
     if (content != NULL){
@@ -260,6 +245,11 @@ void IMAPMessage::setPartData(Data * content){
 }
 Data * IMAPMessage::partData(){
     return mPartData;
+}
+String * IMAPMessage::decodePart(Encoding encoding, String *charset, bool isHTML){
+    Data *data = mPartData->decodedDataUsingEncoding(encoding);
+    String * str = data->stringWithDetectedCharset(charset, isHTML);
+    return str;
 }
 
 AbstractPart * IMAPMessage::partForContentID(String * contentID)
