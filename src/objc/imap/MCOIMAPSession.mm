@@ -297,7 +297,7 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
                                                                                            MCO_FROM_OBJC(IndexSet, uids));
     return MCO_TO_OBJC_OP(coreOp);
 }
-
+//Weicheng
 - (MCOIMAPFetchMessagesOperation *) fetchMessagesOperationWithFolder:(NSString *)folder
                                                          requestKind:(MCOIMAPMessagesRequestKind)requestKind
                                                               partID:(NSString *) partID
@@ -306,6 +306,17 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
                                                                                            (IMAPMessagesRequestKind) requestKind,
                                                                                            [partID mco_mcString],
                                                                                            MCO_FROM_OBJC(IndexSet, uids));
+    return MCO_TO_OBJC_OP(coreOp);
+}
+
+- (MCOIMAPFetchMessagesOperation *) fetchMessagesByNumberOperationWithFolder:(NSString *)folder
+                                                                 requestKind:(MCOIMAPMessagesRequestKind)requestKind
+                                                                      partID:(NSString *) partID
+                                                                     numbers:(MCOIndexSet *)numbers{
+    IMAPFetchMessagesOperation * coreOp = MCO_NATIVE_INSTANCE->fetchMessagesByNumberOperation([folder mco_mcString],
+                                                                                              (IMAPMessagesRequestKind) requestKind,
+                                                                                              [partID mco_mcString],
+                                                                                              MCO_FROM_OBJC(IndexSet, numbers));
     return MCO_TO_OBJC_OP(coreOp);
 }
 

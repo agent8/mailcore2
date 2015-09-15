@@ -472,6 +472,12 @@
                                                               partID:(NSString *) partID
                                                                 uids:(MCOIndexSet *)uids;
 
+- (MCOIMAPFetchMessagesOperation *) fetchMessagesByNumberOperationWithFolder:(NSString *)folder
+                                                                 requestKind:(MCOIMAPMessagesRequestKind)requestKind
+                                                                      partID:(NSString *) partID
+                                                                     numbers:(MCOIndexSet *)numbers;
+
+
 /**
  Returns an operation to fetch messages by (sequence) number.
  For example: show 50 most recent uids.

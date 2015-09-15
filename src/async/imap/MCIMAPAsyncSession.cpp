@@ -473,9 +473,10 @@ IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(Strin
     op->autorelease();
     return op;
 }
+
+//Weicheng
 IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                           String * partID,
-                                                                           IndexSet * uids)
+                                                                           String * partID, IndexSet * uids)
 {
     IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
     op->setMainSession(this);
@@ -495,6 +496,20 @@ IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByNumberOperation(St
     op->setFolder(folder);
     op->setKind(requestKind);
     op->setIndexes(numbers);
+    op->autorelease();
+    return op;
+}
+
+//Weicheng
+IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                              String * partID, IndexSet * numbers)
+{
+    IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
+    op->setMainSession(this);
+    op->setFolder(folder);
+    op->setKind(requestKind);
+    op->setIndexes(numbers);
+    op->setPartID(partID);
     op->autorelease();
     return op;
 }

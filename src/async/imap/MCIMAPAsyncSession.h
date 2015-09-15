@@ -125,10 +125,15 @@ namespace mailcore {
         
         virtual IMAPFetchMessagesOperation * fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
                                                                          IndexSet * indexes);
+        //Weicheng
         virtual IMAPFetchMessagesOperation * fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
                                                                          String * partID,
                                                                          IndexSet * indexes);
         virtual IMAPFetchMessagesOperation * fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                            IndexSet * indexes);
+        //Weicheng
+        virtual IMAPFetchMessagesOperation * fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                            String * partID,
                                                                             IndexSet * indexes);
         virtual IMAPFetchMessagesOperation * syncMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
                                                                         IndexSet * indexes, uint64_t modSeq);

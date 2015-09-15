@@ -121,7 +121,7 @@ void IMAPFetchMessagesOperation::main()
         }
     }
     else {
-        mMessages = session()->session()->fetchMessagesByNumberWithExtraHeaders(folder(), mKind, mIndexes, this,
+        mMessages = session()->session()->fetchMessagesByNumberWithExtraHeaders(folder(), mKind, mPartID, mIndexes, this,
                                                                                 mExtraHeaders, &error);
     }
     MC_SAFE_RETAIN(mMessages);

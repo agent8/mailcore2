@@ -2458,7 +2458,7 @@ Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind
 {
     return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, NULL, pError);
 }
-
+//Weicheng
 Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                              String * partID,
                                              IndexSet * uids, IMAPProgressCallback * progressCallback,
@@ -2489,10 +2489,20 @@ Array * IMAPSession::fetchMessagesByNumber(String * folder, IMAPMessagesRequestK
                                            IndexSet * numbers, IMAPProgressCallback * progressCallback,
                                            ErrorCode * pError)
 {
-    return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, numbers, progressCallback, NULL, pError);
+    return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, NULL, numbers, progressCallback, NULL, pError);
+}
+
+//Weicheng
+Array * IMAPSession::fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
+                                           String * partID,
+                                           IndexSet * numbers, IMAPProgressCallback * progressCallback,
+                                           ErrorCode * pError)
+{
+    return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, partID, numbers, progressCallback, NULL, pError);
 }
 
 Array * IMAPSession::fetchMessagesByNumberWithExtraHeaders(String * folder, IMAPMessagesRequestKind requestKind,
+                                                           String * partID,
                                                            IndexSet * numbers, IMAPProgressCallback * progressCallback,
                                                            Array * extraHeaders, ErrorCode * pError)
 {

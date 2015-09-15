@@ -94,6 +94,7 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                              ErrorCode * pError);
+        //Weicheng
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              String * partID,
                                                              IndexSet * uids, IMAPProgressCallback * progressCallback,
@@ -107,8 +108,14 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
                                                                 IndexSet * numbers, IMAPProgressCallback * progressCallback,
                                                                 ErrorCode * pError);
+        //Weicheng
+        virtual Array * /* IMAPMessage */ fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                String * partID,
+                                                                IndexSet * numbers, IMAPProgressCallback * progressCallback,
+                                                                ErrorCode * pError);
         virtual Array * /* IMAPMessage */ fetchMessagesByNumberWithExtraHeaders(String * folder,
                                                                                 IMAPMessagesRequestKind requestKind,
+                                                                                String * partID,
                                                                                 IndexSet * numbers,
                                                                                 IMAPProgressCallback * progressCallback,
                                                                                 Array * extraHeaders, ErrorCode * pError);
