@@ -246,11 +246,6 @@ void IMAPMessage::setPartData(Data * content){
 Data * IMAPMessage::partData(){
     return mPartData;
 }
-String * IMAPMessage::decodePart(Encoding encoding, String *charset, bool isHTML){
-    Data *data = mPartData->decodedDataUsingEncoding(encoding);
-    String * str = data->stringWithDetectedCharset(charset, isHTML);
-    return str;
-}
 
 AbstractPart * IMAPMessage::partForContentID(String * contentID)
 {

@@ -59,8 +59,21 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partData());
 }
 
-- (NSString *)decodePart:(MCOEncoding) encoding charset:(NSString *)charset isHTML:(BOOL) isHTML{
-    NSString * str = MCO_TO_OBJC(MCO_NATIVE_INSTANCE->decodePart((Encoding)encoding, [charset mco_mcString], isHTML));
+/**
+    if partData is nil, then use the interal partData
+ */
+- (NSString *)decodePart:(NSData *) partData encoding:(MCOEncoding) encoding charset:(NSString *)charset isHTML:(BOOL) isHTML{
+    mailcore::Data * data;
+    if (partData == nil) {
+        data = MCO_NATIVE_INSTANCE->partData();
+    }else{
+        data = MCO_FROM_OBJC(Data, partData);
+    }
+//    NSString * str1 = MCO_TO_OBJC(MCO_NATIVE_INSTANCE->decodePart(data, (Encoding)encoding, [charset mco_mcString], isHTML));
+//    NSLog(@"S1:%@",str1);    
+    data = data->decodedDataUsingEncoding((Encoding)encoding);
+    String * mcStr = data->stringWithDetectedCharset([charset mco_mcString], isHTML);
+    NSString * str = MCO_TO_OBJC(mcStr);
     return str;
 }
 

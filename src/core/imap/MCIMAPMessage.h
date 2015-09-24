@@ -55,7 +55,6 @@ namespace mailcore {
         
         virtual void setPartData(Data * content);
         virtual Data * partData();
-        virtual String *decodePart(Encoding encoding, String *charset, bool isHTML);
         
         virtual AbstractPart * partForPartID(String * partID);
         
