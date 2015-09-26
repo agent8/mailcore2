@@ -1427,7 +1427,7 @@
 			remoteGlobalIDString = C682E2C015B315EF00BE9DA7;
 			remoteInfo = "libetpan ios";
 		};
-		A137AF711B9727E600FB2560 /* PBXContainerItemProxy */ = {
+		A197B3171BB635C3005BAD04 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A137AF631B97279A00FB2560 /* libetpan.xcodeproj */;
 			proxyType = 1;
@@ -3884,7 +3884,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A137AF721B9727E600FB2560 /* PBXTargetDependency */,
+				A197B3181BB635C3005BAD04 /* PBXTargetDependency */,
 			);
 			name = "Edo Mailcore2";
 			productName = mailcore;
@@ -5008,10 +5008,10 @@
 			target = C6BA2B091705F4E6003F0E9E /* static mailcore2 ios */;
 			targetProxy = 27780C3F19CF9DE600C77E44 /* PBXContainerItemProxy */;
 		};
-		A137AF721B9727E600FB2560 /* PBXTargetDependency */ = {
+		A197B3181BB635C3005BAD04 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "libetpan ios";
-			targetProxy = A137AF711B9727E600FB2560 /* PBXContainerItemProxy */;
+			targetProxy = A197B3171BB635C3005BAD04 /* PBXContainerItemProxy */;
 		};
 		C600B61F1A244BD8000728F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
