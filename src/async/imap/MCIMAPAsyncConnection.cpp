@@ -308,9 +308,9 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
     mOwner->retain();
     mScheduledAutomaticDisconnect = true;
 #if __APPLE__
-    performMethodOnDispatchQueueAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, dispatchQueue(), 60*5);
+    performMethodOnDispatchQueueAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, dispatchQueue(), 25);
 #else
-    performMethodAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, 60*5);
+    performMethodAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, 25);
 #endif
 
     if (scheduledAutomaticDisconnect) {
@@ -322,10 +322,14 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
 
-    IMAPOperation * op = disconnectOperation();
-    op->start();
-
-    mOwner->release();
+    if (mOwner->isKeepSessionAlive()){
+        IMAPOperation * op = owner()->noopOperation();
+        op->start();
+    }else{
+        IMAPOperation * op = disconnectOperation();
+        op->start();
+        mOwner->release();
+    }
 }
 
 void IMAPAsyncConnection::queueStartRunning()

@@ -194,6 +194,14 @@ bool IMAPAsyncSession::isVoIPEnabled()
     return mVoIPEnabled;
 }
 
+void IMAPAsyncSession::setKeepSessionAlive(bool enabled){
+    mKeepSessionAlive = enabled;
+}
+
+bool IMAPAsyncSession::isKeepSessionAlive(){
+    return mKeepSessionAlive;
+}
+
 IMAPNamespace * IMAPAsyncSession::defaultNamespace()
 {
     return mDefaultNamespace;

@@ -80,7 +80,10 @@
 
 /** When set to YES, VoIP capability will be enabled on the IMAP connection on iOS */
 @property (nonatomic, assign, getter=isVoIPEnabled) BOOL voIPEnabled;
-
+/**
+ When set to YES, the session is will keep sending a noop command to server every N seconds when idle
+ */
+@property (nonatomic, assign, getter=isKeepSessionAlive) BOOL keepSessionAlive;
 /** The default namespace. */
 @property (nonatomic, strong) MCOIMAPNamespace * defaultNamespace;
 
