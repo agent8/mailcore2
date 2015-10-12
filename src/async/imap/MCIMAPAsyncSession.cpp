@@ -137,6 +137,11 @@ String * IMAPAsyncSession::password()
 void IMAPAsyncSession::setOAuth2Token(String * token)
 {
     MC_SAFE_REPLACE_COPY(String, mOAuth2Token, token);
+    //Weicheng: refresh the session token
+    for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        s->setOAuth2Token(mOAuth2Token);
+    }
 }
 
 String * IMAPAsyncSession::OAuth2Token()
