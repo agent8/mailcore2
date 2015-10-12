@@ -127,6 +127,11 @@ String * IMAPAsyncSession::username()
 void IMAPAsyncSession::setPassword(String * password)
 {
     MC_SAFE_REPLACE_COPY(String, mPassword, password);
+    //Weicheng: refresh the session password
+    for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        s->setPassword(mPassword);
+    }
 }
 
 String * IMAPAsyncSession::password()
