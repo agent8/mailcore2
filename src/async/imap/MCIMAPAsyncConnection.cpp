@@ -337,7 +337,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
     //NOTE: if error happens then stop noop
-    if (mOwner->isKeepSessionAlive() && this->noopError == ErrorNone){
+    if (mOwner->isKeepSessionAlive() && (this->noopError == ErrorNone || this->noopError == ErrorConnection)){
         IMAPOperation * op = owner()->noopOperation();
         op->setCallback(mNoopCallback);
         op->start();
