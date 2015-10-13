@@ -88,6 +88,15 @@ namespace mailcore {
         IMAPAsyncConnection * mConnection;
     };
 
+    class IMAPNoopOperationCallback:public Object, public OperationCallback{
+    public:
+        IMAPNoopOperationCallback(){
+        
+        }
+        void operationFinished(Operation * op) {
+            
+        }
+    };
 }
 
 IMAPAsyncConnection::IMAPAsyncConnection()
@@ -323,7 +332,11 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
     mScheduledAutomaticDisconnect = false;
 
     if (mOwner->isKeepSessionAlive()){
+        //TODO: need to handler the errors such as network and authentication
         IMAPOperation * op = owner()->noopOperation();
+//        IMAPNoopOperationCallback * callback = new IMAPNoopOperationCallback();
+//        op->setCallback(callback);
+//        callback->autorelease();
         op->start();
     }else{
         IMAPOperation * op = disconnectOperation();
