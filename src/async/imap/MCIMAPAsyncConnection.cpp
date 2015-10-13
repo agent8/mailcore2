@@ -39,6 +39,7 @@
 #include "MCConnectionLogger.h"
 #include "MCIMAPMessageRenderingOperation.h"
 #include "MCIMAPIdentity.h"
+#include "MCMessageConstants.h"
 
 using namespace mailcore;
 
@@ -90,12 +91,15 @@ namespace mailcore {
 
     class IMAPNoopOperationCallback:public Object, public OperationCallback{
     public:
-        IMAPNoopOperationCallback(){
-        
+        IMAPNoopOperationCallback(IMAPAsyncConnection * context){
+            this->context = context;
         }
-        void operationFinished(Operation * op) {
-            
+        virtual void operationFinished(Operation * op){
+            IMAPOperation * operation = (IMAPOperation*)op;
+            context->noopError = operation->error();
         }
+    private:
+        IMAPAsyncConnection * context;
     };
 }
 
@@ -107,6 +111,7 @@ IMAPAsyncConnection::IMAPAsyncConnection()
     mClientIdentity = new IMAPIdentity();
     mLastFolder = NULL;
     mQueueCallback = new IMAPOperationQueueCallback(this);
+    mNoopCallback = new IMAPNoopOperationCallback(this);
     mQueue->setCallback(mQueueCallback);
     mOwner = NULL;
     mConnectionLogger = NULL;
@@ -127,6 +132,7 @@ IMAPAsyncConnection::~IMAPAsyncConnection()
     pthread_mutex_destroy(&mConnectionLoggerLock);
     MC_SAFE_RELEASE(mInternalLogger);
     MC_SAFE_RELEASE(mQueueCallback);
+    MC_SAFE_RELEASE(mNoopCallback);
     MC_SAFE_RELEASE(mLastFolder);
     MC_SAFE_RELEASE(mClientIdentity);
     MC_SAFE_RELEASE(mDefaultNamespace);
@@ -330,15 +336,15 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
 void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
-
-    if (mOwner->isKeepSessionAlive()){
-        //TODO: need to handler the errors such as network and authentication
+    //NOTE: if error happens then stop noop
+    if (mOwner->isKeepSessionAlive() && this->noopError == ErrorNone){
         IMAPOperation * op = owner()->noopOperation();
-//        IMAPNoopOperationCallback * callback = new IMAPNoopOperationCallback();
-//        op->setCallback(callback);
-//        callback->autorelease();
+        op->setCallback(mNoopCallback);
         op->start();
     }else{
+        if (this->noopError != ErrorNone){
+            printf("Stop noop for there is an error:%d",this->noopError);
+        }
         IMAPOperation * op = disconnectOperation();
         op->start();
         mOwner->release();

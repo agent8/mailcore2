@@ -33,7 +33,7 @@ namespace mailcore {
     class IMAPMessageRenderingOperation;
     class IMAPMessage;
     class IMAPIdentity;
-    
+    class IMAPNoopOperationCallback;
     class MAILCORE_EXPORT IMAPAsyncConnection : public Object {
     public:
         IMAPAsyncConnection();
@@ -88,7 +88,8 @@ namespace mailcore {
 #endif
         
         virtual IMAPOperation * disconnectOperation();
-
+    public:
+        ErrorCode noopError = ErrorNone;
     private:
         IMAPSession * mSession;
         OperationQueue * mQueue;
@@ -96,6 +97,7 @@ namespace mailcore {
         IMAPIdentity * mClientIdentity;
         String * mLastFolder;
         IMAPOperationQueueCallback * mQueueCallback;
+        IMAPNoopOperationCallback * mNoopCallback;
         IMAPAsyncSession * mOwner;
         ConnectionLogger * mConnectionLogger;
         IMAPConnectionLogger * mInternalLogger;
