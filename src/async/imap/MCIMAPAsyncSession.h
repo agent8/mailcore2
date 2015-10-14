@@ -215,7 +215,7 @@ namespace mailcore {
         
         virtual IMAPAsyncConnection * session();
         virtual IMAPAsyncConnection * matchingSessionForFolder(String * folder);
-        virtual IMAPAsyncConnection * availableSession();
+        virtual IMAPAsyncConnection * availableSession(String * folder);
         virtual IMAPMessageRenderingOperation * renderingOperation(IMAPMessage * message,
                                                                    String * folder,
                                                                    IMAPMessageRenderingType type);
