@@ -271,6 +271,30 @@ unsigned int OperationQueue::count()
     
     return count;
 }
+/**This is used to check which queue is the most idle*/
+unsigned int OperationQueue::countWithoutNoop(){
+    unsigned int count;
+    
+    pthread_mutex_lock(&mLock);
+    count = mOperations->count();
+    if (count == 1){
+        Operation * op = (Operation *) mOperations->objectAtIndex(0);
+        if (op->className()->isEqual(MCSTR("mailcore::IMAPNoopOperation"))){
+            count = -1;//prefer this kind of session
+        }
+    }else{
+        //No need to
+//        for (unsigned int i = 0 ; i < mOperations->count() ; i ++) {
+//            Operation * op = (Operation *) mOperations->objectAtIndex(i);
+//            if (op->className()->isEqual(MCSTR("mailcore::IMAPNoopOperation"))){
+//                count--;
+//            }
+//        }
+    }
+    pthread_mutex_unlock(&mLock);
+    
+    return count;
+}
 
 void OperationQueue::setCallback(OperationQueueCallback * callback)
 {

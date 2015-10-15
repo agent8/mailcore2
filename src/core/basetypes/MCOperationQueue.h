@@ -6,7 +6,7 @@
 #include <semaphore.h>
 #include <MailCore/MCObject.h>
 #include <MailCore/MCLibetpanTypes.h>
-
+#include <MailCore/MCString.h>
 #ifdef __cplusplus
 
 namespace mailcore {
@@ -24,7 +24,7 @@ namespace mailcore {
         virtual void cancelAllOperations();
         
         virtual unsigned int count();
-        
+        virtual unsigned int countWithoutNoop();
         virtual void setCallback(OperationQueueCallback * callback);
         virtual OperationQueueCallback * callback();
         

@@ -297,7 +297,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
         IMAPAsyncConnection * s = NULL;
         if (urgent && mAllowsFolderConcurrentAccessEnabled) {
             s = availableSession(folder);
-            if (s->operationsCount() == 0) {
+            if (s->operationsCount() <= 0) {
                 s->setLastFolder(folder);
                 return s;
             }
@@ -314,7 +314,7 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
     if (mMaximumConnections == 0) {
         for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
-            if (s->operationsCount() == 0)
+            if (s->operationsCount() <= 0)
                 return s;
         }
         IMAPAsyncConnection * chosenSession = session();
@@ -330,11 +330,6 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
             if (folder->isEqual(MCSTR("[Gmail]/All Mail"))) {
                 skipGmailAllMailSession = false;
             }
-        }
-        if(folder != NULL){
-            printf("availableSession Folder:%s\n",folder->UTF8Characters());
-        }else{
-            printf("availableSession Folder:NULL\n");
         }
         for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);

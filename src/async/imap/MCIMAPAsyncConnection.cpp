@@ -282,7 +282,7 @@ IMAPSession * IMAPAsyncConnection::session()
 
 unsigned int IMAPAsyncConnection::operationsCount()
 {
-    return mQueue->count();
+    return mQueue->countWithoutNoop();
 }
 
 void IMAPAsyncConnection::cancelAllOperations()
@@ -340,7 +340,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
     if (mOwner->isKeepSessionAlive() && (noopError == ErrorNone || noopError == ErrorConnection)){
         //Weicheng: does need to keep all session or just the [Gmail]/All Mail and INBOX
         if (this->lastFolder() != NULL && (mLastFolder->isEqual(MCSTR("[Gmail]/All Mail")) || mLastFolder->isEqual(MCSTR("INBOX")))){
-            printf("keep session(%s) from disconnect\n",this->lastFolder()->UTF8Characters());
+            printf("keep session(%s) from disconnecting\n",this->lastFolder()->UTF8Characters());
             IMAPOperation * op = owner()->noopOperation();
             op->setCallback(mNoopCallback);
             op->setSession(this);
