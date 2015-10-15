@@ -336,19 +336,24 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
 void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
-    //NOTE: if error happens then stop noop
-    if (mOwner->isKeepSessionAlive() && (this->noopError == ErrorNone || this->noopError == ErrorConnection)){
-        IMAPOperation * op = owner()->noopOperation();
-        op->setCallback(mNoopCallback);
-        op->start();
-    }else{
-        if (this->noopError != ErrorNone){
-            printf("Stop noop for there is an error:%d",this->noopError);
+    //NOTE: if error(except network) happens then stop noop
+    if (mOwner->isKeepSessionAlive() && (noopError == ErrorNone || noopError == ErrorConnection)){
+        //Weicheng: does need to keep all session or just the [Gmail]/All Mail and INBOX
+        if (this->lastFolder() != NULL && (mLastFolder->isEqual(MCSTR("[Gmail]/All Mail")) || mLastFolder->isEqual(MCSTR("INBOX")))){
+            printf("keep session(%s) from disconnect\n",this->lastFolder()->UTF8Characters());
+            IMAPOperation * op = owner()->noopOperation();
+            op->setCallback(mNoopCallback);
+            op->setSession(this);
+            this->runOperation(op);
+            return;
         }
-        IMAPOperation * op = disconnectOperation();
-        op->start();
-        mOwner->release();
     }
+    if (noopError != ErrorNone){
+        printf("Stop noop for there is an error:%d",this->noopError);
+    }
+    IMAPOperation * op = disconnectOperation();
+    op->start();
+    mOwner->release();
 }
 
 void IMAPAsyncConnection::queueStartRunning()
