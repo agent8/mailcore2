@@ -323,7 +323,7 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
     }
     else {
         IMAPAsyncConnection * chosenSession = NULL;
-        unsigned int minOperationsCount = 0;
+        int minOperationsCount = 0;
         //keep one [Gmail]/All Mail session for select [Gmail]/All Mail will cost much time.
         bool skipGmailAllMailSession = true;
         if (folder != NULL) {
@@ -331,15 +331,25 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
                 skipGmailAllMailSession = false;
             }
         }
+        if (this->mKeepSessionAlive){
+            printf("Start select session for %s\n",folder==NULL?"NULL":folder->UTF8Characters());
+        }
         for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+            String * lastFolder = s->lastFolder();
+            if (this->mKeepSessionAlive){
+                if(lastFolder!=NULL){
+                    printf("Session %d Folder:NULL\n",i);
+                }else{
+                    printf("Session %d Folder:%s\n",i, lastFolder->UTF8Characters());
+                }
+            }
             if (chosenSession == NULL) {
                 chosenSession = s;
                 minOperationsCount = s->operationsCount();
             }
             else{
                 if (skipGmailAllMailSession){
-                    String * lastFolder = s->lastFolder();
                     if (lastFolder != NULL && lastFolder->isEqual(MCSTR("[Gmail]/All Mail"))){
                         skipGmailAllMailSession = false;
                         if (s->operationsCount() < minOperationsCount && chosenSession->lastFolder() != NULL && chosenSession->lastFolder()->isEqual(MCSTR("[Gmail]/All Mail"))) {
@@ -358,8 +368,14 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
 
         }
         if (mSessions->count() < mMaximumConnections) {
-            if ((chosenSession != NULL) && (minOperationsCount == 0)) {
+            if ((chosenSession != NULL) && (minOperationsCount <= 0)) {
+                if (this->mKeepSessionAlive){
+                    printf("Select a session with folder %s as %s\n", (chosenSession->lastFolder()==NULL?"NULL":chosenSession->lastFolder()->UTF8Characters()),(folder==NULL?"NULL":folder->UTF8Characters()));
+                }
                 return chosenSession;
+            }
+            if (this->mKeepSessionAlive){
+                printf("New session for Folder %s\n",folder==NULL?"NULL":folder->UTF8Characters());
             }
             chosenSession = session();
             mSessions->addObject(chosenSession);

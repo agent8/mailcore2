@@ -96,6 +96,11 @@ namespace mailcore {
         }
         virtual void operationFinished(Operation * op){
             IMAPOperation * operation = (IMAPOperation*)op;
+            if(context->noopError == operation->error()){
+                context->noopRepeatCount++;
+            }else{
+                context->noopRepeatCount = 0;
+            }
             context->noopError = operation->error();
         }
     private:
@@ -301,6 +306,7 @@ void IMAPAsyncConnection::runOperation(IMAPOperation * operation)
         mOwner->release();
         mScheduledAutomaticDisconnect = false;
     }
+    noopRepeatCount  = 0;
     mQueue->addOperation(operation);
 }
 
@@ -337,14 +343,18 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
     //NOTE: if error(except network) happens then stop noop
-    if (mOwner->isKeepSessionAlive() && (noopError == ErrorNone || noopError == ErrorConnection)){
+    if (mOwner->isKeepSessionAlive() &&
+            ((noopError == ErrorNone && noopRepeatCount<72)/*noop 72 times (30 mins) before disconect*/
+             || (noopError == ErrorConnection && noopRepeatCount<10)/*retry 10 times if network error before disconect*/
+            )
+        ){
         //Weicheng: does need to keep all session or just the [Gmail]/All Mail and INBOX
         if (this->lastFolder() != NULL && (mLastFolder->isEqual(MCSTR("[Gmail]/All Mail")) || mLastFolder->isEqual(MCSTR("INBOX")))){
-            printf("keep session(%s) from disconnecting with error:%d\n",this->lastFolder()->UTF8Characters(),noopError);
+            printf("keep session(%s) from disconnecting %d times with error:%d\n",this->lastFolder()->UTF8Characters(), noopRepeatCount, noopError);
             IMAPOperation * op = owner()->noopOperation();
             op->setCallback(mNoopCallback);
             op->setSession(this);
-            this->runOperation(op);
+            mQueue->addOperation(op);
             return;
         }
     }

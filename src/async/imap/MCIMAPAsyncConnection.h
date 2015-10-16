@@ -90,6 +90,7 @@ namespace mailcore {
         virtual IMAPOperation * disconnectOperation();
     public:
         ErrorCode noopError = ErrorNone;
+        unsigned int noopRepeatCount = 0;
     private:
         IMAPSession * mSession;
         OperationQueue * mQueue;
