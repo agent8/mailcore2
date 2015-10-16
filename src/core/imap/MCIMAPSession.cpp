@@ -794,7 +794,8 @@ void IMAPSession::login(ErrorCode * pError)
         case AuthTypeXOAuth2:
         case AuthTypeXOAuth2Outlook:
             if (mOAuth2Token == NULL) {
-                r = MAILIMAP_ERROR_STREAM;
+                //Weicheng: This should be an auth error, not a network error
+                r = MAILIMAP_ERROR_NEEDS_MORE_DATA;//MAILIMAP_ERROR_STREAM;
             }
             else {
                 r = mailimap_oauth2_authenticate(mImap, utf8username, MCUTF8(mOAuth2Token));
