@@ -54,7 +54,7 @@ void IMAPFolderStatusOperation::main()
     }
     
     if (status->messageCount() != messageCount) {
-        printf("Folder(%s): status(%d) message count is not equal to select(%d)\n",folder()->UTF8Characters(),status->messageCount(),messageCount);
+        MCLog("Folder(%s): status(%d) message count is not equal to select(%d)\n",folder()->UTF8Characters(),status->messageCount(),messageCount);
         status->setMessageCount(messageCount);
     }
     

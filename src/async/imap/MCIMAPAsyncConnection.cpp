@@ -350,7 +350,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
         ){
         //Weicheng: does need to keep all session or just the [Gmail]/All Mail and INBOX
         if (this->lastFolder() != NULL && (mLastFolder->isEqual(MCSTR("[Gmail]/All Mail")) || mLastFolder->isEqual(MCSTR("INBOX")))){
-            printf("keep session(%s) from disconnecting %d times with error:%d\n",this->lastFolder()->UTF8Characters(), noopRepeatCount, noopError);
+            MCLog("keep session(%s) from disconnecting %d times with error:%d\n",this->lastFolder()->UTF8Characters(), noopRepeatCount, noopError);
             IMAPOperation * op = owner()->noopOperation();
             op->setCallback(mNoopCallback);
             op->setSession(this);
@@ -359,7 +359,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
         }
     }
     if (noopError != ErrorNone){
-        printf("Stop noop for there is an error:%d",this->noopError);
+        MCLog("Stop noop for there is an error:%d",this->noopError);
     }
     IMAPOperation * op = disconnectOperation();
     op->start();

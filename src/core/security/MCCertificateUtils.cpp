@@ -159,7 +159,7 @@ err:
 
 	status = X509_STORE_set_default_paths(store);
     if (status != 1) {
-        printf("Error loading the system-wide CA certificates");
+        MCLog("Error loading the system-wide CA certificates");
     }
     
     certificates = sk_X509_new_null();
