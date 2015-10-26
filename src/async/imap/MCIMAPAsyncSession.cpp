@@ -332,16 +332,16 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
             }
         }
         if (this->mKeepSessionAlive){
-            printf("Start select session for %s\n",folder==NULL?"NULL":folder->UTF8Characters());
+            MCLog("Start select session for %s\n",folder==NULL?"NULL":folder->UTF8Characters());
         }
         for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
             String * lastFolder = s->lastFolder();
             if (this->mKeepSessionAlive){
                 if(lastFolder!=NULL){
-                    printf("Session %d Folder:NULL\n",i);
+                    MCLog("Session %d Folder:NULL\n",i);
                 }else{
-                    printf("Session %d Folder:%s\n",i, lastFolder->UTF8Characters());
+                    MCLog("Session %d Folder:%s\n",i, lastFolder->UTF8Characters());
                 }
             }
             if (chosenSession == NULL) {
@@ -370,12 +370,12 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
         if (mSessions->count() < mMaximumConnections) {
             if ((chosenSession != NULL) && (minOperationsCount <= 0)) {
                 if (this->mKeepSessionAlive){
-                    printf("Select a session with folder %s as %s\n", (chosenSession->lastFolder()==NULL?"NULL":chosenSession->lastFolder()->UTF8Characters()),(folder==NULL?"NULL":folder->UTF8Characters()));
+                    MCLog("Select a session with folder %s as %s\n", (chosenSession->lastFolder()==NULL?"NULL":chosenSession->lastFolder()->UTF8Characters()),(folder==NULL?"NULL":folder->UTF8Characters()));
                 }
                 return chosenSession;
             }
             if (this->mKeepSessionAlive){
-                printf("New session for Folder %s\n",folder==NULL?"NULL":folder->UTF8Characters());
+                MCLog("New session for Folder %s\n",folder==NULL?"NULL":folder->UTF8Characters());
             }
             chosenSession = session();
             mSessions->addObject(chosenSession);
