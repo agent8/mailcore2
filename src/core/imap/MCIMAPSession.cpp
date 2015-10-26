@@ -1080,9 +1080,10 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
     status_att_list = mailimap_status_att_list_new_empty();
     mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_UNSEEN);
     mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_MESSAGES);
-    mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_RECENT);
-    mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_UIDNEXT);
-    mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_UIDVALIDITY);
+    //Weicheng:Some IMAP server(such as imap.qq.com) does not support folowing arguments
+//    mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_RECENT);
+//    mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_UIDNEXT);
+//    mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_UIDVALIDITY);
     if (mCondstoreEnabled) {
         mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_HIGHESTMODSEQ);
     }
