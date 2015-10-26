@@ -11,6 +11,7 @@
 #include "MCIMAPSession.h"
 #include "MCIMAPAsyncConnection.h"
 #include "MCIMAPFolderInfo.h"
+#include "MCIMAPFolderStatus.h"
 
 using namespace mailcore;
 
@@ -27,6 +28,13 @@ IMAPFolderInfoOperation::~IMAPFolderInfoOperation()
 IMAPFolderInfo * IMAPFolderInfoOperation::info()
 {
     return mInfo;
+}
+
+bool IMAPFolderInfoOperation::includeUnSeen(){
+    return mIncludeUnSeen;
+}
+void IMAPFolderInfoOperation::setIncludeUnSeen(bool includeUnSeen){
+    this->mIncludeUnSeen = includeUnSeen;
 }
 
 void IMAPFolderInfoOperation::main()
@@ -53,6 +61,15 @@ void IMAPFolderInfoOperation::main()
     mInfo->setFirstUnseenUid(session()->session()->firstUnseenUid());
     mInfo->setAllowsNewPermanentFlags(session()->session()->allowsNewPermanentFlags());
 
+    if(mIncludeUnSeen){
+        IMAPFolderStatus *status = session()->session()->folderStatus(folder(), &error);
+        if (error != ErrorNone) {
+            setError(error);
+            return;
+        }
+        mInfo->setUnSeenMessageCount(status->unseenCount());
+    }
+    
     setError(error);
 }
 

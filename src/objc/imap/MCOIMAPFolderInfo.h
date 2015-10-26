@@ -31,6 +31,9 @@
 // first uid of the unseen messages.
 @property (nonatomic, assign) uint32_t firstUnseenUid;
 
+//Weicheng: get by command "STATUS"
+@property (nonatomic, assign) int unSeenMessageCount;
+
 /** An boolean indicates that this folder or IMAP server allows to add a new permanent flags */
 @property (nonatomic, assign) BOOL allowsNewPermanentFlags;
 

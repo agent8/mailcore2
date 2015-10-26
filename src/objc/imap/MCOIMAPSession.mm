@@ -193,9 +193,9 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
     return result;
 }
 
-- (MCOIMAPFolderInfoOperation *) folderInfoOperation:(NSString *)folder
+- (MCOIMAPFolderInfoOperation *) folderInfoOperation:(NSString *)folder includeUnSeen:(BOOL)includeUnSeen
 {
-    IMAPFolderInfoOperation * coreOp = MCO_NATIVE_INSTANCE->folderInfoOperation([folder mco_mcString]);
+    IMAPFolderInfoOperation * coreOp = MCO_NATIVE_INSTANCE->folderInfoOperation([folder mco_mcString], includeUnSeen);
     return MCO_TO_OBJC_OP(coreOp);
 }
 

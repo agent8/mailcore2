@@ -34,6 +34,9 @@ namespace mailcore {
         virtual void setMessageCount(int messageCount);
         virtual int messageCount();
         
+        virtual void setUnSeenMessageCount(int unSeenMessageCount);
+        virtual int unSeenMessageCount();
+        
         virtual void setFirstUnseenUid(uint32_t firstUnseenUid);
         virtual uint32_t firstUnseenUid();
         
@@ -49,6 +52,7 @@ namespace mailcore {
         uint32_t mUidValidity;
         uint64_t mModSequenceValue;
         int mMessageCount;
+        int mUnSeenMessageCount;
         uint32_t mFirstUnseenUid;
         bool mAllowsNewPermanentFlags;
         

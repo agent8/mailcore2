@@ -85,6 +85,16 @@ int IMAPFolderInfo::messageCount()
     return mMessageCount;
 }
 
+void IMAPFolderInfo::setUnSeenMessageCount(int unSeenMessageCount)
+{
+    mUnSeenMessageCount = unSeenMessageCount;
+}
+
+int IMAPFolderInfo::unSeenMessageCount()
+{
+    return mUnSeenMessageCount;
+}
+
 void IMAPFolderInfo::setFirstUnseenUid(uint32_t firstUnseenUid)
 {
     mFirstUnseenUid = firstUnseenUid;

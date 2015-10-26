@@ -107,7 +107,7 @@ namespace mailcore {
         virtual IMAPIdentity * clientIdentity();
         virtual String * gmailUserDisplayName() DEPRECATED_ATTRIBUTE;
         
-        virtual IMAPFolderInfoOperation * folderInfoOperation(String * folder);
+        virtual IMAPFolderInfoOperation * folderInfoOperation(String * folder, bool includeUnSeen);
         virtual IMAPFolderStatusOperation * folderStatusOperation(String * folder);
         
         virtual IMAPFetchFoldersOperation * fetchSubscribedFoldersOperation();

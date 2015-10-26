@@ -24,14 +24,17 @@ namespace mailcore {
         virtual ~IMAPFolderInfoOperation();
 
         IMAPFolderInfo * info();
-
+        bool includeUnSeen();
+        void setIncludeUnSeen(bool includeUnSeen);
+        
     public: // subclass behavior
         virtual void main();
         
     private:
 
         IMAPFolderInfo * mInfo;
-
+        bool mIncludeUnSeen;
+        
     };
 
 }

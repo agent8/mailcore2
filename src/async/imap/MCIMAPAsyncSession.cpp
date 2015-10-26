@@ -403,11 +403,12 @@ IMAPAsyncConnection * IMAPAsyncSession::matchingSessionForFolder(String * folder
     return availableSession(folder);
 }
 
-IMAPFolderInfoOperation * IMAPAsyncSession::folderInfoOperation(String * folder)
+IMAPFolderInfoOperation * IMAPAsyncSession::folderInfoOperation(String * folder, bool includeUnSeen)
 {
     IMAPFolderInfoOperation * op = new IMAPFolderInfoOperation();
     op->setMainSession(this);
     op->setFolder(folder);
+    op->setIncludeUnSeen(includeUnSeen);
     op->autorelease();
     return op;
 }

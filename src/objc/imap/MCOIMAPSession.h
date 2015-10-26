@@ -171,7 +171,7 @@
      }];
 */
 
-- (MCOIMAPFolderInfoOperation *) folderInfoOperation:(NSString *)folder;
+- (MCOIMAPFolderInfoOperation *) folderInfoOperation:(NSString *)folder includeUnSeen:(BOOL)unSeen;
 
 /**
  Returns an operation that retrieves folder status (like UIDNext - Unseen -)
