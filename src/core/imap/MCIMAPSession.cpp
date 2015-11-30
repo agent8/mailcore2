@@ -618,7 +618,8 @@ void IMAPSession::connect(ErrorCode * pError)
     mailstream_low * low;
     String * identifierString;
     char * identifier;
-    
+    bool needToSendId;
+    needToSendId = false;
     low = mailstream_get_low(mImap->imap_stream);
     identifierString = String::stringWithUTF8Format("%s@%s:%u", MCUTF8(mUsername), MCUTF8(mHostname), mPort);
     identifier = strdup(identifierString->UTF8Characters());
@@ -628,8 +629,10 @@ void IMAPSession::connect(ErrorCode * pError)
         MC_SAFE_REPLACE_RETAIN(String, mWelcomeString, String::stringWithUTF8Characters(mImap->imap_response));
         mYahooServer = (mWelcomeString->locationOfString(MCSTR("yahoo.com")) != -1);
 #ifdef LIBETPAN_HAS_MAILIMAP_163_WORKAROUND
-        if(mWelcomeString->locationOfString(MCSTR("Coremail System IMap Server Ready")) != -1)
+        if(mWelcomeString->locationOfString(MCSTR("Coremail System IMap Server Ready")) != -1) {
             mailimap_set_163_workaround_enabled(mImap, 1);
+            needToSendId = true;
+        }
 #endif
     }
     
@@ -646,6 +649,18 @@ void IMAPSession::connect(ErrorCode * pError)
                 MCLog("capabilities failed");
                 goto close;
             }
+        }
+    }
+    
+    if (needToSendId) {
+        IMAPIdentity *clientIdentity = new IMAPIdentity();
+        clientIdentity->setName(MCSTR("Easilydo Mail"));
+        clientIdentity->setVendor(MCSTR("Easilydo"));
+        clientIdentity->setVersion(MCSTR("1.0"));
+        clientIdentity->autorelease();
+        identity(clientIdentity, pError);
+        if(*pError != ErrorNone){
+            goto close;
         }
     }
     
