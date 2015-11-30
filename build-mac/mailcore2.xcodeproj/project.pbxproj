@@ -624,6 +624,12 @@
 		9EF9AB23175F406D0027FA3B /* MCOIMAPFolderStatusOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9EF9AB16175F35C60027FA3B /* MCOIMAPFolderStatusOperation.h */; };
 		9EF9AB24175F409D0027FA3B /* MCIMAPFolderStatusOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9EF9AB0E175F30C20027FA3B /* MCIMAPFolderStatusOperation.h */; };
 		9EF9AB25175F40C70027FA3B /* MCIMAPFolderStatusOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9EF9AB0E175F30C20027FA3B /* MCIMAPFolderStatusOperation.h */; };
+		A1B491E71C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */; };
+		A1B491E81C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */; };
+		A1B491E91C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */; };
+		A1B491EC1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
+		A1B491ED1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
+		A1B491EE1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
 		BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD6272981A13FF2A00129AA8 /* test-all-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD6272961A13FF2A00129AA8 /* test-all-mac.mm */; };
@@ -2263,6 +2269,10 @@
 		9EF9AB16175F35C60027FA3B /* MCOIMAPFolderStatusOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPFolderStatusOperation.h; sourceTree = "<group>"; };
 		9EF9AB18175F36600027FA3B /* MCOIMAPFolderStatusOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPFolderStatusOperation.mm; sourceTree = "<group>"; };
 		A137AF631B97279A00FB2560 /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "../../libetpan/build-mac/libetpan.xcodeproj"; sourceTree = "<group>"; };
+		A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPCustomCommandOperation.cpp; sourceTree = "<group>"; };
+		A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPCustomCommandOperation.h; sourceTree = "<group>"; };
+		A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPCustomCommandOperation.h; sourceTree = "<group>"; };
+		A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPCustomCommandOperation.mm; sourceTree = "<group>"; };
 		BD49963519FEC6DD000945BC /* ConvertUTF.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ConvertUTF.c; sourceTree = "<group>"; };
 		BD49963619FEC6DD000945BC /* ConvertUTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertUTF.h; sourceTree = "<group>"; };
 		BD6272961A13FF2A00129AA8 /* test-all-mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "test-all-mac.mm"; sourceTree = "<group>"; };
@@ -3301,6 +3311,8 @@
 				84B639EC17F280F3003B5BA2 /* MCIMAPNoopOperation.h */,
 				C6EFFBC6182BBF5700CFF656 /* MCIMAPMultiDisconnectOperation.cpp */,
 				C6EFFBC7182BBF5700CFF656 /* MCIMAPMultiDisconnectOperation.h */,
+				A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */,
+				A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */,
 			);
 			path = imap;
 			sourceTree = "<group>";
@@ -3827,6 +3839,8 @@
 				C63D316117C92D8300A4D993 /* MCOIMAPIdentity.mm */,
 				C6EFFBCA1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.h */,
 				C6EFFBCB1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.mm */,
+				A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */,
+				A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */,
 			);
 			path = imap;
 			sourceTree = "<group>";
@@ -4300,6 +4314,7 @@
 				3D9C2D8E1B96637E008F57C6 /* MCIMAPFetchFoldersOperation.cpp in Sources */,
 				3D9C2D8F1B96637E008F57C6 /* MCIMAPRenameFolderOperation.cpp in Sources */,
 				3D9C2D901B96637E008F57C6 /* ConvertUTF.c in Sources */,
+				A1B491EE1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */,
 				3D9C2D911B96637E008F57C6 /* MCIMAPDeleteFolderOperation.cpp in Sources */,
 				3D9C2D921B96637E008F57C6 /* MCIMAPIdentity.cpp in Sources */,
 				3D9C2D931B96637E008F57C6 /* MCNNTPFetchAllArticlesOperation.cpp in Sources */,
@@ -4464,6 +4479,7 @@
 				3D9C2E321B96637E008F57C6 /* MCHTMLRendererIMAPDataCallback.cpp in Sources */,
 				3D9C2E331B96637E008F57C6 /* MCOIMAPMessageRenderingOperation.mm in Sources */,
 				3D9C2E341B96637E008F57C6 /* MCONNTPFetchArticleOperation.mm in Sources */,
+				A1B491E91C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp in Sources */,
 				3D9C2E351B96637E008F57C6 /* MCOIMAPQuotaOperation.mm in Sources */,
 				3D9C2E361B96637E008F57C6 /* MCIMAPQuotaOperation.cpp in Sources */,
 			);
@@ -4551,6 +4567,7 @@
 				C64EA80216A295E400778456 /* MCIMAPRenameFolderOperation.cpp in Sources */,
 				C64EA80516A2997E00778456 /* MCIMAPDeleteFolderOperation.cpp in Sources */,
 				BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */,
+				A1B491EC1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */,
 				C63D315C17C9155C00A4D993 /* MCIMAPIdentity.cpp in Sources */,
 				84D73742199BF963005124E5 /* MCNNTPFetchAllArticlesOperation.cpp in Sources */,
 				C64EA80816A2999A00778456 /* MCIMAPCreateFolderOperation.cpp in Sources */,
@@ -4667,6 +4684,7 @@
 				C6F61F9F17016EA10073032E /* MCOIMAPFolderInfo.mm in Sources */,
 				C6D4FD3F19FB7534001F7E01 /* MCMessageParserMac.mm in Sources */,
 				C6F61FB51702AB340073032E /* MCOIMAPBaseOperation.mm in Sources */,
+				A1B491E71C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp in Sources */,
 				C608167517759967001F1018 /* MCSMTPDisconnectOperation.cpp in Sources */,
 				C6A81BBF17068E5E00882C15 /* MCOSMTPSession.mm in Sources */,
 				BDCD7CC71A70771B0001DCC3 /* csr2022.cpp in Sources */,
@@ -4823,6 +4841,7 @@
 				C6BA2BC51705F4E6003F0E9E /* MCIMAPFetchFoldersOperation.cpp in Sources */,
 				C6BA2BC61705F4E6003F0E9E /* MCIMAPRenameFolderOperation.cpp in Sources */,
 				BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */,
+				A1B491ED1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */,
 				C6BA2BC71705F4E6003F0E9E /* MCIMAPDeleteFolderOperation.cpp in Sources */,
 				C63D315D17C9155C00A4D993 /* MCIMAPIdentity.cpp in Sources */,
 				84D73743199BF963005124E5 /* MCNNTPFetchAllArticlesOperation.cpp in Sources */,
@@ -4987,6 +5006,7 @@
 				DAACAD5217886807000B4517 /* MCHTMLRendererIMAPDataCallback.cpp in Sources */,
 				DA89896E178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm in Sources */,
 				84D73772199C007E005124E5 /* MCONNTPFetchArticleOperation.mm in Sources */,
+				A1B491E81C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp in Sources */,
 				4B3C1BE317ABFF91008BBF4C /* MCOIMAPQuotaOperation.mm in Sources */,
 				4B3C1BE517AC0176008BBF4C /* MCIMAPQuotaOperation.cpp in Sources */,
 			);
