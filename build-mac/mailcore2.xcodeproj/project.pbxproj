@@ -630,6 +630,8 @@
 		A1B491EC1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
 		A1B491ED1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
 		A1B491EE1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
+		A1B491F01C0C6D2D00699CF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		A1B491F11C0C6D2D00699CF5 /* MCIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */; };
 		BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD6272981A13FF2A00129AA8 /* test-all-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD6272961A13FF2A00129AA8 /* test-all-mac.mm */; };
@@ -1484,6 +1486,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				A1B491F01C0C6D2D00699CF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
+				A1B491F11C0C6D2D00699CF5 /* MCIMAPCustomCommandOperation.h in CopyFiles */,
 				3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in CopyFiles */,
 				3D9C2C741B96637E008F57C6 /* MCMXRecordResolverOperation.h in CopyFiles */,
 				3D9C2C751B96637E008F57C6 /* MCOAccountValidator.h in CopyFiles */,
