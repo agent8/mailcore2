@@ -1038,8 +1038,7 @@ String * IMAPSession::customCommand(String * command, ErrorCode * pError)
 void IMAPSession::select(String * folder, ErrorCode * pError)
 {
     int r;
-
-    MCLog("select");
+    MCLog("select folder:%s\n", folder != NULL?folder->mUTF7DecodedString()->UTF8Characters():"NULL");
     MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
 
     r = mailimap_select(mImap, MCUTF8(folder));
