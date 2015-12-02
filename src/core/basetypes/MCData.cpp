@@ -301,6 +301,9 @@ String * Data::stringWithDetectedCharset(String * hintCharset, bool isHTML)
     
     if (hintCharset != NULL) {
         hintCharset = normalizeCharset(hintCharset);
+        if (hintCharset->isEqual(MCSTR("x-unknown"))){
+            hintCharset = NULL;
+        }
     }
     if (isHintCharsetValid(hintCharset)) {
         charset = hintCharset;
