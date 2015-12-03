@@ -3893,7 +3893,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3D9C2E391B96637E008F57C6 /* Build configuration list for PBXNativeTarget "Edo Mailcore2" */;
 			buildPhases = (
-				3D9C2C711B96637E008F57C6 /* ShellScript */,
+				3D9C2C711B96637E008F57C6 /* Run Script */,
 				3D9C2C721B96637E008F57C6 /* CopyFiles */,
 				3D9C2D4A1B96637E008F57C6 /* Sources */,
 				3D9C2E371B96637E008F57C6 /* Frameworks */,
@@ -4181,13 +4181,14 @@
 			shellPath = /bin/sh;
 			shellScript = "rsync -a  \"$BUILT_PRODUCTS_DIR/include/MailCore/\" \"$BUILT_PRODUCTS_DIR/$PUBLIC_HEADERS_FOLDER_PATH\"\ncd \"$BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME\"\nrm -f Headers\nln -sf \"Versions/Current/Headers\" Headers\n";
 		};
-		3D9C2C711B96637E008F57C6 /* ShellScript */ = {
+		3D9C2C711B96637E008F57C6 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
