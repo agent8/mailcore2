@@ -6,6 +6,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
+#include <syslog.h>
 #ifndef _MSC_VER
 #include <time.h>
 #include <unistd.h>
@@ -59,7 +60,7 @@ static void logInternalv(FILE * file,
         }
         filename = p + 1;
     }
-    
+
     struct timeval tv;
     struct tm tm_value;
     pthread_t thread_id = pthread_self();
@@ -72,13 +73,14 @@ static void logInternalv(FILE * file,
     time_t timevalue_sec = tv.tv_sec;
     localtime_r(&timevalue_sec, &tm_value);
     fprintf(file, "%04u-%02u-%02u %02u:%02u:%02u.%03u ", tm_value.tm_year + 1900, tm_value.tm_mon + 1, tm_value.tm_mday, tm_value.tm_hour, tm_value.tm_min, tm_value.tm_sec, (int) (tv.tv_usec / 1000));
-
+    syslog(0,  "%04u-%02u-%02u %02u:%02u:%02u.%03u ", tm_value.tm_year + 1900, tm_value.tm_mon + 1, tm_value.tm_mday, tm_value.tm_hour, tm_value.tm_min, tm_value.tm_sec, (int) (tv.tv_usec / 1000));
 #ifdef __MACH__   
     if (pthread_main_np()) {
 #else
     if (0) {
 #endif
         fprintf(file, "[%i:main] %s:%u: ", sPid, filename, line);
+        syslog(0,  "[%i:main] %s:%u: ", sPid, filename, line);
     }
     else {
         unsigned long threadValue;
@@ -90,9 +92,12 @@ static void logInternalv(FILE * file,
         threadValue = (unsigned long) thread_id;
 #endif
         fprintf(file, "[%i:%lx] %s:%u: ", sPid, threadValue, filename, line);
+        syslog(0, "[%i:%lx] %s:%u: ", sPid, threadValue, filename, line);
     }
     vfprintf(file, format, argp);
+    syslog(0, format, argp);
     fprintf(file, "\n");
+    syslog(0, "\n");
     
     if (dumpStack) {
 #if __APPLE__
@@ -101,11 +106,14 @@ static void logInternalv(FILE * file,
         int i;
     
         fprintf(file, "    ");
+        syslog(0, "    ");
         frameCount = backtrace(frame, 128);
         for(i = 0 ; i < frameCount ; i ++) {
             fprintf(file, " %p", frame[i]);
+            syslog(0, " %p", frame[i]);
         }
         fprintf(file, "\n");
+        syslog(0, "\n");
 #endif
         // TODO: other platforms implemented needed.
     }
