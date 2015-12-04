@@ -99,7 +99,7 @@ static void logInternalv(FILE * file,
         syslog(0, "[%i:%lx] %s:%u: ", sPid, threadValue, filename, line);
     }
     vfprintf(file, format, argp);
-//    syslog(0, format, argp);
+//    vsyslog(0, format, argp);
     fprintf(file, "\n");
     syslog(0, "\n");
     
