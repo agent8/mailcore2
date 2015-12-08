@@ -1038,11 +1038,10 @@ String * IMAPSession::customCommand(String * command, ErrorCode * pError)
 void IMAPSession::select(String * folder, ErrorCode * pError)
 {
     int r;
-    MCLog("select folder:%s\n", folder != NULL?folder->mUTF7DecodedString()->UTF8Characters():"NULL");
     MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
 
     r = mailimap_select(mImap, MCUTF8(folder));
-    MCLog("select error : %i", r);
+    MCLog("select %s. error: %i\n", folder != NULL?MCUTF8(folder):"NULL", r);
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
