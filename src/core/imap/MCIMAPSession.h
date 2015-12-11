@@ -191,6 +191,7 @@ namespace mailcore {
         virtual bool allowsNewPermanentFlags(); 
       
         virtual String * gmailUserDisplayName() DEPRECATED_ATTRIBUTE;
+        virtual String * getResponse();
         
         virtual void setConnectionLogger(ConnectionLogger * logger);
         virtual ConnectionLogger * connectionLogger();
@@ -222,7 +223,6 @@ namespace mailcore {
         virtual bool isAutomaticConfigurationDone();
         virtual void resetAutomaticConfigurationDone();
         virtual void applyCapabilities(IndexSet * capabilities);
-        
     private:
         String * mHostname;
         unsigned int mPort;

@@ -833,7 +833,8 @@ void IMAPSession::login(ErrorCode * pError)
         if (mImap->imap_response != NULL) {
             response = String::stringWithUTF8Characters(mImap->imap_response);
         }
-        if (response->locationOfString(MCSTR("not enabled for IMAP use")) != -1) {
+         MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
+        if (response->locationOfString(MCSTR("not enabled for IMAP use")) != -1 || response->locationOfString(MCSTR("enable IMAP")) != -1) {
             * pError = ErrorGmailIMAPNotEnabled;
         }
         else if (response->locationOfString(MCSTR("bandwidth limits")) != -1) {
@@ -861,10 +862,9 @@ void IMAPSession::login(ErrorCode * pError)
     }
     
     String * loginResponse = MCSTR("");
-    if (mIsGmail) {
-        if (mImap->imap_response != NULL) {
-            loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
-            
+    if (mImap->imap_response != NULL) {
+        loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
+        if (mIsGmail) {
             int location = loginResponse->locationOfString(MCSTR(" authenticated (Success)"));
             if (location != -1) {
                 String * emailAndName = loginResponse->substringToIndex(location);
@@ -4057,4 +4057,8 @@ void IMAPSession::resetAutomaticConfigurationDone()
 String * IMAPSession::gmailUserDisplayName()
 {
     return mGmailUserDisplayName;
+}
+
+String * IMAPSession::getResponse(){
+    return mLoginResponse;
 }

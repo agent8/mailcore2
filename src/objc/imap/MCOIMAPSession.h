@@ -35,7 +35,7 @@
 @class MCOIMAPMessage;
 @class MCOIMAPIdentity;
 @class MCOIMAPCustomCommandOperation;
-
+@class MCOIMAPCheckAccountOperation;
 /**
  This is the main IMAP class from which all operations are created
 
@@ -906,7 +906,7 @@ vanishedMessages will be set only for servers that support QRESYNC. See [RFC5162
      }];
 */
 
-- (MCOIMAPOperation *) checkAccountOperation;
+- (MCOIMAPCheckAccountOperation *) checkAccountOperation;
 
 /**
  Returns an operation to request capabilities of the server.

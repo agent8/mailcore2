@@ -43,6 +43,7 @@
 #include "MCIMAPNoopOperation.h"
 #include "MCIMAPMessageRenderingOperation.h"
 #include "MCIMAPCustomCommandOperation.h"
+#include "MCIMAPCheckAccountOperation.h"
 
 #define DEFAULT_MAX_CONNECTIONS 3
 
@@ -775,7 +776,7 @@ IMAPOperation * IMAPAsyncSession::connectOperation()
     return op;
 }
 
-IMAPOperation * IMAPAsyncSession::checkAccountOperation()
+IMAPCheckAccountOperation * IMAPAsyncSession::checkAccountOperation()
 {
     IMAPCheckAccountOperation * op = new IMAPCheckAccountOperation();
     op->setMainSession(this);
