@@ -288,7 +288,11 @@ IMAPSession * IMAPAsyncConnection::session()
 
 unsigned int IMAPAsyncConnection::operationsCount()
 {
+#if MCO_KEEP_ALIVE
     return mQueue->countWithoutNoop();
+#else
+    return mQueue->count();
+#endif
 }
 
 void IMAPAsyncConnection::cancelAllOperations()
@@ -340,6 +344,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
     }
 }
 
+#if MCO_KEEP_ALIVE
 void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
@@ -366,7 +371,18 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
     op->start();
     mOwner->release();
 }
+#else
+void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
+{
+    mScheduledAutomaticDisconnect = false;
+    
+    IMAPOperation * op = disconnectOperation();
+    op->start();
+    
+    mOwner->release();
+}
 
+#endif
 void IMAPAsyncConnection::queueStartRunning()
 {
     this->retain();
