@@ -475,6 +475,7 @@
 		3D9C2E341B96637E008F57C6 /* MCONNTPFetchArticleOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84D73770199C007E005124E5 /* MCONNTPFetchArticleOperation.mm */; };
 		3D9C2E351B96637E008F57C6 /* MCOIMAPQuotaOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */; };
 		3D9C2E361B96637E008F57C6 /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
+		3DE0D1F31C1B5C4B005CFA6D /* MCOIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
 		4B3C1BDE17ABF309008BBF4C /* MCOIMAPQuotaOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */; };
 		4B3C1BE117ABF4BC008BBF4C /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
 		4B3C1BE217ABFF7C008BBF4C /* MCOIMAPQuotaOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B3C1BDC17ABF306008BBF4C /* MCOIMAPQuotaOperation.h */; };
@@ -1489,6 +1490,7 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				3DE0D1F31C1B5C4B005CFA6D /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
 				A1B491F01C0C6D2D00699CF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
 				A1B491F11C0C6D2D00699CF5 /* MCIMAPCustomCommandOperation.h in CopyFiles */,
 				3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in CopyFiles */,
