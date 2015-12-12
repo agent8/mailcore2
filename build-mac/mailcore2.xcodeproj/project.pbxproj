@@ -24,6 +24,7 @@
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
 		27780C3E19CF9DDF00C77E44 /* libMailCore-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BA2C191705F4E6003F0E9E /* libMailCore-ios.a */; };
 		27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
+		3D58AFA61C1BB8E400D340F9 /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		3D9C2C741B96637E008F57C6 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
 		3D9C2C751B96637E008F57C6 /* MCOAccountValidator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27478E821A7646F8004AE621 /* MCOAccountValidator.h */; };
@@ -1490,6 +1491,7 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				3D58AFA61C1BB8E400D340F9 /* MCIMAPCheckAccountOperation.h in CopyFiles */,
 				3DE0D1F31C1B5C4B005CFA6D /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
 				A1B491F01C0C6D2D00699CF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
 				A1B491F11C0C6D2D00699CF5 /* MCIMAPCustomCommandOperation.h in CopyFiles */,
