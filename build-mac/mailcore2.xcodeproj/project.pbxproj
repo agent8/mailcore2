@@ -485,6 +485,7 @@
 		4B3C1BE517AC0176008BBF4C /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
 		4BE4029117B548B900ECC5E4 /* MCOIMAPQuotaOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B3C1BDC17ABF306008BBF4C /* MCOIMAPQuotaOperation.h */; };
 		4BE4029217B548D900ECC5E4 /* MCIMAPQuotaOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B3C1BE017ABF4BC008BBF4C /* MCIMAPQuotaOperation.h */; };
+		5A98232A1C1B9B9E00ED15C3 /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		8199FBEB19FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8199FBE819FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm */; };
 		8199FBEC19FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8199FBE819FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm */; };
 		8199FBF119FAF1270040BBC3 /* MCIMAPFetchParsedContentOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8199FBEF19FAF1270040BBC3 /* MCIMAPFetchParsedContentOperation.cpp */; };
