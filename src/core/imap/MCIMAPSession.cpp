@@ -856,9 +856,9 @@ void IMAPSession::login(ErrorCode * pError)
             * pError = ErrorYahooUnavailable;
         }
         else {
-            if (mImap->imap_response_info->rsp_alert != NULL
+            if (mImap->imap_response_info != NULL && (mImap->imap_response_info->rsp_alert != NULL
                 || mImap->imap_response_info->rsp_parse != NULL
-                || mImap->imap_response_info->rsp_badcharset != NULL) {
+                || mImap->imap_response_info->rsp_badcharset != NULL)) {
                 * pError = ErrorInvalidAccount;
             }else{
                 * pError = ErrorAuthentication;
