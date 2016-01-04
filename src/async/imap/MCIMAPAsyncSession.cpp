@@ -206,12 +206,12 @@ bool IMAPAsyncSession::isVoIPEnabled()
     return mVoIPEnabled;
 }
 
-void IMAPAsyncSession::setKeepSessionAlive(bool enabled){
-    mKeepSessionAlive = enabled;
+void IMAPAsyncSession::setKeepSessionAliveState(int state){
+    mKeepSessionAliveState = state;
 }
 
-bool IMAPAsyncSession::isKeepSessionAlive(){
-    return mKeepSessionAlive;
+int IMAPAsyncSession::keepSessionAliveState(){
+    return mKeepSessionAliveState;
 }
 
 IMAPNamespace * IMAPAsyncSession::defaultNamespace()
@@ -333,13 +333,13 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
                 skipGmailAllMailSession = false;
             }
         }
-        if (this->mKeepSessionAlive){
+        if (this->mKeepSessionAliveState){
             MCLog("Start select session for %s\n",folder==NULL?"NULL":folder->UTF8Characters());
         }
         for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
             String * lastFolder = s->lastFolder();
-            if (this->mKeepSessionAlive){
+            if (this->mKeepSessionAliveState){
                 if(lastFolder!=NULL){
                     MCLog("Session %d Folder:NULL\n",i);
                 }else{
@@ -371,12 +371,12 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
         }
         if (mSessions->count() < mMaximumConnections) {
             if ((chosenSession != NULL) && (minOperationsCount <= 0)) {
-                if (this->mKeepSessionAlive){
+                if (this->mKeepSessionAliveState){
                     MCLog("Select a session with folder %s as %s\n", (chosenSession->lastFolder()==NULL?"NULL":chosenSession->lastFolder()->UTF8Characters()),(folder==NULL?"NULL":folder->UTF8Characters()));
                 }
                 return chosenSession;
             }
-            if (this->mKeepSessionAlive){
+            if (this->mKeepSessionAliveState){
                 MCLog("New session for Folder %s\n",folder==NULL?"NULL":folder->UTF8Characters());
             }
             chosenSession = session();

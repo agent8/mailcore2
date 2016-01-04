@@ -5,6 +5,10 @@
 #include <MailCore/MCBaseTypes.h>
 #include <MailCore/MCMessageConstants.h>
 
+#ifndef MCO_KEEP_ALIVE
+    #define MCO_KEEP_ALIVE 1
+#endif
+
 #ifdef __cplusplus
 
 namespace mailcore {

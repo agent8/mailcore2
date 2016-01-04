@@ -174,24 +174,10 @@ void IMAPOperation::itemsProgressOnMainThread(void * ctx)
 
 void IMAPOperation::beforeMain()
 {
-//    if(mMainSession->isKeepSessionAlive()){
-//        if(mFolder != NULL){
-//            printf("IMAPOperation:beforeMain, folder:%s================>\n", mFolder->UTF8Characters());
-//        }else{
-//            printf("IMAPOperation:beforeMain, folder:NULL================>\n");
-//        }
-//    }
 }
 
 void IMAPOperation::afterMain()
 {
-//    if(mMainSession->isKeepSessionAlive()){
-//        if(mFolder != NULL){
-//            printf("IMAPOperation:afterMain, folder:%s================>\n", mFolder->UTF8Characters());
-//        }else{
-//            printf("IMAPOperation:afterMain, folder:NULL================>\n");
-//        }
-//    }
     if (mSession->session()->isAutomaticConfigurationDone()) {
         mSession->owner()->automaticConfigurationDone(mSession->session());
         mSession->session()->resetAutomaticConfigurationDone();

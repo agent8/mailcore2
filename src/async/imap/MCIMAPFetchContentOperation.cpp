@@ -75,10 +75,6 @@ Data * IMAPFetchContentOperation::data()
 
 void IMAPFetchContentOperation::main()
 {
-//    if(mainSession()->isKeepSessionAlive()){
-//        printf("IMAPFetchContentOperation::main() for %s==============>\n",folder()->UTF8Characters());
-//    }
-    
     ErrorCode error;
     if (mUid != 0) {
         if (mPartID != NULL) {
@@ -98,8 +94,5 @@ void IMAPFetchContentOperation::main()
     }
     MC_SAFE_RETAIN(mData);
     setError(error);
-//    if(mainSession()->isKeepSessionAlive()){
-//        printf("IMAPFetchContentOperation::main() end=================>\n");
-//    }
 }
 

@@ -349,9 +349,9 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
     //NOTE: if error(except network) happens then stop noop
-    if (mOwner->isKeepSessionAlive() &&
-            ((noopError == ErrorNone && noopRepeatCount<72)/*noop 72 times (30 mins) before disconect*/
-             || (noopError == ErrorConnection && noopRepeatCount<10)/*retry 10 times if network error before disconect*/
+    if (mOwner->keepSessionAliveState() > 0 &&
+            ((noopError == ErrorNone && noopRepeatCount < 72)/*noop 72 times (30 mins) before disconect*/
+             || (noopError == ErrorConnection && noopRepeatCount < 10)/*retry 10 times if network error before disconect*/
             )
         ){
         //Weicheng: does need to keep all session or just the [Gmail]/All Mail and INBOX
