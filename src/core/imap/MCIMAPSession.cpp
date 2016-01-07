@@ -2302,6 +2302,8 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         clist_append(hdrlist, header);
         header = strdup("In-Reply-To");
         clist_append(hdrlist, header);
+        header = strdup("List-Unsubscribe");
+        clist_append(hdrlist, header);
     }
     if ((requestKind & IMAPMessagesRequestKindHeaders) != 0) {
         char * header;
