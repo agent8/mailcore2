@@ -57,6 +57,7 @@ IMAPAsyncSession::IMAPAsyncSession()
 
     mHostname = NULL;
     mPort = 0;
+    mKeepSessionAliveState = 0;
     mUsername = NULL;
     mPassword = NULL;
     mOAuth2Token = NULL;
@@ -340,11 +341,7 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
             String * lastFolder = s->lastFolder();
             if (this->mKeepSessionAliveState){
-                if(lastFolder!=NULL){
-                    MCLog("Session %d Folder:NULL\n",i);
-                }else{
-                    MCLog("Session %d Folder:%s\n",i, lastFolder->UTF8Characters());
-                }
+                MCLog("Session %d Folder:%s\n",i, lastFolder==NULL?"NULL":lastFolder->UTF8Characters());
             }
             if (chosenSession == NULL) {
                 chosenSession = s;

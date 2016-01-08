@@ -87,7 +87,7 @@
  When set to 1, the session is will keep sending a noop command to server every N seconds when idle
  When set to >1, then it is in background
  */
-@property (nonatomic, assign) int keepSessionAlive;
+@property (nonatomic, assign) int keepSessionAliveState;
 
 /** The default namespace. */
 @property (nonatomic, strong) MCOIMAPNamespace * defaultNamespace;
