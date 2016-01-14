@@ -1081,7 +1081,7 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
 
     if (mImap->imap_selection_info != NULL) {
         mUIDValidity = mImap->imap_selection_info->sel_uidvalidity;
-        mUIDNext = mImap->imap_selection_info->sel_uidnext;        
+        mUIDNext = mImap->imap_selection_info->sel_uidnext;
         if (mImap->imap_selection_info->sel_has_exists) {
             mFolderMsgCount = (unsigned int) (mImap->imap_selection_info->sel_exists);
         } else {
@@ -1095,22 +1095,22 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
         }
         
         if (mImap->imap_selection_info->sel_perm_flags) {
-          clistiter * cur;
-
-          struct mailimap_flag_perm * perm_flag;
-          for(cur = clist_end(mImap->imap_selection_info->sel_perm_flags) ; cur != NULL ;
-              cur = clist_previous(cur)) {
-            perm_flag = (struct mailimap_flag_perm *)clist_content(cur);
-            mAllowsNewPermanentFlags = perm_flag->fl_type == MAILIMAP_FLAG_PERM_ALL;
-            if (mAllowsNewPermanentFlags) {
-              break;
+            clistiter * cur;
+            
+            struct mailimap_flag_perm * perm_flag;
+            for(cur = clist_end(mImap->imap_selection_info->sel_perm_flags) ; cur != NULL ;
+                cur = clist_previous(cur)) {
+                perm_flag = (struct mailimap_flag_perm *)clist_content(cur);
+                mAllowsNewPermanentFlags = perm_flag->fl_type == MAILIMAP_FLAG_PERM_ALL;
+                if (mAllowsNewPermanentFlags) {
+                    break;
+                }
             }
-          }
         }
-      
+        
         mModSequenceValue = get_mod_sequence_value(mImap);
     }
-
+    
     mState = STATE_SELECTED;
     * pError = ErrorNone;
     MCLog("select ok");
