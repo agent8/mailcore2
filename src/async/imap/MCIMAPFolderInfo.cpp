@@ -18,6 +18,7 @@ void IMAPFolderInfo::init()
     mModSequenceValue = 0;
     mFirstUnseenUid = 0;
     mAllowsNewPermanentFlags = false;
+    mUnSeenMessageCount = 0;
 }
 
 IMAPFolderInfo::IMAPFolderInfo()
@@ -34,6 +35,7 @@ IMAPFolderInfo::IMAPFolderInfo(IMAPFolderInfo * other)
     setMessageCount(other->messageCount());
     setFirstUnseenUid(other->firstUnseenUid());
     setAllowsNewPermanentFlags(other->allowsNewPermanentFlags());
+    setUnSeenMessageCount(other->unSeenMessageCount());
 }
 
 IMAPFolderInfo::~IMAPFolderInfo()
