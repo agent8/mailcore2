@@ -894,7 +894,7 @@ void IMAPSession::login(ErrorCode * pError)
             capability(pError);
             if (* pError != ErrorNone) {
                 MCLog("capabilities failed");
-                if (mImap->imap_response != NULL) {
+                if (mImap != NULL && mImap->imap_response != NULL) {
                     loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
                     MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
                 }
@@ -913,7 +913,7 @@ void IMAPSession::login(ErrorCode * pError)
             HashMap * result = fetchNamespace(pError);
             if (* pError != ErrorNone) {
                 MCLog("fetch namespace failed");
-                if (mImap->imap_response != NULL) {
+                if (mImap != NULL && mImap->imap_response != NULL) {
                     loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
                     MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
                 }
@@ -935,7 +935,7 @@ void IMAPSession::login(ErrorCode * pError)
             r = mailimap_list(mImap, "", "", &imap_folders);
             folders = resultsWithError(r, imap_folders, pError);
             if (* pError != ErrorNone)
-                if (mImap->imap_response != NULL) {
+                if (mImap != NULL && mImap->imap_response != NULL) {
                     loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
                     MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
                 }
