@@ -2085,8 +2085,10 @@ String * String::stripWhitespace()
     // skip spaces at the beginning.
     source = str->unicodeCharacters();
     dest = str->mUnicodeChars;
-    while (* source == ' ') {
-        source ++;
+    if (str->mLength > 1) {//Keep the first space
+        while (* source == ' ' && (* (source + 1) == ' ')) {
+            source ++;
+        }
     }
 
     // copy content
@@ -2101,9 +2103,9 @@ String * String::stripWhitespace()
     * dest = 0;
     str->mLength = (unsigned int) (dest - str->mUnicodeChars);
 
-    // skip spaces at the end.
-    if (str->mLength > 0) {
-        while (* (dest - 1) == ' ') {
+    // skip spaces at the end. keep the last space
+    if (str->mLength > 1) {
+        while (* (dest - 1) == ' ' && * (dest - 2) == ' ') {
             dest --;
         }
         * dest = 0;
