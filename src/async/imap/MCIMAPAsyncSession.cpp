@@ -334,20 +334,15 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
                 skipGmailAllMailSession = false;
             }
         }
-        if (this->mKeepSessionAliveState){
-            MCLog("Start select session for %s\n",folder==NULL?"NULL":folder->UTF8Characters());
-        }
+        MCLog("Start select session for %s\n",folder==NULL?"NULL":folder->UTF8Characters());
         for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
             IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
             String * lastFolder = s->lastFolder();
-            if (this->mKeepSessionAliveState){
-                MCLog("Session %d Folder:%s\n",i, lastFolder==NULL?"NULL":lastFolder->UTF8Characters());
-            }
+            MCLog("Session %d Folder:%s\n",i, lastFolder==NULL?"NULL":lastFolder->UTF8Characters());
             if (chosenSession == NULL) {
                 chosenSession = s;
                 minOperationsCount = s->operationsCount();
-            }
-            else{
+            }else{
                 if (skipGmailAllMailSession){
                     if (lastFolder != NULL && lastFolder->isEqual(MCSTR("[Gmail]/All Mail"))){
                         skipGmailAllMailSession = false;
@@ -355,7 +350,7 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
                             chosenSession = s;
                             minOperationsCount = s->operationsCount();
                         }
-                    }else{
+                    }else if (s->operationsCount() < minOperationsCount){
                         chosenSession = s;
                         minOperationsCount = s->operationsCount();
                     }
@@ -368,14 +363,10 @@ IMAPAsyncConnection * IMAPAsyncSession::availableSession(String * folder)
         }
         if (mSessions->count() < mMaximumConnections) {
             if ((chosenSession != NULL) && (minOperationsCount <= 0)) {
-                if (this->mKeepSessionAliveState){
-                    MCLog("Select a session with folder %s as %s\n", (chosenSession->lastFolder()==NULL?"NULL":chosenSession->lastFolder()->UTF8Characters()),(folder==NULL?"NULL":folder->UTF8Characters()));
-                }
+                MCLog("Select a session with folder %s as %s\n", (chosenSession->lastFolder()==NULL?"NULL":chosenSession->lastFolder()->UTF8Characters()),(folder==NULL?"NULL":folder->UTF8Characters()));
                 return chosenSession;
             }
-            if (this->mKeepSessionAliveState){
-                MCLog("New session for Folder %s\n",folder==NULL?"NULL":folder->UTF8Characters());
-            }
+            MCLog("New session for Folder %s\n",folder==NULL?"NULL":folder->UTF8Characters());
             chosenSession = session();
             mSessions->addObject(chosenSession);
             return chosenSession;
