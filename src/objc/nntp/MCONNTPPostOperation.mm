@@ -1,35 +1,35 @@
 //
-//  MCONNTPFetchArticleOperation.m
+//  MCONNTPPostOperation.mm
 //  mailcore2
 //
-//  Created by Robert Widmann on 8/13/14.
-//  Copyright (c) 2014 MailCore. All rights reserved.
+//  Created by Daryle Walker on 2/21/16.
+//  Copyright © 2016 MailCore. All rights reserved.
 //
 
-#import "MCONNTPFetchArticleOperation.h"
+#import "MCONNTPPostOperation.h"
 
 #import "MCAsyncNNTP.h"
 
 #import "MCOUtils.h"
 #import "MCOOperation+Private.h"
 
-#define nativeType mailcore::NNTPFetchArticleOperation
+#define nativeType mailcore::NNTPPostOperation
 
-typedef void (^CompletionType)(NSError *error, NSData * messageData);
+typedef void (^CompletionType)(NSError *error);
 
-@interface MCONNTPFetchArticleOperation ()
+@interface MCONNTPPostOperation ()
 
 - (void) bodyProgress:(unsigned int)current maximum:(unsigned int)maximum;
 
 @end
 
-class MCONNTPFetchArticleOperationCallback : public mailcore::NNTPOperationCallback {
+class MCONNTPPostOperationCallback : public mailcore::NNTPOperationCallback {
 public:
-    MCONNTPFetchArticleOperationCallback(MCONNTPFetchArticleOperation * op)
+    MCONNTPPostOperationCallback(MCONNTPPostOperation * op)
     {
         mOperation = op;
     }
-    virtual ~MCONNTPFetchArticleOperationCallback()
+    virtual ~MCONNTPPostOperationCallback()
     {
     }
     
@@ -38,12 +38,12 @@ public:
     }
     
 private:
-    MCONNTPFetchArticleOperation * mOperation;
+    MCONNTPPostOperation * mOperation;
 };
 
-@implementation MCONNTPFetchArticleOperation {
+@implementation MCONNTPPostOperation {
     CompletionType _completionBlock;
-    MCONNTPFetchArticleOperationCallback * _popCallback;
+    MCONNTPPostOperationCallback * _popCallback;
     MCONNTPOperationProgressBlock _progress;
 }
 
@@ -64,7 +64,7 @@ private:
 {
     self = [super initWithMCOperation:op];
     
-    _popCallback = new MCONNTPFetchArticleOperationCallback(self);
+    _popCallback = new MCONNTPPostOperationCallback(self);
     ((mailcore::NNTPOperation *) op)->setNNTPCallback(_popCallback);
     
     return self;
@@ -78,7 +78,7 @@ private:
     [super dealloc];
 }
 
-- (void) start:(void (^)(NSError *error, NSData * messageData))completionBlock
+- (void) start:(void (^)(NSError *error))completionBlock
 {
     _completionBlock = [completionBlock copy];
     [self start];
@@ -98,9 +98,9 @@ private:
     
     nativeType *op = MCO_NATIVE_INSTANCE;
     if (op->error() == mailcore::ErrorNone) {
-        _completionBlock(nil, MCO_TO_OBJC(op->data()));
+        _completionBlock(nil);
     } else {
-        _completionBlock([NSError mco_errorWithErrorCode:op->error()], nil);
+        _completionBlock([NSError mco_errorWithErrorCode:op->error()]);
     }
     [_completionBlock release];
     _completionBlock = nil;

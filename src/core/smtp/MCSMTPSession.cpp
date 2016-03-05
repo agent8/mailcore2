@@ -42,6 +42,7 @@ void SMTPSession::init()
     mLastLibetpanError = 0;
     mLastSMTPResponseCode = 0;
     mConnectionLogger = NULL;
+    pthread_mutex_init(&mConnectionLoggerLock, NULL);
 }
 
 SMTPSession::SMTPSession()
@@ -51,6 +52,7 @@ SMTPSession::SMTPSession()
 
 SMTPSession::~SMTPSession()
 {
+    pthread_mutex_destroy(&mConnectionLoggerLock);
     MC_SAFE_RELEASE(mLastSMTPResponse);
     MC_SAFE_RELEASE(mHostname);
     MC_SAFE_RELEASE(mUsername);
@@ -184,24 +186,29 @@ void SMTPSession::bodyProgress(unsigned int current, unsigned int maximum)
 static void logger(mailsmtp * smtp, int log_type, const char * buffer, size_t size, void * context)
 {
     SMTPSession * session = (SMTPSession *) context;
+    session->lockConnectionLogger();
     
-    if (session->connectionLogger() == NULL)
+    if (session->connectionLoggerNoLock() == NULL) {
+        session->unlockConnectionLogger();
         return;
+    }
     
     ConnectionLogType type = getConnectionType(log_type);
     if ((int) type == -1) {
         // in case of MAILSTREAM_LOG_TYPE_INFO_RECEIVED or MAILSTREAM_LOG_TYPE_INFO_SENT.
+        session->unlockConnectionLogger();
         return;
     }
     bool isBuffer = isBufferFromLogType(log_type);
     
     if (isBuffer) {
         Data * data = Data::dataWithBytes(buffer, (unsigned int) size);
-        session->connectionLogger()->log(session, type, data);
+        session->connectionLoggerNoLock()->log(session, type, data);
     }
     else {
-        session->connectionLogger()->log(session, type, NULL);
+        session->connectionLoggerNoLock()->log(session, type, NULL);
     }
+    session->unlockConnectionLogger();
 }
 
 
@@ -529,7 +536,13 @@ void SMTPSession::login(ErrorCode * pError)
             if (utf8Username == NULL) {
                 utf8Username = "";
             }
-            r = mailsmtp_oauth2_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
+            
+            if (mOAuth2Token == NULL) {
+                r = MAILSMTP_ERROR_STREAM;
+            }
+            else {
+                r = mailsmtp_oauth2_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
+            }
             break;
         }
         
@@ -538,7 +551,13 @@ void SMTPSession::login(ErrorCode * pError)
             if (utf8Username == NULL) {
                 utf8Username = "";
             }
-            r = mailsmtp_oauth2_outlook_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
+            
+            if (mOAuth2Token == NULL) {
+                r = MAILSMTP_ERROR_STREAM;
+            } 
+            else {
+                r = mailsmtp_oauth2_outlook_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
+            }
             break;
         }
     }
@@ -605,7 +624,7 @@ void SMTPSession::sendMessage(Address * from, Array * recipients, Data * message
     }
     
     messageData = dataWithFilteredBcc(messageData);
-    
+
     mProgressCallback = callback;
     bodyProgress(0, messageData->length());
     
@@ -682,6 +701,14 @@ void SMTPSession::sendMessage(Address * from, Array * recipients, Data * message
                 goto err;
             }
         }
+        else if (responseCode == 521 && response->locationOfString(MCSTR("over the limit")) != -1) {
+            * pError = ErrorYahooSendMessageDailyLimitExceeded;
+            goto err;
+        }
+        else if (responseCode == 554 && response->locationOfString(MCSTR("spam")) != -1) {
+            * pError = ErrorYahooSendMessageSpamSuspected;
+            goto err;
+        }
         
         * pError = ErrorSendMessage;
         MC_SAFE_REPLACE_COPY(String, mLastSMTPResponse, response);
@@ -697,13 +724,28 @@ void SMTPSession::sendMessage(Address * from, Array * recipients, Data * message
     mProgressCallback = NULL;
 }
 
+void SMTPSession::sendMessage(Address * from, Array * recipients, String * messagePath,
+                              SMTPProgressCallback * callback, ErrorCode * pError)
+{
+    Data * messageData = Data::dataWithContentsOfFile(messagePath);
+    if (!messageData) {
+        * pError = ErrorFile;
+        return;
+    }
+
+    return sendMessage(from, recipients, messageData, callback, pError);
+}
+
+static void mmapStringDeallocator(char * bytes, unsigned int length) {
+    mmap_string_unref(bytes);
+}
+
 Data * SMTPSession::dataWithFilteredBcc(Data * data)
 {
     int r;
     size_t idx;
     struct mailimf_message * msg;
-    MMAPString * str;
-    
+
     idx = 0;
     r = mailimf_message_parse(data->bytes(), data->length(), &idx, &msg);
     if (r != MAILIMF_NO_ERROR) {
@@ -714,15 +756,16 @@ Data * SMTPSession::dataWithFilteredBcc(Data * data)
     int col = 0;
 
     int hasRecipient = 0;
-    str = mmap_string_new("");
+    bool bccWasActuallyRemoved = false;
     for(clistiter * cur = clist_begin(fields->fld_list) ; cur != NULL ; cur = clist_next(cur)) {
         struct mailimf_field * field = (struct mailimf_field *) clist_content(cur);
         if (field->fld_type == MAILIMF_FIELD_BCC) {
             mailimf_field_free(field);
             clist_delete(fields->fld_list, cur);
+            bccWasActuallyRemoved = true;
             break;
         }
-        else if ((field->fld_type == MAILIMF_FIELD_TO) || (field->fld_type == MAILIMF_FIELD_CC) || (field->fld_type == MAILIMF_FIELD_BCC)) {
+        else if ((field->fld_type == MAILIMF_FIELD_TO) || (field->fld_type == MAILIMF_FIELD_CC)) {
             hasRecipient = 1;
         }
     }
@@ -734,13 +777,24 @@ Data * SMTPSession::dataWithFilteredBcc(Data * data)
         struct mailimf_field * field = mailimf_field_new(MAILIMF_FIELD_TO, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, toField, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
         mailimf_fields_add(fields, field);
     }
-    mailimf_fields_write_mem(str, &col, fields);
-    mmap_string_append(str, "\n");
-    mmap_string_append_len(str, msg->msg_body->bd_text, msg->msg_body->bd_size);
-    
-    Data * result = Data::dataWithBytes(str->str, (unsigned int) str->len);
-    
-    mmap_string_free(str);
+
+    Data * result;
+    if (!hasRecipient || bccWasActuallyRemoved) {
+        MMAPString * str = mmap_string_new("");
+        mailimf_fields_write_mem(str, &col, fields);
+        mmap_string_append(str, "\n");
+        mmap_string_append_len(str, msg->msg_body->bd_text, msg->msg_body->bd_size);
+
+        mmap_string_ref(str);
+
+        result = Data::data();
+        result->takeBytesOwnership(str->str, (unsigned int) str->len, mmapStringDeallocator);
+    }
+    else {
+        // filter Bcc and modify To: only if necessary.
+        result = data;
+    }
+
     mailimf_message_free(msg);
     
     return result;
@@ -815,12 +869,35 @@ bool SMTPSession::isDisconnected()
     return mState == STATE_DISCONNECTED;
 }
 
+void SMTPSession::lockConnectionLogger()
+{
+    pthread_mutex_lock(&mConnectionLoggerLock);
+}
+
+void SMTPSession::unlockConnectionLogger()
+{
+    pthread_mutex_unlock(&mConnectionLoggerLock);
+}
+
 void SMTPSession::setConnectionLogger(ConnectionLogger * logger)
 {
+    lockConnectionLogger();
     mConnectionLogger = logger;
+    unlockConnectionLogger();
 }
 
 ConnectionLogger * SMTPSession::connectionLogger()
+{
+    ConnectionLogger * result;
+
+    lockConnectionLogger();
+    result = connectionLoggerNoLock();
+    unlockConnectionLogger();
+
+    return result;
+}
+
+ConnectionLogger * SMTPSession::connectionLoggerNoLock()
 {
     return mConnectionLogger;
 }

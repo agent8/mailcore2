@@ -16,7 +16,7 @@
 
 @property (nonatomic, copy) NSString * identifier;
 
-- (id) initWithInfo:(NSDictionary *)info;
+- (instancetype) initWithInfo:(NSDictionary *)info;
 
 /**
    A list of ways that you can connect to the IMAP server
@@ -82,5 +82,14 @@
    @return Returns nil if it is unknown
 */
 - (NSString *) importantFolderPath;
+
+@end
+
+@interface MCOMailProvider (MCOUnavailable)
+
+/** Do not invoke this directly. */
+- (instancetype) init NS_UNAVAILABLE;
+/** Do not invoke this directly. */
++ (instancetype) new NS_UNAVAILABLE;
 
 @end

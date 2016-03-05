@@ -267,6 +267,8 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     MCOIMAPCapabilityId,
     /** LITERAL+ Capability.*/
     MCOIMAPCapabilityLiteralPlus,
+    /** MOVE Capability */
+    MCOIMAPCapabilityMove,
     /** MULTIAPPEND Capability.*/
     MCOIMAPCapabilityMultiAppend,
     /** NAMESPACE Capability.*/
@@ -414,6 +416,10 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorNoValidServerFound,
     /** Error while running custom command */
     MCOErrorCustomCommand,
+    /** Spam was suspected by server */
+    MCOErrorYahooSendMessageSpamSuspected,
+    /** Daily limit of sent messages was hit */
+    MCOErrorYahooSendMessageDailyLimitExceeded,
     /** The count of all errors */
     MCOErrorCodeCount,
 };

@@ -26,6 +26,7 @@
 #include "MCIMAPExpungeOperation.h"
 #include "MCIMAPAppendMessageOperation.h"
 #include "MCIMAPCopyMessagesOperation.h"
+#include "MCIMAPMoveMessagesOperation.h"
 #include "MCIMAPFetchMessagesOperation.h"
 #include "MCIMAPFetchContentOperation.h"
 #include "MCIMAPFetchParsedContentOperation.h"
@@ -253,6 +254,11 @@ IMAPIdentity * IMAPAsyncSession::serverIdentity()
 IMAPIdentity * IMAPAsyncSession::clientIdentity()
 {
     return mClientIdentity;
+}
+
+void IMAPAsyncSession::setClientIdentity(IMAPIdentity * clientIdentity)
+{
+    MC_SAFE_REPLACE_COPY(IMAPIdentity, mClientIdentity, clientIdentity);
 }
 
 String * IMAPAsyncSession::gmailUserDisplayName()
@@ -488,9 +494,32 @@ IMAPAppendMessageOperation * IMAPAsyncSession::appendMessageOperation(String * f
     return op;
 }
 
+IMAPAppendMessageOperation * IMAPAsyncSession::appendMessageOperation(String * folder, String * messagePath, MessageFlag flags, Array * customFlags)
+{
+    IMAPAppendMessageOperation * op = new IMAPAppendMessageOperation();
+    op->setMainSession(this);
+    op->setFolder(folder);
+    op->setMessageFilepath(messagePath);
+    op->setFlags(flags);
+    op->setCustomFlags(customFlags);
+    op->autorelease();
+    return op;
+}
+
 IMAPCopyMessagesOperation * IMAPAsyncSession::copyMessagesOperation(String * folder, IndexSet * uids, String * destFolder)
 {
     IMAPCopyMessagesOperation * op = new IMAPCopyMessagesOperation();
+    op->setMainSession(this);
+    op->setFolder(folder);
+    op->setUids(uids);
+    op->setDestFolder(destFolder);
+    op->autorelease();
+    return op;
+}
+
+IMAPMoveMessagesOperation * IMAPAsyncSession::moveMessagesOperation(String * folder, IndexSet * uids, String * destFolder)
+{
+    IMAPMoveMessagesOperation * op = new IMAPMoveMessagesOperation();
     op->setMainSession(this);
     op->setFolder(folder);
     op->setUids(uids);

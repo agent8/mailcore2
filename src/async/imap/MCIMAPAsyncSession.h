@@ -21,6 +21,7 @@ namespace mailcore {
     class IMAPFetchFoldersOperation;
     class IMAPAppendMessageOperation;
     class IMAPCopyMessagesOperation;
+    class IMAPMoveMessagesOperation;
     class IMAPFetchMessagesOperation;
     class IMAPFetchContentOperation;
     class IMAPFetchParsedContentOperation;
@@ -107,6 +108,8 @@ namespace mailcore {
         
         virtual IMAPIdentity * serverIdentity();
         virtual IMAPIdentity * clientIdentity();
+        virtual void setClientIdentity(IMAPIdentity * clientIdentity);
+
         virtual String * gmailUserDisplayName() DEPRECATED_ATTRIBUTE;
         
         virtual IMAPFolderInfoOperation * folderInfoOperation(String * folder, bool includeUnSeen);
@@ -123,8 +126,10 @@ namespace mailcore {
         virtual IMAPOperation * unsubscribeFolderOperation(String * folder);
         
         virtual IMAPAppendMessageOperation * appendMessageOperation(String * folder, Data * messageData, MessageFlag flags, Array * customFlags = NULL);
-        
+        virtual IMAPAppendMessageOperation * appendMessageOperation(String * folder, String * messagePath, MessageFlag flags, Array * customFlags = NULL);
+
         virtual IMAPCopyMessagesOperation * copyMessagesOperation(String * folder, IndexSet * uids, String * destFolder);
+        virtual IMAPMoveMessagesOperation * moveMessagesOperation(String * folder, IndexSet * uids, String * destFolder);
         
         virtual IMAPOperation * expungeOperation(String * folder);
         

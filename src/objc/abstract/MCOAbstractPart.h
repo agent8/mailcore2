@@ -50,7 +50,7 @@ namespace mailcore {
 @interface MCOAbstractPart : NSObject <NSCopying>
 
 #ifdef __cplusplus
-- (id) initWithMCPart:(mailcore::AbstractPart *)part NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithMCPart:(mailcore::AbstractPart *)part NS_DESIGNATED_INITIALIZER;
 #endif
 
 /** Returns type of the part (single / message part / multipart/mixed,
@@ -106,6 +106,15 @@ namespace mailcore {
 
 /** Returns an array with the names of all content type parameters.*/
 - (NSArray * /* NSString */) allContentTypeParametersNames;
+
+@end
+
+@interface MCOAbstractPart (MCOUnavailable)
+
+/** Do not invoke this directly. */
+- (instancetype) init NS_UNAVAILABLE;
+/** Do not invoke this directly. */
++ (instancetype) new NS_UNAVAILABLE;
 
 @end
 
