@@ -49,13 +49,13 @@ Address * Address::addressWithMailbox(String * mailbox)
     return addressWithDisplayName(NULL, mailbox);
 }
 
-Address * Address::addressWithIMFMailbox(struct mailimf_mailbox * mailbox)
+Address * Address::addressWithIMFMailbox(struct mailimf_mailbox * mailbox, String * charsetHint)
 {
     Address * address;
     
     address = new Address();
     if (mailbox->mb_display_name != NULL) {
-        address->setDisplayName(String::stringByDecodingMIMEHeaderValue(mailbox->mb_display_name));
+        address->setDisplayName(String::stringByDecodingMIMEHeaderValue2(mailbox->mb_display_name, charsetHint));
     }
     if (mailbox->mb_addr_spec != NULL) {
         address->setMailbox(String::stringWithUTF8Characters(mailbox->mb_addr_spec));
@@ -124,7 +124,7 @@ Address * Address::addressWithRFC822String(String * RFC822String)
     if (r != MAILIMF_NO_ERROR)
         return NULL;
     
-    result = addressWithIMFMailbox(mb);
+    result = addressWithIMFMailbox(mb, NULL);
     mailimf_mailbox_free(mb);
     
     return result;
@@ -450,7 +450,7 @@ static Array * lep_address_list_from_lep_mailbox(struct mailimf_mailbox_list * m
         
         mb = (mailimf_mailbox *) clist_content(cur);
         if (encoded) {
-            address = Address::addressWithIMFMailbox(mb);
+            address = Address::addressWithIMFMailbox(mb, NULL);
         }
         else {
             address = Address::addressWithNonEncodedIMFMailbox(mb);
@@ -479,7 +479,7 @@ static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr
                 Address * address;
                 
                 if (encoded) {
-                    address = Address::addressWithIMFMailbox(addr->ad_data.ad_mailbox);
+                    address = Address::addressWithIMFMailbox(addr->ad_data.ad_mailbox, NULL);
                 }
                 else {
                     address = Address::addressWithNonEncodedIMFMailbox(addr->ad_data.ad_mailbox);

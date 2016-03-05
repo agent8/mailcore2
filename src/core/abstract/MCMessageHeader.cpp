@@ -18,8 +18,8 @@ using namespace mailcore;
 
 static struct mailimf_address_list * lep_address_list_from_array(Array * addresses);
 static struct mailimf_mailbox_list * lep_mailbox_list_from_array(Array * addresses);
-static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr_list);
-static Array * lep_address_list_from_lep_mailbox(struct mailimf_mailbox_list * mb_list);
+static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr_list, String * charsetHint);
+static Array * lep_address_list_from_lep_mailbox(struct mailimf_mailbox_list * mb_list, String * charsetHint);
 
 static Array * msg_id_to_string_array(clist * msgids);
 static clist * msg_id_from_string_array(Array * msgids);
@@ -50,6 +50,7 @@ MessageHeader::MessageHeader(MessageHeader * other)
     setDate(other->date());
     setReceivedDate(other->receivedDate());
     setExtraHeaders(other->mExtraHeaders);
+    setDefaultCharset(other->mDefaultCharset);
 }
 
 void MessageHeader::init(bool generateDate, bool generateMessageID)
@@ -68,7 +69,7 @@ void MessageHeader::init(bool generateDate, bool generateMessageID)
     mDate = (time_t) -1;
     mReceivedDate = (time_t) -1;
     mExtraHeaders = NULL;
-    
+    mDefaultCharset = NULL;
     if (generateDate) {
         time_t date;
         date = time(NULL);
@@ -121,6 +122,7 @@ MessageHeader::~MessageHeader()
     MC_SAFE_RELEASE(mReplyTo);
     MC_SAFE_RELEASE(mSubject);
     MC_SAFE_RELEASE(mExtraHeaders);
+    MC_SAFE_RELEASE(mDefaultCharset);
 }
 
 String * MessageHeader::description()
@@ -156,6 +158,9 @@ String * MessageHeader::description()
     }
     if (mSubject != NULL) {
         result->appendUTF8Format("Subject: %s\n", mSubject->UTF8Characters());
+    }
+    if (mDefaultCharset != NULL) {
+        result->appendUTF8Format("Default Charset %s\n", mDefaultCharset->UTF8Characters());
     }
     if (mExtraHeaders != NULL) {
         mc_foreachhashmapKeyAndValue(String, header, String, value, mExtraHeaders) {
@@ -313,6 +318,11 @@ void MessageHeader::setExtraHeaders(HashMap * headers)
     MC_SAFE_REPLACE_COPY(HashMap, mExtraHeaders, headers);
 }
 
+void MessageHeader::setDefaultCharset(String *charset)
+{
+    MC_SAFE_REPLACE_COPY(String, mDefaultCharset, charset);
+}
+
 Array * MessageHeader::allExtraHeadersNames()
 {
     if (mExtraHeaders == NULL)
@@ -386,7 +396,6 @@ void MessageHeader::importHeadersData(Data * data)
 void MessageHeader::importIMFFields(struct mailimf_fields * fields)
 {
     struct mailimf_single_fields single_fields;
-    
     mailimf_single_fields_init(&single_fields, fields);
     
     /* date */
@@ -402,9 +411,10 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
     /* subject */
     if (single_fields.fld_subject != NULL) {
         char * subject;
-        
         subject = single_fields.fld_subject->sbj_value;
-        setSubject(String::stringByDecodingMIMEHeaderValue(subject));
+        String *s = String::stringByDecodingMIMEHeaderValue2(subject, mDefaultCharset);
+        //MCLog("!!!!!!!!!!!The subject is:%s\n-->Original:%s\n", s->UTF8Characters(), subject);
+        setSubject(s);
     }
     
     /* sender */
@@ -414,7 +424,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         
         mb = single_fields.fld_sender->snd_mb;
         if (mb != NULL) {
-            address = Address::addressWithIMFMailbox(mb);
+            address = Address::addressWithIMFMailbox(mb, mDefaultCharset);
             setSender(address);
         }
     }
@@ -425,7 +435,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         Array * addresses;
         
         mb_list = single_fields.fld_from->frm_mb_list;
-        addresses = lep_address_list_from_lep_mailbox(mb_list);
+        addresses = lep_address_list_from_lep_mailbox(mb_list, mDefaultCharset);
         if (addresses->count() > 0) {
             setFrom((Address *) (addresses->objectAtIndex(0)));
         }
@@ -437,7 +447,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         Array * addresses;
         
         addr_list = single_fields.fld_reply_to->rt_addr_list;
-        addresses = lep_address_list_from_lep_addr(addr_list);
+        addresses = lep_address_list_from_lep_addr(addr_list, mDefaultCharset);
         setReplyTo(addresses);
     }
     
@@ -447,7 +457,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         Array * addresses;
         
         addr_list = single_fields.fld_to->to_addr_list;
-        addresses = lep_address_list_from_lep_addr(addr_list);
+        addresses = lep_address_list_from_lep_addr(addr_list, mDefaultCharset);
         setTo(addresses);
     }
     
@@ -457,7 +467,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         Array * addresses;
         
         addr_list = single_fields.fld_cc->cc_addr_list;
-        addresses = lep_address_list_from_lep_addr(addr_list);
+        addresses = lep_address_list_from_lep_addr(addr_list, mDefaultCharset);
         setCc(addresses);
     }
     
@@ -467,7 +477,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         Array * addresses;
         
         addr_list = single_fields.fld_bcc->bcc_addr_list;
-        addresses = lep_address_list_from_lep_addr(addr_list);
+        addresses = lep_address_list_from_lep_addr(addr_list, mDefaultCharset);
         setBcc(addresses);
     }
     
@@ -522,7 +532,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
             String * fieldValueStr;
             
             fieldValue = field->fld_data.fld_optional_field->fld_value;
-            fieldValueStr = String::stringByDecodingMIMEHeaderValue(fieldValue);
+            fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
             setExtraHeader(fieldNameStr, fieldValueStr);
         }
     }
@@ -530,7 +540,7 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
 
 #pragma mark RFC 2822 mailbox conversion
 
-static Array * lep_address_list_from_lep_mailbox(struct mailimf_mailbox_list * mb_list)
+static Array * lep_address_list_from_lep_mailbox(struct mailimf_mailbox_list * mb_list, String * charsetHint)
 {
     Array * result;
     clistiter * cur;
@@ -541,14 +551,14 @@ static Array * lep_address_list_from_lep_mailbox(struct mailimf_mailbox_list * m
         Address * address;
         
         mb = (struct mailimf_mailbox *) clist_content(cur);
-        address = Address::addressWithIMFMailbox(mb);
+        address = Address::addressWithIMFMailbox(mb, charsetHint);
         result->addObject(address);
     }
     
     return result;
 }
 
-static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr_list)
+static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr_list, String * charsetHint)
 {
     Array * result;
     clistiter * cur;
@@ -573,7 +583,7 @@ static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr
             {
                 Address * address;
                 
-                address = Address::addressWithIMFMailbox(addr->ad_data.ad_mailbox);
+                address = Address::addressWithIMFMailbox(addr->ad_data.ad_mailbox, charsetHint);
                 result->addObject(address);
                 break;
             }
@@ -583,7 +593,7 @@ static Array * lep_address_list_from_lep_addr(struct mailimf_address_list * addr
                 if (addr->ad_data.ad_group->grp_mb_list != NULL) {
                     Array * subArray;
                     
-                    subArray = lep_address_list_from_lep_mailbox(addr->ad_data.ad_group->grp_mb_list);
+                    subArray = lep_address_list_from_lep_mailbox(addr->ad_data.ad_group->grp_mb_list, charsetHint);
                     result->addObjectsFromArray(subArray);
                 }
                 break;
@@ -814,7 +824,7 @@ void MessageHeader::importIMAPEnvelope(struct mailimap_envelope * env)
 
         // subject
         subject = env->env_subject;
-        setSubject(String::stringByDecodingMIMEHeaderValue(subject));
+        setSubject(String::stringByDecodingMIMEHeaderValue2(subject, mDefaultCharset));
     }
 
     if (env->env_sender != NULL) {
@@ -959,7 +969,7 @@ void MessageHeader::importIMAPReferences(Data * data)
             //MCLog("charset: %s %s", value, MCUTF8(charset));
             
             if (!broken) {
-                setSubject(String::stringByDecodingMIMEHeaderValue(single_fields.fld_subject->sbj_value));
+                setSubject(String::stringByDecodingMIMEHeaderValue2(single_fields.fld_subject->sbj_value, mDefaultCharset));
             }
         }
     }

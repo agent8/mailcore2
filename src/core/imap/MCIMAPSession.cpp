@@ -2068,6 +2068,27 @@ HashMap * IMAPSession::fetchMessageNumberUIDMapping(String * folder, uint32_t fr
     return result;
 }
 
+static String * discoverCharset(AbstractPart * part){
+    if (part != NULL) {
+        if (part->className()->isEqual(MCSTR("mailcore::IMAPMultipart")) || part->className()->isEqual(MCSTR("mailcore::AbstractMultipart"))) {
+            unsigned int index, count;
+            Array * array;
+            array = ((AbstractMultipart*)part)->parts();
+            count = array->count();
+            for (index=0;index<count;index++) {
+                AbstractPart *childPart = (AbstractPart*)array->objectAtIndex(index);
+                String * charset = discoverCharset(childPart);
+                if(charset != NULL) {
+                    return charset;
+                }
+            }
+        } else {
+            return part->charset();
+        }
+    }
+    return NULL;
+}
+
 struct msg_att_handler_data {
     IndexSet * uidsFilter;
     IndexSet * numbersFilter;
@@ -2177,40 +2198,8 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                 msg->header()->importIMAPEnvelope(env);
                 hasHeader = true;
             }
-            else if (att_static->att_type == MAILIMAP_MSG_ATT_BODY_SECTION) {
-                if ((requestKind & IMAPMessagesRequestKindFullHeaders) != 0 ||
-                    (requestKind & IMAPMessagesRequestKindExtraHeaders) != 0 ||
-                    (requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
-                    char * bytes;
-                    size_t length;
-                    
-                    bytes = att_static->att_data.att_body_section->sec_body_part;
-                    length = att_static->att_data.att_body_section->sec_length;
-                    //SZ: BODY[x.x]
-                    if (att_static->att_data.att_body_section->sec_section->sec_spec->sec_type == MAILIMAP_SECTION_SPEC_SECTION_PART) {
-                        //Weicheng: the encoding can not be gotten here, so the plain body should keep char* type, and convert to String at a higher level
-                        msg->setPartData(Data::dataWithBytes(bytes, (unsigned int) length));
-                        hasBody = true;
-                    } else {
-                        msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
-                        hasHeader = true;
-                    }
-                }
-                else {
-                    char * references;
-                    size_t ref_size;
-                    
-                    // references
-                    references = att_static->att_data.att_body_section->sec_body_part;
-                    ref_size = att_static->att_data.att_body_section->sec_length;
-                    
-                    msg->header()->importIMAPReferences(Data::dataWithBytes(references, (unsigned int) ref_size));
-                    hasHeader = true;
-                }
-            }
             else if (att_static->att_type == MAILIMAP_MSG_ATT_BODYSTRUCTURE) {
                 AbstractPart * mainPart;
-                
                 // bodystructure
                 mainPart = IMAPPart::attachmentWithIMAPBody(att_static->att_data.att_body);
                 msg->setMainPart(mainPart);
@@ -2281,6 +2270,36 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                 msg->header()->importIMAPInternalDate(att_static->att_data.att_internal_date);
             } else if (att_static->att_type == MAILIMAP_MSG_ATT_RFC822_SIZE) {
                 msg->setSize(att_static->att_data.att_rfc822_size);
+            } else if (att_static->att_type == MAILIMAP_MSG_ATT_BODY_SECTION) {
+                if ((requestKind & IMAPMessagesRequestKindFullHeaders) != 0 ||
+                    (requestKind & IMAPMessagesRequestKindExtraHeaders) != 0 ||
+                    (requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
+                    char * bytes;
+                    size_t length;
+                    bytes = att_static->att_data.att_body_section->sec_body_part;
+                    length = att_static->att_data.att_body_section->sec_length;
+                    if (att_static->att_data.att_body_section->sec_section->sec_spec->sec_type == MAILIMAP_SECTION_SPEC_SECTION_PART) {
+                        //Weicheng: the encoding can not be gotten here, so the plain body should keep char* type, and convert to String at a higher level
+                        msg->setPartData(Data::dataWithBytes(bytes, (unsigned int) length));
+                        hasBody = true;
+                    } else {
+                        String * charset = discoverCharset((AbstractPart*)msg->mainPart());
+                        msg->header()->setDefaultCharset(charset);
+                        msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
+                        hasHeader = true;
+                    }
+                }
+                else {
+                    char * references;
+                    size_t ref_size;
+                    
+                    // references
+                    references = att_static->att_data.att_body_section->sec_body_part;
+                    ref_size = att_static->att_data.att_body_section->sec_length;
+                    
+                    msg->header()->importIMAPReferences(Data::dataWithBytes(references, (unsigned int) ref_size));
+                    hasHeader = true;
+                }
             }
         }
     }

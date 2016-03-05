@@ -48,7 +48,7 @@ namespace mailcore {
         virtual struct mailimf_mailbox * createIMFMailbox();
         
         // Additions
-        static Address * addressWithIMFMailbox(struct mailimf_mailbox * mb);
+        static Address * addressWithIMFMailbox(struct mailimf_mailbox * mb, String * charsetHint);
         static Address * addressWithNonEncodedIMFMailbox(struct mailimf_mailbox * mb);
         static Address * addressWithIMAPAddress(struct mailimap_address * imap_addr);
         

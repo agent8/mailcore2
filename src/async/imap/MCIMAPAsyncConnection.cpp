@@ -108,7 +108,7 @@ namespace mailcore {
         IMAPAsyncConnection * context;
     };
 }
-
+static int connectionCount = 0;
 IMAPAsyncConnection::IMAPAsyncConnection()
 {
     mSession = new IMAPSession();
@@ -126,10 +126,12 @@ IMAPAsyncConnection::IMAPAsyncConnection()
     mAutomaticConfigurationEnabled = true;
     mQueueRunning = false;
     mScheduledAutomaticDisconnect = false;
+    MCLog("!!!!!New Connection.%d",++connectionCount);
 }
 
 IMAPAsyncConnection::~IMAPAsyncConnection()
 {
+    MCLog("!!!!!Free Connection.%d",--connectionCount);
 #if __APPLE__
     cancelDelayedPerformMethodOnDispatchQueue((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, dispatchQueue());
 #else
@@ -419,13 +421,13 @@ void IMAPAsyncConnection::setConnectionLogger(ConnectionLogger * logger)
 {
     pthread_mutex_lock(&mConnectionLoggerLock);
     mConnectionLogger = logger;
-    if (mConnectionLogger != NULL) {
+    pthread_mutex_unlock(&mConnectionLoggerLock);
+    if (logger != NULL) {
         mSession->setConnectionLogger(mInternalLogger);
     }
     else {
         mSession->setConnectionLogger(NULL);
     }
-    pthread_mutex_unlock(&mConnectionLoggerLock);
 }
 
 ConnectionLogger * IMAPAsyncConnection::connectionLogger()

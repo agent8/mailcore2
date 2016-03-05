@@ -59,6 +59,9 @@ namespace mailcore {
         
         virtual void setExtraHeader(String *name, String * value);
         virtual void removeExtraHeader(String *name);
+        
+        virtual void setDefaultCharset(String * charset);
+        
         virtual String * extraHeaderValueForName(String *name);
         virtual Array * allExtraHeadersNames();
         
@@ -95,6 +98,7 @@ namespace mailcore {
         Array * /* Address */ mCc;
         Array * /* Address */ mBcc;
         Array * /* Address */ mReplyTo;
+        String * mDefaultCharset;
         String * mSubject;
         time_t mDate;
         time_t mReceivedDate;

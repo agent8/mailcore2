@@ -5,6 +5,7 @@
 #include <MailCore/MCBaseTypes.h>
 #include <MailCore/MCMessageConstants.h>
 #include <MailCore/MCIMAPMessage.h>
+#include <MailCore/MCAbstractMultipart.h>
 
 #ifdef __cplusplus
 

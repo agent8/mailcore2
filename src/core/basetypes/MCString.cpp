@@ -1121,7 +1121,7 @@ unsigned int String::hash()
 #define DEFAULT_INCOMING_CHARSET "iso-8859-1"
 #define DEFAULT_DISPLAY_CHARSET "utf-8"
 
-String * String::stringByDecodingMIMEHeaderValue(const char * phrase)
+String * String::stringByDecodingMIMEHeaderValue2(const char * phrase, String * charsetHint)
 {
     size_t cur_token;
     char * decoded;
@@ -1143,7 +1143,7 @@ String * String::stringByDecodingMIMEHeaderValue(const char * phrase)
     }
 
     if (!hasEncoding) {
-        return Data::dataWithBytes(phrase, (unsigned int) strlen(phrase))->stringWithDetectedCharset();
+        return Data::dataWithBytes(phrase, (unsigned int) strlen(phrase))->stringWithDetectedCharset(charsetHint, false);
     }
 
     cur_token = 0;
@@ -1163,6 +1163,13 @@ String * String::stringByDecodingMIMEHeaderValue(const char * phrase)
 
     free(decoded);
     
+    return result;
+}
+
+String * String::stringByDecodingMIMEHeaderValue(const char * phrase)
+{
+    String * result;
+    result = String::stringByDecodingMIMEHeaderValue2(phrase, NULL);
     return result;
 }
 
