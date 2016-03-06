@@ -6,7 +6,7 @@
 
 #include <MailCore/MCObject.h>
 #include <MailCore/MCMessageConstants.h>
-
+#include "MCLog.h"
 #ifdef __APPLE__
 #import <CoreFoundation/CoreFoundation.h>
 #endif
