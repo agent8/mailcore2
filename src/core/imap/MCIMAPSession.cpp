@@ -844,7 +844,7 @@ void IMAPSession::login(ErrorCode * pError)
         response = MCSTR("");
         if (mImap->imap_response != NULL) {
 //            response = String::stringWithUTF8Characters(mImap->imap_response);
-            response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset("utf-8", false);
+            response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(MCSTR("utf-8"), false);
         }
          MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
         if (response->locationOfString(MCSTR("not enabled for IMAP use")) != -1 || response->locationOfString(MCSTR("enable IMAP")) != -1) {
