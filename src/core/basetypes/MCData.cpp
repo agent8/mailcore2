@@ -260,7 +260,8 @@ static bool isHintCharsetValid(String * hintCharset)
                 break;
             if (validCharset == NULL)
                 break;
-            knownCharset->addObject(String::stringWithUTF8Characters(validCharset));
+            String * str = String::stringWithUTF8Characters(validCharset)->lowercaseString();
+            knownCharset->addObject(str);
         }
         uenum_close(iterator);
         ucsdet_close(detector);
