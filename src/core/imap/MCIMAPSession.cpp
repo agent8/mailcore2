@@ -844,7 +844,7 @@ void IMAPSession::login(ErrorCode * pError)
         response = MCSTR("");
         if (mImap->imap_response != NULL) {
 //            response = String::stringWithUTF8Characters(mImap->imap_response);
-            response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(MCSTR("utf-8"), false);
+            response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
         }
          MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
         if (response->locationOfString(MCSTR("not enabled for IMAP use")) != -1 || response->locationOfString(MCSTR("enable IMAP")) != -1) {
@@ -3679,6 +3679,7 @@ void IMAPSession::storeFlagsAndCustomFlags(String * folder, bool identifier_is_u
         f = mailimap_flag_new_draft();
         mailimap_flag_list_add(flag_list, f);
     }
+    //https://tools.ietf.org/html/rfc5788#section-3.4.2
     if ((flags & MessageFlagMDNSent) != 0) {
         struct mailimap_flag * f;
 
