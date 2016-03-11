@@ -869,13 +869,14 @@ void IMAPSession::login(ErrorCode * pError)
             * pError = ErrorYahooUnavailable;
         }
         else {
-            if (mImap->imap_response_info != NULL && (mImap->imap_response_info->rsp_alert != NULL
-                || mImap->imap_response_info->rsp_parse != NULL
-                || mImap->imap_response_info->rsp_badcharset != NULL)) {
-                * pError = ErrorInvalidAccount;
-            }else{
-                * pError = ErrorAuthentication;
-            }
+//            if (mImap->imap_response_info != NULL && (mImap->imap_response_info->rsp_alert != NULL
+//                || mImap->imap_response_info->rsp_parse != NULL
+//                || mImap->imap_response_info->rsp_badcharset != NULL)) {
+//                * pError = ErrorInvalidAccount;
+//            }else{
+//                * pError = ErrorAuthentication;
+//            }
+            * pError = ErrorAuthentication;
         }
         return;
     }
