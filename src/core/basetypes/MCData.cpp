@@ -354,7 +354,7 @@ String * Data::stringWithDetectedCharset(String * hintCharset, bool isHTML)
     
     if (charset == NULL) {
         //charset = MCSTR(MCDATA_DEFAULT_CHARSET);
-        return MCSTR("*UNSUPPORTED ENCODE*");
+        return MCSTR("**Encoding is not supported**");
     }
     
     charset = normalizeCharset(charset);
