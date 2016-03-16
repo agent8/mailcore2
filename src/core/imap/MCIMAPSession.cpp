@@ -480,6 +480,11 @@ bool IMAPSession::isVoIPEnabled()
     return mVoIPEnabled;
 }
 
+String * IMAPSession::loginResponse()
+{
+    return mLoginResponse;
+}
+
 static bool hasError(int errorCode)
 {
     return ((errorCode != MAILIMAP_NO_ERROR) && (errorCode != MAILIMAP_NO_ERROR_AUTHENTICATED) &&

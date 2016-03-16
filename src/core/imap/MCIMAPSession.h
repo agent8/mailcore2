@@ -221,6 +221,8 @@ namespace mailcore {
         
         /** Check if the automatic query of the capabilities of the IMAP server is enabled. */
         virtual bool isAutomaticConfigurationEnabled();
+
+        virtual String * loginResponse();
         
     public: // private
         virtual void loginIfNeeded(ErrorCode * pError);
@@ -234,6 +236,7 @@ namespace mailcore {
         virtual void lockConnectionLogger();
         virtual void unlockConnectionLogger();
         virtual ConnectionLogger * connectionLoggerNoLock();
+
     private:
         String * mHostname;
         unsigned int mPort;

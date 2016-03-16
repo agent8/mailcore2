@@ -1583,6 +1583,23 @@ struct parserState {
 
 static void appendQuote(struct parserState * state);
 
+static inline int isWhitespace(UChar ch)
+{
+    switch (ch) {
+        case ' ':
+        case '\t':
+        case '\n':
+        case '\f':
+        case '\r':
+        case 160:
+        case 133:
+        case 0x2028:
+        case 0x2029:
+            return true;
+    }
+    return false;
+}
+
 static void charactersParsed(void * context,
     const xmlChar * ch, int len)
 /*" Callback function for stringByStrippingHTML. "*/
@@ -1602,8 +1619,21 @@ static void charactersParsed(void * context,
     String * modifiedString;
     modifiedString = new String((const char *) ch, len);
     modifiedString->autorelease();
+    bool hasTerminalWhitespace = false;
+    bool hasInitialWhitespace = false;
+    if (modifiedString->length() > 0) {
+        hasInitialWhitespace = isWhitespace(modifiedString->characterAtIndex(0));
+        hasTerminalWhitespace = isWhitespace(modifiedString->characterAtIndex(modifiedString->length() - 1));
+    }
     modifiedString = modifiedString->stripWhitespace();
+    if (hasTerminalWhitespace) {
+        if (modifiedString->length() == 0) {
+            hasInitialWhitespace = false;
+        }
+        modifiedString->appendString(MCSTR(" "));
+    }
 
+    /*
     if (modifiedString->length() > 0) {
         if (state->lastCharIsWhitespace) {
             if (modifiedString->characterAtIndex(0) == ' ') {
@@ -1611,6 +1641,7 @@ static void charactersParsed(void * context,
             }
         }
     }
+     */
 
     if (modifiedString->length() > 0) {
         bool lastIsWhiteSpace;
@@ -1645,6 +1676,11 @@ static void charactersParsed(void * context,
                 appendQuote(state);
                 state->hasQuote = true;
             }
+            if (hasInitialWhitespace) {
+                if (!state->lastCharIsWhitespace) {
+                    result->appendString(MCSTR(" "));
+                }
+            }
             result->appendString(modifiedString);
             state->lastCharIsWhitespace = lastIsWhiteSpace;
             state->hasText = true;
@@ -1674,13 +1710,35 @@ static void appendQuote(struct parserState * state)
     state->lastCharIsWhitespace = true;
 }
 
+static void cleanTerminalSpace(String * result)
+{
+    if (result->length() > 0) {
+        if (result->characterAtIndex(result->length() - 1) == ' ') {
+            result->deleteCharactersInRange(RangeMake(result->length() - 1, 1));
+        }
+    }
+}
+
+static bool isPreviousLineBlankLine(String * result)
+{
+    if (result->length() < 2) {
+        return false;
+    }
+    return (result->characterAtIndex(result->length() - 1) == '\n') && (result->characterAtIndex(result->length() - 2) == '\n');
+}
+
 static void returnToLine(struct parserState * state)
 {
     if (!state->hasQuote) {
         appendQuote(state);
         state->hasQuote = true;
     }
-    state->result->appendString(MCSTR("\n"));
+
+    cleanTerminalSpace(state->result);
+
+    if (!isPreviousLineBlankLine(state->result)) {
+        state->result->appendString(MCSTR("\n"));
+    }
     state->hasText = false;
     state->lastCharIsWhitespace = true;
     state->hasQuote = false;
@@ -1779,7 +1837,7 @@ static void elementStarted(void * ctx, const xmlChar * name, const xmlChar ** at
         AutoreleasePool * pool;
         String * link = NULL;
         HashMap * attributes;
-        
+
         pool = new AutoreleasePool();
         attributes = dictionaryFromAttributes(atts);
         if (attributes != NULL) {
@@ -1930,6 +1988,9 @@ static void elementEnded(void * ctx, const xmlChar * name)
                 if (offset != state->result->length()) {
                     if (link->length() > 0) {
                         if (!state->result->hasSuffix(link)) {
+                            if (!state->lastCharIsWhitespace) {
+                                state->result->appendUTF8Characters(" ");
+                            }
                             state->result->appendUTF8Characters("(");
                             state->result->appendString(link);
                             state->result->appendUTF8Characters(")");
@@ -2035,15 +2096,11 @@ String * String::flattenHTMLAndShowBlockquoteAndLink(bool showBlockquote, bool s
         MCLog("Leak of %d blocks found in htmlSAXParseDoc",
             xmlMemBlocks() - mem_base);
     }
-    
+
+    cleanTerminalSpace(state.result);
     state.paragraphSpacingStack->release();
     state.linkStack->release();
-    
-    UChar ch[2];
-    ch[0] = 160;
-    ch[1] = 0;
-    result->replaceOccurrencesOfString(String::stringWithCharacters(ch), MCSTR(" "));
-    
+
     return result;
 }
 
@@ -2071,9 +2128,6 @@ String * String::stripWhitespace()
         else if (* source == '\n') {
             * dest = ' ';
         }
-        else if (* source == '\t') {
-            * dest = ' ';
-        }
         else if (* source == '\f') {
             * dest = ' ';
         }
@@ -2087,6 +2141,9 @@ String * String::stripWhitespace()
             * dest = ' ';
         }
         else if (* source == 0x2028) {
+            * dest = ' ';
+        }
+        else if (* source == 0x2029) {
             * dest = ' ';
         }
         else {
@@ -2107,7 +2164,7 @@ String * String::stripWhitespace()
 
     // copy content
     while (* source != 0) {
-        if ((* source == ' ') && (* (source + 1) == ' ')) {
+        while ((* source == ' ') && (* (source + 1) == ' ')) {
             source ++;
         }
         * dest = * source;
