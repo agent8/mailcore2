@@ -847,10 +847,7 @@ void IMAPSession::login(ErrorCode * pError)
             response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
         }
          MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
-        if (response->locationOfString(MCSTR("not enabled for IMAP use")) != -1 || response->locationOfString(MCSTR("enable IMAP")) != -1) {
-            * pError = ErrorGmailIMAPNotEnabled;
-        }
-        else if (response->locationOfString(MCSTR("bandwidth limits")) != -1) {
+        if (response->locationOfString(MCSTR("bandwidth limits")) != -1) {
             * pError = ErrorGmailExceededBandwidthLimit;
         }
         else if (response->locationOfString(MCSTR("Too many simultaneous connections")) != -1) {
