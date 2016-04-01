@@ -344,7 +344,6 @@ void IMAPSession::init()
     mLastFetchedSequenceNumber = 0;
     mCurrentFolder = NULL;
     pthread_mutex_init(&mIdleLock, NULL);
-    mCanIdle = true;
     mState = STATE_DISCONNECTED;
     mImap = NULL;
     mProgressCallback = NULL;
@@ -561,7 +560,7 @@ void IMAPSession::unsetup()
     LOCK();
     imap = mImap;
     mImap = NULL;
-    mCanIdle = false;
+    mIdleEnabled = false;
     UNLOCK();
     
     if (imap != NULL) {
@@ -3341,8 +3340,8 @@ bool IMAPSession::setupIdle()
 {
     // main thread
     LOCK();
-    bool canIdle = mCanIdle;
-    if (mCanIdle) {
+    bool canIdle = mIdleEnabled;
+    if (mIdleEnabled) {
         mailstream_setup_idle(mImap->imap_stream);
     }
     UNLOCK();
@@ -3441,7 +3440,7 @@ void IMAPSession::interruptIdle()
 {
     // main thread
     LOCK();
-    if (mCanIdle) {
+    if (mIdleEnabled) {
         mailstream_interrupt_idle(mImap->imap_stream);
     }
     UNLOCK();
@@ -3451,7 +3450,7 @@ void IMAPSession::unsetupIdle()
 {
     // main thread
     LOCK();
-    if (mCanIdle) {
+    if (mIdleEnabled) {
         mailstream_unsetup_idle(mImap->imap_stream);
     }
     UNLOCK();
@@ -3962,9 +3961,7 @@ void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
         capabilities->addIndex(IMAPCapabilityAuthLogin);
     }
     if (mailimap_has_idle(mImap)) {
-        LOCK();
-        mCanIdle = true;
-        UNLOCK();
+        capabilities->addIndex(IMAPCapabilityIdle);
     }
     if (mailimap_has_id(mImap)) {
         capabilities->addIndex(IMAPCapabilityId);
@@ -3976,9 +3973,6 @@ void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
         // Disable use of XLIST if this is the Gmail IMAP server because it implements
         // RFC 6154.
         capabilities->addIndex(IMAPCapabilityGmail);
-    }
-    if (mailimap_has_idle(mImap)) {
-        capabilities->addIndex(IMAPCapabilityIdle);
     }
     if (mailimap_has_condstore(mImap)) {
         capabilities->addIndex(IMAPCapabilityCondstore);
@@ -4032,7 +4026,9 @@ void IMAPSession::applyCapabilities(IndexSet * capabilities)
         mIsGmail = true;
     }
     if (capabilities->containsIndex(IMAPCapabilityIdle)) {
+        LOCK();
         mIdleEnabled = true;
+        UNLOCK();
     }
     if (capabilities->containsIndex(IMAPCapabilityCondstore)) {
         mCondstoreEnabled = true;
@@ -4056,7 +4052,10 @@ void IMAPSession::applyCapabilities(IndexSet * capabilities)
 
 bool IMAPSession::isIdleEnabled()
 {
-    return mIdleEnabled;
+    LOCK();
+    bool idleEnabled = mIdleEnabled;
+    UNLOCK();
+    return idleEnabled;
 }
 
 bool IMAPSession::isXListEnabled()

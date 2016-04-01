@@ -1161,6 +1161,10 @@ String * String::stringByDecodingMIMEHeaderValue2(const char * phrase, String * 
         MCLog("could not decode: %s\n", phrase);
     }
 
+    if (result == NULL) {
+      result = string();
+    }
+
     free(decoded);
     
     return result;
@@ -2401,6 +2405,7 @@ Array * String::componentsSeparatedByString(String * separator)
         p = location + separator->length();
     }
     unsigned int length = (unsigned int) (mLength - (p - mUnicodeChars));
+    MCAssert(length <= mLength);
     String * value = new String(p, length);
     result->addObject(value);
     value->release();
