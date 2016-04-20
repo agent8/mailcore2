@@ -321,7 +321,8 @@ static bool isHintCharsetValid(String * hintCharset)
         
         // If it's among the known charset, we want to try to detect it
         // to validate that it's the correct charset.
-        if (!knownCharset->containsObject(hintCharset)) {
+        //Weicheng:I don't think we need to detect the charset again, And what's more the result is not correct for sometime.
+        if (knownCharset->containsObject(hintCharset)) {
             return true;
         }
     }
