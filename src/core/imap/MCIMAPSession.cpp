@@ -2453,6 +2453,8 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         clist_append(hdrlist, header);
         header = strdup("List-ID");
         clist_append(hdrlist, header);
+        header = strdup("Precedence");
+        clist_append(hdrlist, header);
     }
     if ((requestKind & IMAPMessagesRequestKindHeaders) != 0) {
         char * header;
