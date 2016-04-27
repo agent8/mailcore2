@@ -28,6 +28,7 @@ Object * IMAPMessagePart::copy()
 void IMAPMessagePart::init()
 {
     mPartID = NULL;
+    mSize = 0;
 }
 
 void IMAPMessagePart::setPartID(String * partID)
@@ -38,6 +39,14 @@ void IMAPMessagePart::setPartID(String * partID)
 String * IMAPMessagePart::partID()
 {
     return mPartID;
+}
+
+void IMAPMessagePart::setSize(unsigned int size){
+    mSize = size;
+}
+
+unsigned int IMAPMessagePart::size(){
+    return mSize;
 }
 
 HashMap * IMAPMessagePart::serializable()

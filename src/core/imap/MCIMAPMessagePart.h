@@ -15,7 +15,8 @@ namespace mailcore {
         
         virtual void setPartID(String * partID);
         virtual String * partID();
-        
+        virtual void setSize(unsigned int size);
+        virtual unsigned int size();
     public: // subclass behavior
         IMAPMessagePart(IMAPMessagePart * other);
         virtual Object * copy();
@@ -24,6 +25,7 @@ namespace mailcore {
         
     private:
         String * mPartID;
+        unsigned int mSize;
         void init();
     };
     

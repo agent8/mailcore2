@@ -165,7 +165,7 @@ IMAPMessagePart * IMAPPart::attachmentWithIMAPBody1PartMessage(struct mailimap_b
     attachment->setPartID(partID);
     attachment->header()->importIMAPEnvelope(message->bd_envelope);
     attachment->importIMAPFields(message->bd_fields, extension);
-
+    attachment->setSize(message->bd_fields->bd_size);
     subAttachment = attachmentWithIMAPBodyInternal(message->bd_body, nextPartID);
     attachment->setMainPart(subAttachment);
     attachment->setMimeType(MCSTR("message/rfc822"));

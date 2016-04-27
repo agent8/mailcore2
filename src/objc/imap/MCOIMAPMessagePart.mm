@@ -30,5 +30,6 @@
 MCO_SYNTHESIZE_NSCODING
 
 MCO_OBJC_SYNTHESIZE_STRING(setPartID, partID)
+MCO_OBJC_SYNTHESIZE_SCALAR(unsigned int, unsigned int, setSize, size)
 
 @end
