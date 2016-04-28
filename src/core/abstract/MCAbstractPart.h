@@ -46,6 +46,12 @@ namespace mailcore {
         virtual bool isAttachment();
         virtual void setAttachment(bool attachment);
 
+        virtual void setEncoding(Encoding encoding);
+        virtual Encoding encoding();
+        
+        virtual void setSize(unsigned int size);
+        virtual unsigned int size();
+        virtual unsigned int decodedSize();
         virtual AbstractPart * partForContentID(String * contentID);
         virtual AbstractPart * partForUniqueID(String * uniqueID);
         
@@ -79,6 +85,8 @@ namespace mailcore {
         String * mContentDescription;
         bool mInlineAttachment;
         bool mAttachment;
+        Encoding mEncoding;
+        unsigned int mSize;
         PartType mPartType;
         HashMap * mContentTypeParameters;
         void init();

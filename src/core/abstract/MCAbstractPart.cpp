@@ -31,6 +31,8 @@ AbstractPart::AbstractPart(AbstractPart * other)
     setAttachment(other->mAttachment);
     setPartType(other->mPartType);
     setContentTypeParameters(other->mContentTypeParameters);
+    setEncoding(other->mEncoding);
+    setSize(other->mSize);
 }
 
 void AbstractPart::init()
@@ -46,6 +48,8 @@ void AbstractPart::init()
     mAttachment = false;
     mPartType = PartTypeSingle;
     mContentTypeParameters = NULL;
+    mEncoding = Encoding8Bit;
+    mSize = 0;
 }
 
 AbstractPart::~AbstractPart()
@@ -84,6 +88,8 @@ String * AbstractPart::description()
     }
     result->appendUTF8Format("inline: %i\n", mInlineAttachment);
     result->appendUTF8Format("attachment: %i\n", mAttachment);
+    result->appendUTF8Format("encoding:%d",mEncoding);
+    result->appendUTF8Format("size:%d",mSize);
     if (mContentTypeParameters != NULL) {
         mc_foreachhashmapKeyAndValue(String, key, String, value, mContentTypeParameters) {
             result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), value->UTF8Characters());
@@ -240,7 +246,24 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
     if (fields->bd_description != NULL) {
         setContentDescription(String::stringWithUTF8Characters(fields->bd_description));
     }
-    
+    if (fields->bd_encoding != NULL) {
+        bool isUUEncode;
+        
+        isUUEncode = false;
+        if (fields->bd_encoding->enc_type == MAILIMAP_BODY_FLD_ENC_OTHER) {
+            if (strcasecmp(fields->bd_encoding->enc_value, "x-uuencode") == 0 ||
+                strcasecmp(fields->bd_encoding->enc_value, "uuencode") == 0) {
+                isUUEncode = true;
+            }
+        }
+        if (isUUEncode) {
+            setEncoding(EncodingUUEncode);
+        }
+        else {
+            setEncoding((Encoding) fields->bd_encoding->enc_type);
+        }
+    }
+    setSize(fields->bd_size);
     if (extension != NULL) {
         if (extension->bd_disposition != NULL) {
             if (strcasecmp(extension->bd_disposition->dsp_type, "inline") == 0) {
@@ -388,6 +411,31 @@ HashMap * AbstractPart::serializable()
     }
     result->setObjectForKey(MCSTR("partType"), partTypeStr);
     
+    String * encodingString;
+    switch (mEncoding) {
+        case Encoding7Bit:
+            encodingString = MCSTR("7bit");
+            break;
+        case Encoding8Bit:
+        default:
+            encodingString = MCSTR("8bit");
+            break;
+        case EncodingBinary:
+            encodingString = MCSTR("binary");
+            break;
+        case EncodingBase64:
+            encodingString = MCSTR("base64");
+            break;
+        case EncodingQuotedPrintable:
+            encodingString = MCSTR("quoted-printable");
+            break;
+        case EncodingUUEncode:
+            encodingString = MCSTR("uuencode");
+            break;
+    }
+    result->setObjectForKey(MCSTR("encoding"), encodingString);
+    String * sizeString = String::stringWithUTF8Format("%lu", size());
+    result->setObjectForKey(MCSTR("size"), sizeString);
     return result;
 }
 
@@ -432,6 +480,33 @@ void AbstractPart::importSerializable(HashMap * serializable)
         else if (value->isEqual(MCSTR("multipart/signed"))) {
             setPartType(PartTypeMultipartSigned);
         }
+    }
+    value = (String *) serializable->objectForKey(MCSTR("encoding"));
+    if (value != NULL) {
+        Encoding encoding = Encoding8Bit;
+        if (value->isEqual(MCSTR("7bit"))) {
+            encoding = Encoding7Bit;
+        }
+        else if (value->isEqual(MCSTR("8bit"))) {
+            encoding = Encoding8Bit;
+        }
+        else if (value->isEqual(MCSTR("binary"))) {
+            encoding = EncodingBinary;
+        }
+        else if (value->isEqual(MCSTR("base64"))) {
+            encoding = EncodingBase64;
+        }
+        else if (value->isEqual(MCSTR("quoted-printable"))) {
+            encoding = EncodingQuotedPrintable;
+        }
+        else if (value->isEqual(MCSTR("uuencode"))) {
+            encoding = EncodingUUEncode;
+        }
+        setEncoding(encoding);
+    }
+    value = (String *) serializable->objectForKey(MCSTR("size"));
+    if (value != NULL) {
+        setSize(value->unsignedIntValue());
     }
 }
 
@@ -479,4 +554,35 @@ String * AbstractPart::contentTypeParameterValueForName(String * name)
         }
     }
     return result;
+}
+
+void AbstractPart::setEncoding(Encoding encoding)
+{
+    mEncoding = encoding;
+}
+
+Encoding AbstractPart::encoding()
+{
+    return mEncoding;
+}
+
+void AbstractPart::setSize(unsigned int size)
+{
+    mSize = size;
+}
+
+unsigned int AbstractPart::size()
+{
+    return mSize;
+}
+
+unsigned int AbstractPart::decodedSize()
+{
+    switch (mEncoding) {
+        case MAILIMAP_BODY_FLD_ENC_BASE64:
+            return mSize * 3 / 4;
+            
+        default:
+            return mSize;
+    }
 }

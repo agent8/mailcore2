@@ -15,8 +15,6 @@ using namespace mailcore;
 void IMAPPart::init()
 {
     mPartID = NULL;
-    mEncoding = Encoding8Bit;
-    mSize = 0;
 }
 
 IMAPPart::IMAPPart()
@@ -28,8 +26,6 @@ IMAPPart::IMAPPart(IMAPPart * other) : AbstractPart(other)
 {
     init();
     MC_SAFE_REPLACE_COPY(String, mPartID, other->mPartID);
-    mEncoding = other->mEncoding;
-    mSize = other->mSize;
 }
 
 IMAPPart::~IMAPPart()
@@ -50,37 +46,6 @@ void IMAPPart::setPartID(String * partID)
 String * IMAPPart::partID()
 {
     return mPartID;
-}
-
-void IMAPPart::setSize(unsigned int size)
-{
-    mSize = size;
-}
-
-unsigned int IMAPPart::size()
-{
-    return mSize;
-}
-
-void IMAPPart::setEncoding(Encoding encoding)
-{
-    mEncoding = encoding;
-}
-
-Encoding IMAPPart::encoding()
-{
-    return mEncoding;
-}
-
-unsigned int IMAPPart::decodedSize()
-{
-    switch (mEncoding) {
-        case MAILIMAP_BODY_FLD_ENC_BASE64:
-            return mSize * 3 / 4;
-            
-        default:
-            return mSize;
-    }
 }
 
 AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)
@@ -177,25 +142,6 @@ void IMAPPart::importIMAPFields(struct mailimap_body_fields * fields,
     struct mailimap_body_ext_1part * extension)
 {
     AbstractPart::importIMAPFields(fields, extension);
-    
-    setSize(fields->bd_size);
-    if (fields->bd_encoding != NULL) {
-        bool isUUEncode;
-        
-        isUUEncode = false;
-        if (fields->bd_encoding->enc_type == MAILIMAP_BODY_FLD_ENC_OTHER) {
-            if (strcasecmp(fields->bd_encoding->enc_value, "x-uuencode") == 0 ||
-                strcasecmp(fields->bd_encoding->enc_value, "uuencode") == 0) {
-                isUUEncode = true;
-            }
-        }
-        if (isUUEncode) {
-            setEncoding(EncodingUUEncode);
-        }
-        else {
-            setEncoding((Encoding) fields->bd_encoding->enc_type);
-        }
-    }
 }
 
 IMAPPart * IMAPPart::attachmentWithIMAPBody1PartBasic(struct mailimap_body_type_basic * basic,
@@ -296,31 +242,6 @@ HashMap * IMAPPart::serializable()
     if (partID() != NULL) {
         result->setObjectForKey(MCSTR("partID"), partID());
     }
-    String * encodingString;
-    switch (encoding()) {
-        case Encoding7Bit:
-            encodingString = MCSTR("7bit");
-            break;
-        case Encoding8Bit:
-        default:
-            encodingString = MCSTR("8bit");
-            break;
-        case EncodingBinary:
-            encodingString = MCSTR("binary");
-            break;
-        case EncodingBase64:
-            encodingString = MCSTR("base64");
-            break;
-        case EncodingQuotedPrintable:
-            encodingString = MCSTR("quoted-printable");
-            break;
-        case EncodingUUEncode:
-            encodingString = MCSTR("uuencode");
-            break;
-    }
-    result->setObjectForKey(MCSTR("encoding"), encodingString);
-    String * sizeString = String::stringWithUTF8Format("%lu", size());
-    result->setObjectForKey(MCSTR("size"), sizeString);
     return result;
 }
 
@@ -329,33 +250,6 @@ void IMAPPart::importSerializable(HashMap * serializable)
     AbstractPart::importSerializable(serializable);
     String * partID = (String *) serializable->objectForKey(MCSTR("partID"));
     setPartID(partID);
-    String * encodingString = (String *) serializable->objectForKey(MCSTR("encoding"));
-    if (encodingString != NULL) {
-        Encoding encoding = Encoding8Bit;
-        if (encodingString->isEqual(MCSTR("7bit"))) {
-            encoding = Encoding7Bit;
-        }
-        else if (encodingString->isEqual(MCSTR("8bit"))) {
-            encoding = Encoding8Bit;
-        }
-        else if (encodingString->isEqual(MCSTR("binary"))) {
-            encoding = EncodingBinary;
-        }
-        else if (encodingString->isEqual(MCSTR("base64"))) {
-            encoding = EncodingBase64;
-        }
-        else if (encodingString->isEqual(MCSTR("quoted-printable"))) {
-            encoding = EncodingQuotedPrintable;
-        }
-        else if (encodingString->isEqual(MCSTR("uuencode"))) {
-            encoding = EncodingUUEncode;
-        }
-        setEncoding(encoding);
-    }
-    String * sizeString = (String *) serializable->objectForKey(MCSTR("size"));
-    if (sizeString != NULL) {
-        setSize(sizeString->unsignedIntValue());
-    }
 }
 
 static void * createObject()

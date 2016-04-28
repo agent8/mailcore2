@@ -11,7 +11,7 @@
 #define MAILCORE_MCOABSTRACTPART_H
 
 #import <Foundation/Foundation.h>
-
+#import <MailCore/MCOConstants.h>
 @class MCOAbstractMessage;
 
 typedef NS_ENUM(NSInteger, MCOPartType) {
@@ -86,6 +86,12 @@ namespace mailcore {
 /** Returns whether the part is an explicit attachment.*/
 @property (nonatomic, assign, getter=isAttachment) BOOL attachment;
 
+/** It's the encoding of the single part */
+@property (nonatomic, nonatomic) MCOEncoding encoding;
+
+/** The size of the single part in bytes */
+@property (nonatomic, nonatomic) unsigned int size;
+
 /** Returns the part with the given Content-ID among this part and its subparts.*/
 - (MCOAbstractPart *) partForContentID:(NSString *)contentID;
 
@@ -107,6 +113,11 @@ namespace mailcore {
 /** Returns an array with the names of all content type parameters.*/
 - (NSArray * /* NSString */) allContentTypeParametersNames;
 
+/**
+ Returns the decoded size of the part.
+ For example, for a part that's encoded with base64, it will return actual_size * 3/4.
+ */
+- (unsigned int) decodedSize;
 @end
 
 @interface MCOAbstractPart (MCOUnavailable)

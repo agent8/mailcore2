@@ -73,6 +73,8 @@ MCO_OBJC_SYNTHESIZE_STRING(setContentLocation, contentLocation)
 MCO_OBJC_SYNTHESIZE_STRING(setContentDescription, contentDescription)
 MCO_OBJC_SYNTHESIZE_BOOL(setInlineAttachment, isInlineAttachment)
 MCO_OBJC_SYNTHESIZE_BOOL(setAttachment, isAttachment)
+MCO_OBJC_SYNTHESIZE_SCALAR(MCOEncoding, mailcore::Encoding, setEncoding, encoding)
+MCO_OBJC_SYNTHESIZE_SCALAR(unsigned int, unsigned int, setSize, size)
 
 - (MCOAbstractPart *) partForContentID:(NSString *)contentID
 {
@@ -108,4 +110,8 @@ MCO_OBJC_SYNTHESIZE_BOOL(setAttachment, isAttachment)
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->allContentTypeParametersNames());
 }
 
+- (unsigned int) decodedSize
+{
+    return MCO_NATIVE_INSTANCE->decodedSize();
+}
 @end
