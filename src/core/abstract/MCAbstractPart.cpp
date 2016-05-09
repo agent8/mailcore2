@@ -88,8 +88,8 @@ String * AbstractPart::description()
     }
     result->appendUTF8Format("inline: %i\n", mInlineAttachment);
     result->appendUTF8Format("attachment: %i\n", mAttachment);
-    result->appendUTF8Format("encoding:%d",mEncoding);
-    result->appendUTF8Format("size:%d",mSize);
+    result->appendUTF8Format("encoding:%d\n",mEncoding);
+    result->appendUTF8Format("size:%d\n",mSize);
     if (mContentTypeParameters != NULL) {
         mc_foreachhashmapKeyAndValue(String, key, String, value, mContentTypeParameters) {
             result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), value->UTF8Characters());
