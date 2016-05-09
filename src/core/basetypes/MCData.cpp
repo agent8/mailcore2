@@ -221,8 +221,9 @@ static String * normalizeCharset(String * charset)
         charset = MCSTR("iso-8859-8");
     }
     else if ((charset->caseInsensitiveCompare(MCSTR("GB2312")) == 0) ||
-    (charset->caseInsensitiveCompare(MCSTR("GB_2312-80")) == 0)) {
-        charset = MCSTR("GBK");
+    (charset->caseInsensitiveCompare(MCSTR("GB_2312-80")) == 0) ||
+    (charset->caseInsensitiveCompare(MCSTR("GBK")) == 0)) {
+        charset = MCSTR("gb18030");
     }
     
     return charset->lowercaseString();
@@ -336,8 +337,7 @@ String * Data::stringWithDetectedCharset(String * hintCharset, bool isHTML)
     String * charset;
     
     if (hintCharset != NULL) {
-        hintCharset = normalizeCharset(hintCharset);
-        if (hintCharset->isEqual(MCSTR("x-unknown"))){
+        if (hintCharset->caseInsensitiveCompare(MCSTR("x-unknown")) == 0){
             hintCharset = NULL;
         }
     }
