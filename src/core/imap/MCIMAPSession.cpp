@@ -649,6 +649,12 @@ void IMAPSession::connect(ErrorCode * pError)
             needToSendId = true;
         }
 #endif
+        if (mWelcomeString->locationOfString(MCSTR("Courier-IMAP")) != -1) {
+            LOCK();
+            mIdleEnabled = true;
+            UNLOCK();
+            mNamespaceEnabled = true;
+        }
     }
     
     mState = STATE_CONNECTED;
@@ -1499,11 +1505,23 @@ Array * /* IMAPFolder */ IMAPSession::fetchAllFolders(ErrorCode * pError)
         }
 
         if (!hasInbox) {
-            r = mailimap_list(mImap, "", "INBOX", &imap_folders);
-            Array * inboxResult = resultsWithError(r, imap_folders, pError);
-            if (* pError == ErrorConnection || * pError == ErrorParse)
-                mShouldDisconnect = true;
-            result->addObjectsFromArray(inboxResult);
+            mc_foreacharray(IMAPFolder, folder, result) {
+                if (folder->flags() & IMAPFolderFlagInbox) {
+                    // some mail providers use non-standart name for inbox folder
+                    hasInbox = true;
+                    folder->setPath(MCSTR("INBOX"));
+                    break;
+                }
+            }
+
+            if (!hasInbox) {
+                r = mailimap_list(mImap, "", "INBOX", &imap_folders);
+                Array * inboxResult = resultsWithError(r, imap_folders, pError);
+                if (* pError == ErrorConnection || * pError == ErrorParse)
+                    mShouldDisconnect = true;
+                result->addObjectsFromArray(inboxResult);
+                hasInbox = true;
+            }
         }
     }
     
@@ -3753,13 +3771,14 @@ void IMAPSession::storeFlagsAndCustomFlags(String * folder, bool identifier_is_u
         else if (r == MAILIMAP_ERROR_PARSE) {
             mShouldDisconnect = true;
             * pError = ErrorParse;
-            return;
+            goto release;
         }
         else if (hasError(r)) {
             * pError = ErrorStore;
-            return;
+            goto release;
         }
     }
+    * pError = ErrorNone;
 
     release:
     for(clistiter * iter = clist_begin(setList) ; iter != NULL ; iter = clist_next(iter)) {
@@ -3771,7 +3790,6 @@ void IMAPSession::storeFlagsAndCustomFlags(String * folder, bool identifier_is_u
     clist_free(setList);
     mailimap_store_att_flags_free(store_att_flags);
     mailimap_set_free(imap_set);
-    * pError = ErrorNone;
 }
 
 void IMAPSession::storeFlagsByNumber(String * folder, IndexSet * numbers, IMAPStoreFlagsRequestKind kind, MessageFlag flags, ErrorCode * pError)
@@ -3850,13 +3868,14 @@ void IMAPSession::storeLabels(String * folder, bool identifier_is_uid, IndexSet 
         else if (r == MAILIMAP_ERROR_PARSE) {
             mShouldDisconnect = true;
             * pError = ErrorParse;
-            return;
+            goto release;
         }
         else if (hasError(r)) {
             * pError = ErrorStore;
-            return;
+            goto release;
         }
     }
+    * pError = ErrorNone;
 
     release:
     for(clistiter * iter = clist_begin(setList) ; iter != NULL ; iter = clist_next(iter)) {
@@ -3868,7 +3887,6 @@ void IMAPSession::storeLabels(String * folder, bool identifier_is_uid, IndexSet 
     clist_free(setList);
     mailimap_msg_att_xgmlabels_free(xgmlabels);
     mailimap_set_free(imap_set);
-    * pError = ErrorNone;
 }
 
 uint32_t IMAPSession::uidValidity()

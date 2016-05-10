@@ -424,6 +424,11 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorCodeCount,
 };
 
+/** Error userInfo key for SMTP operations response string */
+#define MCOSMTPResponseKey @"MCOSMTPResponseKey"
+/** Error userInfo key for SMTP operations response code */
+#define MCOSMTPResponseCodeKey @"MCOSMTPResponseCodeKey"
+
 /** Here's the list of connection log types.*/
 typedef NS_ENUM(NSInteger, MCOConnectionLogType) {
     /** Received data.*/
@@ -452,5 +457,8 @@ typedef void (^MCOConnectionLogger)(void * connectionID, MCOConnectionLogType ty
  It's called when asynchronous operations stop/start running.
  */
 typedef void (^MCOOperationQueueRunningChangeBlock)(void);
+
+/** MCOIMAPResponseKey is a key for NSError userInfo dictionary, the value is string with the server response. */
+#define MCOIMAPResponseKey @"MCOIMAPResponseKey"
 
 #endif

@@ -111,6 +111,8 @@ namespace mailcore {
         virtual void setClientIdentity(IMAPIdentity * clientIdentity);
 
         virtual String * gmailUserDisplayName() DEPRECATED_ATTRIBUTE;
+
+        virtual bool isIdleEnabled();
         
         virtual IMAPFolderInfoOperation * folderInfoOperation(String * folder, bool includeUnSeen);
         virtual IMAPFolderStatusOperation * folderStatusOperation(String * folder);
@@ -220,7 +222,8 @@ namespace mailcore {
         dispatch_queue_t mDispatchQueue;
 #endif
         String * mGmailUserDisplayName;
-        
+        bool mIdleEnabled;
+
         virtual IMAPAsyncConnection * session();
         virtual IMAPAsyncConnection * matchingSessionForFolder(String * folder);
         virtual IMAPAsyncConnection * availableSession(String * folder);

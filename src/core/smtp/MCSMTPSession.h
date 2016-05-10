@@ -49,6 +49,10 @@ namespace mailcore {
         
         virtual void setUseHeloIPEnabled(bool enabled);
         virtual bool useHeloIPEnabled();
+
+        virtual String * lastSMTPResponse();
+
+        virtual int lastSMTPResponseCode();
         
         virtual void connect(ErrorCode * pError);
         virtual void disconnect();
@@ -62,6 +66,8 @@ namespace mailcore {
                                  SMTPProgressCallback * callback, ErrorCode * pError);
         virtual void sendMessage(Address * from, Array * /* Address */ recipients, String * messagePath,
                                  SMTPProgressCallback * callback, ErrorCode * pError);
+
+        virtual void cancelMessageSending();
 
         virtual void setConnectionLogger(ConnectionLogger * logger);
         virtual ConnectionLogger * connectionLogger();
@@ -85,6 +91,8 @@ namespace mailcore {
         bool mCheckCertificateEnabled;
         bool mUseHeloIPEnabled;
         bool mShouldDisconnect;
+        bool mSendingCancelled;
+        bool mCanCancel;
         
         mailsmtp * mSmtp;
         SMTPProgressCallback * mProgressCallback;
@@ -92,6 +100,8 @@ namespace mailcore {
         String * mLastSMTPResponse;
         int mLastLibetpanError;
         int mLastSMTPResponseCode;
+        pthread_mutex_t mCancelLock;
+        pthread_mutex_t mCanCancelLock;
         
         ConnectionLogger * mConnectionLogger;
         pthread_mutex_t mConnectionLoggerLock;
@@ -104,8 +114,11 @@ namespace mailcore {
         void unsetup();
         void connectIfNeeded(ErrorCode * pError);
         bool checkCertificate();
+        void setSendingCancelled(bool isCancelled);
         
         void sendMessage(MessageBuilder * msg, SMTPProgressCallback * callback, ErrorCode * pError);
+        void internalSendMessage(Address * from, Array * /* Address */ recipients, Data * messageData,
+                                 SMTPProgressCallback * callback, ErrorCode * pError);
         
     public: // private
         virtual bool isDisconnected();

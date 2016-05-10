@@ -2380,9 +2380,9 @@ Array * String::componentsSeparatedByString(String * separator)
             break;
         }
 #else
-        int remaining = length() - (int) (p - mUnicodeChars);
         location = NULL;
         while (location == NULL) {
+            int remaining = length() - (int) (p - mUnicodeChars);
             location = (UChar *) memmem(p, remaining * sizeof(UChar), separator->unicodeCharacters(), separator->length() * sizeof(UChar));
             if (location == NULL) {
                 break;
@@ -2406,6 +2406,10 @@ Array * String::componentsSeparatedByString(String * separator)
         p = location + separator->length();
     }
     unsigned int length = (unsigned int) (mLength - (p - mUnicodeChars));
+    if (length > mLength) {
+        fprintf(stderr, "trying to split string: |%s| |%s| %i %i %p %p\n", MCUTF8(this), MCUTF8(separator), length, mLength, p, mUnicodeChars);
+        return result;
+    }
     MCAssert(length <= mLength);
     String * value = new String(p, length);
     result->addObject(value);
