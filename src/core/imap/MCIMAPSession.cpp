@@ -739,8 +739,10 @@ void IMAPSession::login(ErrorCode * pError)
     
     const char * utf8username;
     const char * utf8password;
+    String * response;
     utf8username = MCUTF8(mUsername);
     utf8password = MCUTF8(mPassword);
+    response = MCSTR("");
     if (utf8username == NULL) {
         utf8username = "";
     }
@@ -848,14 +850,11 @@ void IMAPSession::login(ErrorCode * pError)
         * pError = ErrorParse;
         return;
     }
-    else if (hasError(r)) {
-        String * response;
-        
-        response = MCSTR("");
-        if (mImap->imap_response != NULL) {
-//            response = String::stringWithUTF8Characters(mImap->imap_response);
-            response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
-        }
+    if (mImap->imap_response != NULL) {
+        //response = String::stringWithUTF8Characters(mImap->imap_response);
+        response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
+    }
+    if (hasError(r)) {
          MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
         if (response->locationOfString(MCSTR("bandwidth limits")) != -1) {
             * pError = ErrorGmailExceededBandwidthLimit;
@@ -875,35 +874,34 @@ void IMAPSession::login(ErrorCode * pError)
         else if (response->locationOfString(MCSTR("OCF12")) != -1) {
             * pError = ErrorYahooUnavailable;
         }
-        else {
-//            if (mImap->imap_response_info != NULL && (mImap->imap_response_info->rsp_alert != NULL
-//                || mImap->imap_response_info->rsp_parse != NULL
-//                || mImap->imap_response_info->rsp_badcharset != NULL)) {
-//                * pError = ErrorInvalidAccount;
-//            }else{
-//                * pError = ErrorAuthentication;
-//            }
+        /*
+         Full error list: https://docs.google.com/spreadsheets/d/1dGLOjZtv4OqFj-ENW9CdN1Q-QURuZQwCpvYn8q5_NOA/edit#gid=1970104932
+         */
+        else if (response->locationOfString(MCSTR("password")) != -1 || response->locationOfString(MCSTR("Invalid")) != -1 ||
+                 response->locationOfString(MCSTR("Incorrect")) != -1 || response->locationOfString(MCSTR("Authentication failed")) != -1 ||
+                 response->locationOfString(MCSTR("LOGIN failed")) != -1 || response->locationOfString(MCSTR("LOGIN error")) != -1 ||
+                 response->locationOfString(MCSTR("Lookup failed")) != -1 || response->locationOfString(MCSTR("auth error")) != -1 ||
+                 response->locationOfString(MCSTR("auth failed")) != -1 || response->locationOfString(MCSTR("not exist")) != -1) {
             * pError = ErrorAuthentication;
         }
+        else if (response->locationOfString(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
+                 response->locationOfString(MCSTR("suspended")) != -1 || response->locationOfString(MCSTR("locked")) != -1 ||
+                 response->locationOfString(MCSTR("IMAP")) != -1) {
+            * pError = ErrorGmailIMAPNotEnabled;
+        } else {
+            * pError = ErrorInvalidAccount;
+        }
         return;
-    }
-    
-    String * loginResponse = MCSTR("");
-    if (mImap->imap_response != NULL) {
-        loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
-        if (mIsGmail) {
-            int location = loginResponse->locationOfString(MCSTR(" authenticated (Success)"));
-            if (location != -1) {
-                String * emailAndName = loginResponse->substringToIndex(location);
-                location = emailAndName->locationOfString(MCSTR(" "));
-                MC_SAFE_RELEASE(mGmailUserDisplayName);
-                mGmailUserDisplayName = emailAndName->substringFromIndex(location + 1);
-                mGmailUserDisplayName->retain();
-            }
+    } else if (mIsGmail && mImap->imap_response != NULL) {
+        int location = response->locationOfString(MCSTR(" authenticated (Success)"));
+        if (location != -1) {
+            String * emailAndName = response->substringToIndex(location);
+            location = emailAndName->locationOfString(MCSTR(" "));
+            MC_SAFE_RELEASE(mGmailUserDisplayName);
+            mGmailUserDisplayName = emailAndName->substringFromIndex(location + 1);
+            mGmailUserDisplayName->retain();
         }
     }
-    MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
-    
     mState = STATE_LOGGEDIN;
     
     if (isAutomaticConfigurationEnabled()) {
@@ -916,8 +914,8 @@ void IMAPSession::login(ErrorCode * pError)
             if (* pError != ErrorNone) {
                 MCLog("capabilities failed");
                 if (mImap != NULL && mImap->imap_response != NULL) {
-                    loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
-                    MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
+                    response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
+                    MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
                 }
                 return;
             }
@@ -935,8 +933,8 @@ void IMAPSession::login(ErrorCode * pError)
             if (* pError != ErrorNone) {
                 MCLog("fetch namespace failed");
                 if (mImap != NULL && mImap->imap_response != NULL) {
-                    loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
-                    MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
+                    response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
+                    MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
                 }
                 return;
             }
@@ -957,8 +955,8 @@ void IMAPSession::login(ErrorCode * pError)
             folders = resultsWithError(r, imap_folders, pError);
             if (* pError != ErrorNone)
                 if (mImap != NULL && mImap->imap_response != NULL) {
-                    loginResponse = String::stringWithUTF8Characters(mImap->imap_response);
-                    MC_SAFE_REPLACE_COPY(String, mLoginResponse, loginResponse);
+                    response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
+                    MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
                 }
                 return;
             
