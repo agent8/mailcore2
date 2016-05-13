@@ -23,6 +23,9 @@ namespace mailcore {
         virtual void setTextBody(String * textBody);
         virtual String * textBody();
         
+        virtual void setExtraBody(Attachment * attachment);
+        virtual Attachment * extraBody();
+        
         virtual void setAttachments(Array * /* Attachment */ attachments);
         virtual Array * /* Attachment */ attachments();
         virtual void addAttachment(Attachment * attachment);
@@ -66,6 +69,7 @@ namespace mailcore {
     private:
         String * mHTMLBody;
         String * mTextBody;
+        Attachment * mExtraBody;
         Array * /* Attachment */ mAttachments;
         Array * /* Attachment */ mRelatedAttachments;
         String * mBoundaryPrefix;

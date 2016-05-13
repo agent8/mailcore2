@@ -650,6 +650,15 @@ String * MessageBuilder::textBody()
     return mTextBody;
 }
 
+void MessageBuilder::setExtraBody(Attachment * attachment)
+{
+    mExtraBody = attachment;
+}
+
+Attachment * MessageBuilder::extraBody() {
+    return mExtraBody;
+}
+
 void MessageBuilder::setAttachments(Array * attachments)
 {
     MC_SAFE_REPLACE_COPY(Array, mAttachments, attachments);
@@ -708,6 +717,7 @@ struct mailmime * MessageBuilder::mimeAndFilterBccAndForEncryption(bool filterBc
     struct mailmime * textPart;
     struct mailmime * altPart;
     struct mailmime * mainPart;
+    struct mailmime * extraPart;
     
     mCurrentBoundaryIndex = 0;
     htmlPart = NULL;
@@ -736,10 +746,18 @@ struct mailmime * MessageBuilder::mimeAndFilterBccAndForEncryption(bool filterBc
         textPart = mime_from_attachment(this, textAttachment, forEncryption);
     }
     
-    if ((textPart != NULL) && (htmlPart != NULL)) {
+    if (((textPart != NULL) && (htmlPart != NULL)) || mExtraBody != NULL) {
         altPart = get_multipart_alternative(this, MCUTF8(mBoundaryPrefix));
-        mailmime_smart_add_part(altPart, textPart);
-        mailmime_smart_add_part(altPart, htmlPart);
+        if (textPart != NULL) {
+            mailmime_smart_add_part(altPart, textPart);
+        }
+        if (htmlPart != NULL) {
+            mailmime_smart_add_part(altPart, htmlPart);
+        }        
+        if (mExtraBody != NULL) {
+            extraPart = mime_from_attachment(this, mExtraBody, forEncryption);
+            mailmime_smart_add_part(altPart, extraPart);
+        }
         mainPart = altPart;
     }
     else if (textPart != NULL) {

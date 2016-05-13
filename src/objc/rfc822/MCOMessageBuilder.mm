@@ -50,6 +50,8 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setAttachments, attachments)
 MCO_OBJC_SYNTHESIZE_ARRAY(setRelatedAttachments, relatedAttachments)
 MCO_OBJC_SYNTHESIZE_STRING(setBoundaryPrefix, boundaryPrefix)
 
+MCO_OBJC_SYNTHESIZE_TYPE(MCOAttachment, mailcore::Attachment, setExtraBody, extraBody)
+
 - (void) addAttachment:(MCOAttachment *)attachment
 {
     MCO_NATIVE_INSTANCE->addAttachment(MCO_FROM_OBJC(mailcore::Attachment, attachment));
