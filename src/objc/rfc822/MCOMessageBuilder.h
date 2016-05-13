@@ -40,6 +40,8 @@
 /** Plain text content of the message.*/
 @property (nonatomic, copy) NSString * textBody;
 
+@property (nonatomic, copy) MCOAttachment * extraBody;
+
 /** List of file attachments.*/
 @property (nonatomic, copy) NSArray * /* MCOAttachment */ attachments;
 
