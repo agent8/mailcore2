@@ -561,6 +561,7 @@ void MessageBuilder::init()
     mHTMLBody = NULL;
     mTextBody = NULL;
     mAttachments = NULL;
+    mExtraBody = NULL;
     mRelatedAttachments = NULL;
     mBoundaryPrefix = NULL;
     mBoundaries = new Array();
@@ -578,8 +579,9 @@ MessageBuilder::MessageBuilder(MessageBuilder * other) : AbstractMessage(other)
     setHTMLBody(other->mHTMLBody);
     setTextBody(other->mTextBody);
     setAttachments(other->mAttachments);
+    setExtraBody(other->mExtraBody);
     setRelatedAttachments(other->mRelatedAttachments);
-    MC_SAFE_REPLACE_COPY(String, mBoundaryPrefix, other->mBoundaryPrefix);
+    setBoundaryPrefix(other->mBoundaryPrefix);
 }
 
 MessageBuilder::~MessageBuilder()
@@ -587,6 +589,7 @@ MessageBuilder::~MessageBuilder()
     MC_SAFE_RELEASE(mHTMLBody);
     MC_SAFE_RELEASE(mTextBody);
     MC_SAFE_RELEASE(mAttachments);
+    MC_SAFE_RELEASE(mExtraBody);
     MC_SAFE_RELEASE(mRelatedAttachments);
     MC_SAFE_RELEASE(mBoundaryPrefix);
     MC_SAFE_RELEASE(mBoundaries);
@@ -613,6 +616,11 @@ String * MessageBuilder::description()
     if (mAttachments != NULL) {
         result->appendUTF8Characters("-- attachments --\n");
         result->appendString(mAttachments->description());
+        result->appendUTF8Characters("\n");
+    }
+    if (mExtraBody != NULL) {
+        result->appendUTF8Characters("-- extra body -- \n");
+        result->appendString(mExtraBody->description());
         result->appendUTF8Characters("\n");
     }
     if (mRelatedAttachments != NULL) {
@@ -652,7 +660,7 @@ String * MessageBuilder::textBody()
 
 void MessageBuilder::setExtraBody(Attachment * attachment)
 {
-    mExtraBody = attachment;
+    MC_SAFE_REPLACE_COPY(Attachment, mExtraBody, attachment);
 }
 
 Attachment * MessageBuilder::extraBody() {
