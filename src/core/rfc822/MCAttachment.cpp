@@ -237,6 +237,12 @@ Attachment::Attachment(Attachment * other) : AbstractPart(other)
     init();
     setData(other->data());
     setPartID(other->partID());
+    //yyb:
+    setMimeType(other->mimeType());
+    setCharset(other->charset());
+    setContentID(other->contentID());
+    setFilename(other->filename());
+    setEncoding(other->encoding());
 }
 
 Attachment::~Attachment()
