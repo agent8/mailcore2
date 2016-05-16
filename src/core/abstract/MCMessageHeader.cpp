@@ -700,6 +700,7 @@ struct mailimf_fields * MessageHeader::createIMFFieldsAndFilterBcc(bool filterBc
     struct mailimf_address_list * imfTo;
     struct mailimf_address_list * imfCc;
     struct mailimf_address_list * imfBcc;
+    struct mailimf_mailbox      * imfSender;
     clist * imfInReplyTo;
     clist * imfReferences;
     struct mailimf_fields * fields;
@@ -735,10 +736,15 @@ struct mailimf_fields * MessageHeader::createIMFFieldsAndFilterBcc(bool filterBc
             imfSubject = strdup(data->bytes());
         }
     }
-
+    
+    imfSender = NULL;
+    if (mSender != NULL) {
+        imfSender = mSender->createIMFMailbox();
+    }
+    
     fields = mailimf_fields_new_with_data_all(imfDate,
         imfFrom,
-        NULL /* sender */,
+        /*NULL*/ imfSender,
         imfReplyTo,
         imfTo,
         imfCc,
