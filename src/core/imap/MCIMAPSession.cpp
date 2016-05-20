@@ -2472,6 +2472,13 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         header = strdup("Precedence");
         clist_append(hdrlist, header);
     }
+    //Bcc header
+    if ((requestKind & IMAPMessagesRequestKindHeaderBcc) != 0) {
+        char * header;
+        header = strdup("Bcc");
+        clist_append(hdrlist, header);
+    }
+    
     if ((requestKind & IMAPMessagesRequestKindHeaders) != 0) {
         char * header;
         

@@ -150,7 +150,9 @@ typedef NS_OPTIONS(NSInteger, MCOIMAPMessagesRequestKind) {
     /** Request size of message */
     MCOIMAPMessagesRequestKindSize           = 1 << 10,
     /** Plain body of message */
-    MCOIMAPMessagesRequestKindPlainBody      = 1 << 11
+    MCOIMAPMessagesRequestKindPlainBody      = 1 << 11,
+    /** Bcc field, FullHeaders not include Bcc */
+    MCOIMAPMessagesRequestKindHeaderBcc      = 1 << 12,
 };
 
 /** It defines the behavior of the STORE flags request.*/
