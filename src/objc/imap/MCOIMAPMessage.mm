@@ -54,8 +54,14 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailThreadID, gmailThreadID)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID)
 
 
-- (NSData *)partData{
-    return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partData());
+- (NSData *)partData:(MCOEncoding) encoding{
+    mailcore::Data * data = MCO_NATIVE_INSTANCE->partData();
+    if (data != NULL) {
+        data = data->decodedDataUsingEncoding((Encoding)encoding);
+        return MCO_TO_OBJC(data);
+    } else {
+        return NULL;
+    }
 }
 
 - (NSString *)decodePart:(MCOEncoding) encoding charset:(NSString *)charset isHTML:(BOOL) isHTML{

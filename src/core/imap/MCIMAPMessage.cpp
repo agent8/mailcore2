@@ -238,7 +238,6 @@ static AbstractPart * partForPartIDInMultipart(AbstractMultipart * part, String 
 }
 
 void IMAPMessage::setPartData(Data * content){
-    //Weicheng: risk!!!
     if (content != NULL){
         MC_SAFE_REPLACE_COPY(Data, mPartData, content);
     }

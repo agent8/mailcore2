@@ -65,7 +65,7 @@
 /** Gmail thread ID of the message */
 @property (nonatomic, assign) uint64_t gmailThreadID;
 
-- (NSData *) partData;
+- (NSData *) partData:(MCOEncoding) encoding;
 - (NSString *) decodePart:(MCOEncoding) encoding charset:(NSString *)charset isHTML:(BOOL) isHTML;
 /**
  Returns the part with the given part identifier.
