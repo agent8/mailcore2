@@ -633,8 +633,6 @@ void IMAPSession::connect(ErrorCode * pError)
     mailstream_low * low;
     String * identifierString;
     char * identifier;
-    bool needToSendId;
-    needToSendId = false;
     low = mailstream_get_low(mImap->imap_stream);
     identifierString = String::stringWithUTF8Format("%s@%s:%u", MCUTF8(mUsername), MCUTF8(mHostname), mPort);
     identifier = strdup(identifierString->UTF8Characters());
@@ -646,7 +644,6 @@ void IMAPSession::connect(ErrorCode * pError)
 #ifdef LIBETPAN_HAS_MAILIMAP_163_WORKAROUND
         if(mWelcomeString->locationOfString(MCSTR("Coremail System IMap Server Ready")) != -1) {
             mailimap_set_163_workaround_enabled(mImap, 1);
-            needToSendId = true;
         }
 #endif
         if (mWelcomeString->locationOfString(MCSTR("Courier-IMAP")) != -1) {
@@ -670,18 +667,6 @@ void IMAPSession::connect(ErrorCode * pError)
                 MCLog("capabilities failed");
                 goto close;
             }
-        }
-    }
-    
-    if (needToSendId) {
-        IMAPIdentity *clientIdentity = new IMAPIdentity();
-        clientIdentity->setName(MCSTR("Easilydo Mail"));
-        clientIdentity->setVendor(MCSTR("Easilydo"));
-        clientIdentity->setVersion(MCSTR("1.0"));
-        clientIdentity->autorelease();
-        identity(clientIdentity, pError);
-        if(*pError != ErrorNone){
-            goto close;
         }
     }
     
@@ -945,7 +930,6 @@ void IMAPSession::login(ErrorCode * pError)
                 hasDefaultNamespace = true;
             }
         }
-        
         if (!hasDefaultNamespace) {
             clist * imap_folders;
             IMAPFolder * folder;
@@ -953,13 +937,13 @@ void IMAPSession::login(ErrorCode * pError)
             
             r = mailimap_list(mImap, "", "", &imap_folders);
             folders = resultsWithError(r, imap_folders, pError);
-            if (* pError != ErrorNone)
+            if (* pError != ErrorNone) {
                 if (mImap != NULL && mImap->imap_response != NULL) {
                     response = Data::dataWithBytes(mImap->imap_response, (unsigned int) strlen(mImap->imap_response))->stringWithDetectedCharset(NULL, false);
                     MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
                 }
                 return;
-            
+            }
             if (folders->count() > 0) {
                 folder = (IMAPFolder *) folders->objectAtIndex(0);
             }
