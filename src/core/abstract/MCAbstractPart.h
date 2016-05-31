@@ -16,6 +16,9 @@ namespace mailcore {
         AbstractPart();
         virtual ~AbstractPart();
         
+        virtual void setPartID(String * partID);
+        virtual String * partID();
+        
         virtual PartType partType();
         virtual void setPartType(PartType type);
         
@@ -76,6 +79,7 @@ namespace mailcore {
         virtual void applyUniquePartID();
         
     private:
+        String * mPartID;
         String * mUniqueID;
         String * mFilename;
         String * mMimeType;

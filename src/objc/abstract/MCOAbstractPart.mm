@@ -62,8 +62,8 @@
     return MCO_OBJC_BRIDGE_GET(description);
 }
 
+MCO_OBJC_SYNTHESIZE_STRING(setPartID, partID)
 MCO_OBJC_SYNTHESIZE_SCALAR(MCOPartType, mailcore::PartType, setPartType, partType)
-
 MCO_OBJC_SYNTHESIZE_STRING(setFilename, filename)
 MCO_OBJC_SYNTHESIZE_STRING(setMimeType, mimeType)
 MCO_OBJC_SYNTHESIZE_STRING(setCharset, charset)

@@ -14,7 +14,6 @@ using namespace mailcore;
 
 void IMAPPart::init()
 {
-    mPartID = NULL;
 }
 
 IMAPPart::IMAPPart()
@@ -25,27 +24,15 @@ IMAPPart::IMAPPart()
 IMAPPart::IMAPPart(IMAPPart * other) : AbstractPart(other)
 {
     init();
-    MC_SAFE_REPLACE_COPY(String, mPartID, other->mPartID);
 }
 
 IMAPPart::~IMAPPart()
 {
-    MC_SAFE_RELEASE(mPartID);
 }
 
 Object * IMAPPart::copy()
 {
     return new IMAPPart(this);
-}
-
-void IMAPPart::setPartID(String * partID)
-{
-    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
-}
-
-String * IMAPPart::partID()
-{
-    return mPartID;
 }
 
 AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)

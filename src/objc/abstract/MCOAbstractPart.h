@@ -53,6 +53,9 @@ namespace mailcore {
 - (instancetype) initWithMCPart:(mailcore::AbstractPart *)part NS_DESIGNATED_INITIALIZER;
 #endif
 
+/** A part identifier looks like 1.2.1 */
+@property (nonatomic, copy) NSString * partID;
+
 /** Returns type of the part (single / message part / multipart/mixed,
  multipart/related, multipart/alternative). See MCOPartType.*/
 @property (nonatomic, assign) MCOPartType partType;

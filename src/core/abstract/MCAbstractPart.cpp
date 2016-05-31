@@ -20,6 +20,7 @@ AbstractPart::AbstractPart()
 AbstractPart::AbstractPart(AbstractPart * other)
 {
     init();
+    setPartID(other->mPartID);
     setUniqueID(other->mUniqueID);
     setFilename(other->mFilename);
     setMimeType(other->mMimeType);
@@ -37,6 +38,7 @@ AbstractPart::AbstractPart(AbstractPart * other)
 
 void AbstractPart::init()
 {
+    mPartID = NULL;
     mUniqueID = NULL;
     mFilename = NULL;
     mMimeType = NULL;
@@ -54,6 +56,7 @@ void AbstractPart::init()
 
 AbstractPart::~AbstractPart()
 {
+    MC_SAFE_RELEASE(mPartID);
     MC_SAFE_RELEASE(mUniqueID);
     MC_SAFE_RELEASE(mFilename);
     MC_SAFE_RELEASE(mMimeType);
@@ -68,6 +71,9 @@ String * AbstractPart::description()
 {
     String * result = String::string();
     result->appendUTF8Format("<%s:%p\n", className()->UTF8Characters(), this);
+    if (mPartID != NULL) {
+        result->appendUTF8Format("partID: %s\n", mPartID->UTF8Characters());
+    }
     if (mFilename != NULL) {
         result->appendUTF8Format("filename: %s\n", mFilename->UTF8Characters());
     }
@@ -103,6 +109,16 @@ String * AbstractPart::description()
 Object * AbstractPart::copy()
 {
     return new AbstractPart(this);
+}
+
+void AbstractPart::setPartID(String * partID)
+{
+    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
+}
+
+String * AbstractPart::partID()
+{
+    return mPartID;
 }
 
 PartType AbstractPart::partType()
