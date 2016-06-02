@@ -72,6 +72,7 @@ namespace mailcore {
         // Additions
         static String * stringByDecodingMIMEHeaderValue(const char * phrase);
         static String * stringByDecodingMIMEHeaderValue2(const char * phrase, String * charsetHint);
+        static String * stringByDecodingMIMEHeaderValueRfc2231(const char * phrase);
         virtual Data * encodedAddressDisplayNameValue();
         virtual Data * encodedMIMEHeaderValue();
         virtual Data * encodedMIMEHeaderValueForSubject();

@@ -1178,6 +1178,17 @@ String * String::stringByDecodingMIMEHeaderValue(const char * phrase)
     return result;
 }
 
+String * String::stringByDecodingMIMEHeaderValueRfc2231(const char * phrase){
+    char * dest = NULL;
+    String *result = NULL;
+    mailmime_encoded_phrase_parse2(phrase, DEFAULT_DISPLAY_CHARSET,&dest);
+    if(dest != NULL) {
+        result = new String(dest);
+        result->autorelease();
+    }
+    return result;
+}
+
 Data * String::encodedAddressDisplayNameValue()
 {
     char * str;

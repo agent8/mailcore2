@@ -232,14 +232,13 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
             struct mailimap_single_body_fld_param * imap_param;
             
             imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
-            
             if (strcasecmp(imap_param->pa_name, "name") == 0) {
                 setFilename(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
-            }
-            else if (strcasecmp(imap_param->pa_name, "charset") == 0) {
+            } else if (strncasecmp(imap_param->pa_name, "name*", 5) == 0) {
+                setFilename(String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value));
+            } else if (strcasecmp(imap_param->pa_name, "charset") == 0) {
                 setCharset(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
-            }
-            else {
+            } else {
                 setContentTypeParameter(String::stringWithUTF8Characters(imap_param->pa_name),
                     String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
             }
@@ -290,21 +289,32 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
             }
 
             if (extension->bd_disposition->dsp_attributes != NULL) {
-                clistiter * cur;
-                
-                for(cur = clist_begin(extension->bd_disposition->dsp_attributes->pa_list) ; cur != NULL ;
-                    cur = clist_next(cur)) {
-                    struct mailimap_single_body_fld_param * imap_param;
-                    
-                    imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
-                    
-                    if (strcasecmp(imap_param->pa_name, "filename") == 0) {
-                        String * filename = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
-                        if (filename != NULL && filename->length() > 0) {
-                            setFilename(filename);
+                    clistiter * cur;
+                    String *filename = NULL;
+                    for(cur = clist_begin(extension->bd_disposition->dsp_attributes->pa_list) ; cur != NULL ;
+                        cur = clist_next(cur)) {
+                        struct mailimap_single_body_fld_param * imap_param;
+                        
+                        imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
+                        if (strcasecmp(imap_param->pa_name, "filename") == 0) {
+                            filename = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
+                            break;
+                        } else if (strncasecmp(imap_param->pa_name, "filename*", 9) == 0) {
+                            String * filenamePart = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
+                            if (filenamePart != NULL && filenamePart->length() > 0) {
+                                if (filename == NULL) {
+                                    filename = filenamePart;
+                                } else {
+                                    filename->appendString(filenamePart);
+                                }
+                            }
+                        } else {
+                            MCLog("Extension:%s->%s\n",imap_param->pa_name,imap_param->pa_value);
                         }
                     }
-                }
+                    if (filename != NULL) {
+                        setFilename(filename);
+                    }
             }
         }
         
