@@ -224,30 +224,6 @@ void AbstractPart::setAttachment(bool attachment)
 void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
     struct mailimap_body_ext_1part * extension)
 {
-    if (fields->bd_parameter != NULL) {
-        clistiter * cur;
-        
-        for(cur = clist_begin(fields->bd_parameter->pa_list) ; cur != NULL ;
-            cur = clist_next(cur)) {
-            struct mailimap_single_body_fld_param * imap_param;
-            
-            imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
-            if (strcasecmp(imap_param->pa_name, "name") == 0) {
-                String * filename = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
-                if (filename == NULL) {
-                    filename = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
-                }
-                setFilename(filename);
-            } else if (strncasecmp(imap_param->pa_name, "name*", 5) == 0) {
-                setFilename(String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value));
-            } else if (strcasecmp(imap_param->pa_name, "charset") == 0) {
-                setCharset(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
-            } else {
-                setContentTypeParameter(String::stringWithUTF8Characters(imap_param->pa_name),
-                    String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
-            }
-        }
-    }
     if (fields->bd_id != NULL) {
         char * contentid;
         size_t cur_token;
@@ -303,10 +279,7 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
                         //("attachment" ("filename" "utf-8''%E7%94%9F%E5%AD%97%E6%B5%8B%E8%AF")) NIL NIL)
                         imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
                         if (strcasecmp(imap_param->pa_name, "filename") == 0) {
-                            filename = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
-                            if (filename == NULL) {
-                                filename = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
-                            }
+                            filename = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
                             break;
                         } else if (strncasecmp(imap_param->pa_name, "filename*", 9) == 0) {
                             String * filenamePart = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
@@ -330,6 +303,30 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
         
         if (extension->bd_loc != NULL) {
             setContentLocation(String::stringWithUTF8Characters(extension->bd_loc));
+        }
+    }
+    
+    if (fields->bd_parameter != NULL) {
+        clistiter * cur;
+        for(cur = clist_begin(fields->bd_parameter->pa_list) ; cur != NULL ;
+            cur = clist_next(cur)) {
+            struct mailimap_single_body_fld_param * imap_param;
+            
+            imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
+            if (strcasecmp(imap_param->pa_name, "name") == 0) {
+                if (filename() == NULL) {
+                    setFilename(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+                }
+            } else if (strncasecmp(imap_param->pa_name, "name*", 5) == 0) {
+                if (filename() == NULL) {
+                    setFilename(String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value));
+                }
+            } else if (strcasecmp(imap_param->pa_name, "charset") == 0) {
+                setCharset(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+            } else {
+                setContentTypeParameter(String::stringWithUTF8Characters(imap_param->pa_name),
+                                        String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+            }
         }
     }
 }
