@@ -303,19 +303,20 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
                         //("attachment" ("filename" "utf-8''%E7%94%9F%E5%AD%97%E6%B5%8B%E8%AF")) NIL NIL)
                         imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
                         if (strcasecmp(imap_param->pa_name, "filename") == 0) {
-                            String * filename = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
+                            filename = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
                             if (filename == NULL) {
                                 filename = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
                             }
                             break;
                         } else if (strncasecmp(imap_param->pa_name, "filename*", 9) == 0) {
                             String * filenamePart = String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value);
-                            if (filenamePart != NULL && filenamePart->length() > 0) {
-                                if (filename == NULL) {
-                                    filename = filenamePart;
-                                } else {
-                                    filename->appendString(filenamePart);
-                                }
+                            if (filenamePart == NULL) {
+                                filenamePart = String::stringByDecodingMIMEHeaderValue(imap_param->pa_value);
+                            }
+                            if (filename == NULL) {
+                                filename = filenamePart;
+                            } else {
+                                filename->appendString(filenamePart);
                             }
                         } else {
                             MCLog("Extension:%s->%s\n",imap_param->pa_name,imap_param->pa_value);
