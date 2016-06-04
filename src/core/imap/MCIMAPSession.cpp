@@ -861,12 +861,14 @@ void IMAPSession::login(ErrorCode * pError)
         }
         /*
          Full error list: https://docs.google.com/spreadsheets/d/1dGLOjZtv4OqFj-ENW9CdN1Q-QURuZQwCpvYn8q5_NOA/edit#gid=1970104932
+         OAuth authentication failed - outlook oauth failed
          */
         else if (response->locationOfString(MCSTR("password")) != -1 || response->locationOfString(MCSTR("Invalid")) != -1 ||
                  response->locationOfString(MCSTR("Incorrect")) != -1 || response->locationOfString(MCSTR("Authentication failed")) != -1 ||
                  response->locationOfString(MCSTR("LOGIN failed")) != -1 || response->locationOfString(MCSTR("LOGIN error")) != -1 ||
                  response->locationOfString(MCSTR("Lookup failed")) != -1 || response->locationOfString(MCSTR("auth error")) != -1 ||
-                 response->locationOfString(MCSTR("auth failed")) != -1 || response->locationOfString(MCSTR("not exist")) != -1) {
+                 response->locationOfString(MCSTR("auth failed")) != -1 || response->locationOfString(MCSTR("not exist")) != -1 ||
+                 response->locationOfString(MCSTR("OAuth authentication failed")) != -1) {
             * pError = ErrorAuthentication;
         }
         else if (response->locationOfString(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
