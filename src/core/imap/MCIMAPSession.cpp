@@ -872,6 +872,9 @@ void IMAPSession::login(ErrorCode * pError)
                  response->locationOfStringCaseInsensitive(MCSTR("Lookup failed")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("auth error")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("auth failed")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("OAuth2")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("token")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("expired")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("not exist")) != -1) {
             * pError = ErrorAuthentication;
         }
