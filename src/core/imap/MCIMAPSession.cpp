@@ -841,46 +841,51 @@ void IMAPSession::login(ErrorCode * pError)
     }
     if (hasError(r)) {
          MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
-        if (response->locationOfString(MCSTR("bandwidth limits")) != -1) {
+        if (response->locationOfStringCaseInsensitive(MCSTR("bandwidth limits")) != -1) {
             * pError = ErrorGmailExceededBandwidthLimit;
         }
-        else if (response->locationOfString(MCSTR("Too many simultaneous connections")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("Too many simultaneous connections")) != -1) {
             * pError = ErrorGmailTooManySimultaneousConnections;
         }
-        else if (response->locationOfString(MCSTR("Maximum number of connections")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("Maximum number of connections")) != -1) {
             * pError = ErrorGmailTooManySimultaneousConnections;
         }
-        else if (response->locationOfString(MCSTR("Application-specific password required")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("Application-specific password required")) != -1) {
             * pError = ErrorGmailApplicationSpecificPasswordRequired;
         }
-        else if (response->locationOfString(MCSTR("http://me.com/move")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("http://me.com/move")) != -1) {
             * pError = ErrorMobileMeMoved;
         }
-        else if (response->locationOfString(MCSTR("OCF12")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("OCF12")) != -1) {
             * pError = ErrorYahooUnavailable;
         }
         /*
          Full error list: https://docs.google.com/spreadsheets/d/1dGLOjZtv4OqFj-ENW9CdN1Q-QURuZQwCpvYn8q5_NOA/edit#gid=1970104932
          OAuth authentication failed - outlook oauth failed
          */
-        else if (response->locationOfString(MCSTR("password")) != -1 || response->locationOfString(MCSTR("Invalid")) != -1 ||
-                 response->locationOfString(MCSTR("Incorrect")) != -1 || response->locationOfString(MCSTR("Authentication failed")) != -1 ||
-                 response->locationOfString(MCSTR("LOGIN failed")) != -1 || response->locationOfString(MCSTR("LOGIN error")) != -1 ||
-                 response->locationOfString(MCSTR("Lookup failed")) != -1 || response->locationOfString(MCSTR("auth error")) != -1 ||
-                 response->locationOfString(MCSTR("auth failed")) != -1 || response->locationOfString(MCSTR("not exist")) != -1 ||
-                 response->locationOfString(MCSTR("authentication failed")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("password")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("Invalid")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("Incorrect")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("authentication failed")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("LOGIN failed")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("LOGIN error")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("Lookup failed")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("auth error")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("auth failed")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("not exist")) != -1) {
             * pError = ErrorAuthentication;
         }
-        else if (response->locationOfString(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
-                 response->locationOfString(MCSTR("suspended")) != -1 || response->locationOfString(MCSTR("locked")) != -1 ||
-                 response->locationOfString(MCSTR("IMAP")) != -1) {
+        else if (response->locationOfStringCaseInsensitive(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
+                 response->locationOfStringCaseInsensitive(MCSTR("suspended")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("locked")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("IMAP")) != -1) {
             * pError = ErrorGmailIMAPNotEnabled;
         } else {
             * pError = ErrorInvalidAccount;
         }
         return;
     } else if (mIsGmail && mImap->imap_response != NULL) {
-        int location = response->locationOfString(MCSTR(" authenticated (Success)"));
+        int location = response->locationOfStringCaseInsensitive(MCSTR(" authenticated (Success)"));
         if (location != -1) {
             String * emailAndName = response->substringToIndex(location);
             location = emailAndName->locationOfString(MCSTR(" "));

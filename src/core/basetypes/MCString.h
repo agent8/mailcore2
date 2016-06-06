@@ -63,6 +63,7 @@ namespace mailcore {
         virtual void deleteCharactersInRange(Range range);
         virtual unsigned int replaceOccurrencesOfString(String * occurrence, String * replacement);
         virtual int locationOfString(String * occurrence);
+        virtual int locationOfStringCaseInsensitive(String * occurrence);
         virtual int lastLocationOfString(String * occurrence);
 
         virtual Array * componentsSeparatedByString(String * separator);

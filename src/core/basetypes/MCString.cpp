@@ -1567,6 +1567,27 @@ int String::locationOfString(String * occurrence)
     return (int) (location - mUnicodeChars);
 }
 
+int String::locationOfStringCaseInsensitive(String * occurrence)
+{
+    UChar * location;
+    const UChar * substring = occurrence->unicodeCharacters();
+    
+    if (mUnicodeChars == NULL) {
+        return -1;
+    }
+    CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) mUnicodeChars, u_strlen(mUnicodeChars), kCFAllocatorNull);
+    CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
+    
+    CFRange range = CFStringFind(cfS, cfSubstring, kCFCompareCaseInsensitive);
+    CFRelease(cfSubstring);
+    CFRelease(cfS);
+    if (range.length == 0) {
+        return -1;
+    }
+    location = (UChar *) (mUnicodeChars + range.location);
+    return (int) (location - mUnicodeChars);
+}
+
 int String::lastLocationOfString(String * occurrence)
 {
     UChar * location;
