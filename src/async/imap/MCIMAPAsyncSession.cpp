@@ -162,6 +162,11 @@ String * IMAPAsyncSession::OAuth2Token()
 void IMAPAsyncSession::setAuthType(AuthType authType)
 {
     mAuthType = authType;
+    //Weicheng: refresh the auth type
+    for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        s->setAuthType(authType);
+    }
 }
 
 AuthType IMAPAsyncSession::authType()
@@ -172,6 +177,11 @@ AuthType IMAPAsyncSession::authType()
 void IMAPAsyncSession::setConnectionType(ConnectionType connectionType)
 {
     mConnectionType = connectionType;
+    //Weicheng: refresh the connection type
+    for(unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        s->setConnectionType(connectionType);
+    }
 }
 
 ConnectionType IMAPAsyncSession::connectionType()
