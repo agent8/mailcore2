@@ -33,12 +33,15 @@ void IMAPCapabilityOperation::main()
     ErrorCode error = ErrorNone;
     mCapabilities = session()->session()->storedCapabilities();
     if (mCapabilities == NULL) {
-        session()->session()->loginIfNeeded(&error);
-        if (error != ErrorNone) {
-            setError(error);
-            return;
-        }
         mCapabilities = session()->session()->capability(&error);
+        if (mCapabilities == NULL) {
+            session()->session()->loginIfNeeded(&error);
+            if (error != ErrorNone) {
+                setError(error);
+                return;
+            }
+            mCapabilities = session()->session()->capability(&error);
+        }
     }
     MC_SAFE_RETAIN(mCapabilities);
     setError(error);
