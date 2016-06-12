@@ -100,6 +100,8 @@ typedef NS_OPTIONS(NSInteger, MCOMessageFlag) {
     MCOMessageFlagSubmitPending = 1 << 7,
     /** $Submitted flag.*/
     MCOMessageFlagSubmitted     = 1 << 8,
+    /** Delete and Seen for Gmail Archive */
+    MCOMessageFlagDeletedAndSeen= (1 << 0) + (1 << 3),
 };
 
 /** It's the encoding of a part.*/
