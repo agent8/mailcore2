@@ -863,19 +863,23 @@ void IMAPSession::login(ErrorCode * pError)
          Full error list: https://docs.google.com/spreadsheets/d/1dGLOjZtv4OqFj-ENW9CdN1Q-QURuZQwCpvYn8q5_NOA/edit#gid=1970104932
          OAuth authentication failed - outlook oauth failed
          */
-        else if (response->locationOfStringCaseInsensitive(MCSTR("password")) != -1 ||
+        else if (response->locationOfStringCaseInsensitive(MCSTR("expired")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("token")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("OAuth2")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("username")) != -1 ||
+                 response->locationOfStringCaseInsensitive(MCSTR("password")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("Invalid")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("Incorrect")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("authentication failed")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("LOGIN failed")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("LOGIN error")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("Lookup failed")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("auth error")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("auth failed")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("OAuth2")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("token")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("expired")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("not exist")) != -1) {
+                 response->locationOfStringCaseInsensitive(MCSTR("not exist")) != -1 ||
+                 (
+                     (response->locationOfStringCaseInsensitive(MCSTR("failed")) != -1 ||
+                      response->locationOfStringCaseInsensitive(MCSTR("error")) != -1) && (
+                      response->locationOfStringCaseInsensitive(MCSTR("auth")) != -1 || 
+                      response->locationOfStringCaseInsensitive(MCSTR("LOGIN")) != -1 ||
+                      response->locationOfStringCaseInsensitive(MCSTR("Lookup")) != -1
+                     )
+                 )
+                 ){
             * pError = ErrorAuthentication;
         }
         else if (response->locationOfStringCaseInsensitive(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
