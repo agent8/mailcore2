@@ -644,9 +644,9 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
     return MCO_TO_OBJC_OP(coreOp);
 }
 
-- (MCOIMAPCapabilityOperation *) capabilityOperation
+- (MCOIMAPCapabilityOperation *) capabilityOperation:(BOOL)forceLogin
 {
-    IMAPCapabilityOperation * coreOp = MCO_NATIVE_INSTANCE->capabilityOperation();
+    IMAPCapabilityOperation * coreOp = MCO_NATIVE_INSTANCE->capabilityOperation(forceLogin);
     return MCO_TO_OBJC_OP(coreOp);
 }
 

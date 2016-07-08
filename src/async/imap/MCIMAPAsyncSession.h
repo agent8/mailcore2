@@ -180,7 +180,7 @@ namespace mailcore {
         virtual IMAPCheckAccountOperation * checkAccountOperation();
         virtual IMAPOperation * disconnectOperation();
         
-        virtual IMAPCapabilityOperation * capabilityOperation();
+        virtual IMAPCapabilityOperation * capabilityOperation(bool forceLogin);
         virtual IMAPQuotaOperation * quotaOperation();
         
         virtual IMAPOperation * noopOperation();

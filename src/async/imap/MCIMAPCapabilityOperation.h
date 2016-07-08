@@ -23,12 +23,14 @@ namespace mailcore {
         
         // Result.
         virtual IndexSet * capabilities();
-        
+        virtual void setForceLogin(bool forceLogin);
+        virtual bool forceLogin();
     public: // subclass behavior
         virtual void main();
         
     private:
         IndexSet * mCapabilities;
+        bool mForceLogin;
     };
     
 }

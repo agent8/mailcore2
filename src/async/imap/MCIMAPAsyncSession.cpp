@@ -817,9 +817,10 @@ IMAPCheckAccountOperation * IMAPAsyncSession::checkAccountOperation()
     return op;
 }
 
-IMAPCapabilityOperation * IMAPAsyncSession::capabilityOperation()
+IMAPCapabilityOperation * IMAPAsyncSession::capabilityOperation(bool forceLogin)
 {
     IMAPCapabilityOperation * op = new IMAPCapabilityOperation();
+    op->setForceLogin(forceLogin);
     op->setMainSession(this);
     op->autorelease();
     return op;

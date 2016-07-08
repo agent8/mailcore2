@@ -262,7 +262,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     /** COMPRESS Capability.*/
     MCOIMAPCapabilityCompressDeflate,
     /** CONDSTORE Capability.*/
-    MCOIMAPCapabilityCondstore,
+    MCOIMAPCapabilityCondstore,//5
     /** ENABLE Capability.*/
     MCOIMAPCapabilityEnable,
     /** IDLE Capability.*/
@@ -272,7 +272,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     /** LITERAL+ Capability.*/
     MCOIMAPCapabilityLiteralPlus,
     /** MOVE Capability */
-    MCOIMAPCapabilityMove,
+    MCOIMAPCapabilityMove,//10
     /** MULTIAPPEND Capability.*/
     MCOIMAPCapabilityMultiAppend,
     /** NAMESPACE Capability.*/
@@ -282,7 +282,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     /** QUOTE Capability.*/
     MCOIMAPCapabilityQuota,
     /** SORT Capability.*/
-    MCOIMAPCapabilitySort,
+    MCOIMAPCapabilitySort,//15
     /** STARTTLS Capability.*/
     MCOIMAPCapabilityStartTLS,
     /** THREAD=ORDEREDSUBJECT Capability.*/
@@ -292,7 +292,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     /** UIDPLUS Capability.*/
     MCOIMAPCapabilityUIDPlus,
     /** UNSELECT Capability.*/
-    MCOIMAPCapabilityUnselect,
+    MCOIMAPCapabilityUnselect,//20
     /** XLIST Capability.*/
     MCOIMAPCapabilityXList,
     /** AUTH=ANONYMOUS Capability.*/
@@ -302,7 +302,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     /** AUTH=DIGEST-MD5 Capability.*/
     MCOIMAPCapabilityAuthDigestMD5,
     /** AUTH=EXTERNAL Capability.*/
-    MCOIMAPCapabilityAuthExternal,
+    MCOIMAPCapabilityAuthExternal,//25
     /** AUTH=GSSAPI Capability.*/
     MCOIMAPCapabilityAuthGSSAPI,
     /** AUTH=KERBEROSV4 Capability.*/
@@ -312,7 +312,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     /** AUTH=NTML Capability.*/
     MCOIMAPCapabilityAuthNTLM,
     /** AUTH=OTP Capability.*/
-    MCOIMAPCapabilityAuthOTP,
+    MCOIMAPCapabilityAuthOTP,//30
     /** AUTH=PLAIN Capability.*/
     MCOIMAPCapabilityAuthPlain,
     /** AUTH=SKEY Capability.*/
@@ -321,7 +321,7 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     MCOIMAPCapabilityAuthSRP,
     /** AUTH=XOAUTH2 Capability.*/
     MCOIMAPCapabilityXOAuth2,
-    MCOIMAPCapabilityXYMHighestModseq,
+    MCOIMAPCapabilityXYMHighestModseq,//35
     /** X-GM-EXT-1 Capability.*/
     MCOIMAPCapabilityGmail
 };

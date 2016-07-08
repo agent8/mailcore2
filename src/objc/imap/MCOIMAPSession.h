@@ -957,7 +957,7 @@ vanishedMessages will be set only for servers that support QRESYNC. See [RFC5162
        }
      }];
 */
-- (MCOIMAPCapabilityOperation *) capabilityOperation;
+- (MCOIMAPCapabilityOperation *) capabilityOperation:(BOOL)forceLogin;
 
 - (MCOIMAPQuotaOperation *) quotaOperation;
 
