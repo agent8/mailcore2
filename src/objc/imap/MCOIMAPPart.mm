@@ -27,6 +27,11 @@
     return [[[self alloc] initWithMCPart:part] autorelease];
 }
 
+- (instancetype) init {
+    self = [super init];
+    return self;
+}
+
 MCO_SYNTHESIZE_NSCODING
 
 @end

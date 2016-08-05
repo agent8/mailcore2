@@ -28,9 +28,9 @@
 
 - (instancetype) init
 {
-    self = [self initWithMCPart:NULL];
-    MCAssert(0);
-    return nil;
+    mailcore::AbstractPart * part = new mailcore::AbstractPart();
+    self = [self initWithMCPart:part];
+    return self;
 }
 
 - (instancetype) initWithMCPart:(mailcore::AbstractPart *)part

@@ -49,6 +49,7 @@ namespace mailcore {
 
 @interface MCOAbstractPart : NSObject <NSCopying>
 
+- (instancetype) init;
 #ifdef __cplusplus
 - (instancetype) initWithMCPart:(mailcore::AbstractPart *)part NS_DESIGNATED_INITIALIZER;
 #endif
