@@ -17,7 +17,7 @@
 /** Represents a single IMAP message part */
 
 @interface MCOIMAPPart : MCOAbstractPart <NSCoding>
-
+    - (instancetype) init;
 @end
 
 #endif
