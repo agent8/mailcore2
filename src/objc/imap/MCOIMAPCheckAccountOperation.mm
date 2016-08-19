@@ -60,11 +60,20 @@ typedef void (^CompletionType)(NSError *error, NSString * response);
         return;
     
     nativeType *op = MCO_NATIVE_INSTANCE;
-    NSString *response = [NSString mco_stringWithMCString:op->getLoginResponse()];
+    NSString *response = [NSString mco_stringWithMCString:op->loginResponse()];
     if (op->error() == mailcore::ErrorNone) {
         _completionBlock(nil, response);
     } else {
-        NSError *error = [NSError mco_errorWithErrorCode:op->error()];
+        NSError * error = [NSError mco_errorWithErrorCode:op->error()];
+        if (op->loginResponse() != NULL || op->loginUnparsedResponseData() != NULL) {
+            NSMutableDictionary * userInfo = [[error userInfo] mutableCopy];
+            if (op->loginResponse() != NULL)
+                userInfo[MCOIMAPResponseKey] = MCO_TO_OBJC(op->loginResponse());
+            if (op->loginUnparsedResponseData() != NULL)
+                userInfo[MCOIMAPUnparsedResponseDataKey] = MCO_TO_OBJC(op->loginUnparsedResponseData());
+            error = [NSError errorWithDomain:[error domain] code:[error code] userInfo:userInfo];
+            [userInfo release];
+        }
         _completionBlock(error, response);
     }
     

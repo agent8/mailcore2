@@ -17,14 +17,21 @@
 namespace mailcore {
     
     class MAILCORE_EXPORT IMAPCheckAccountOperation : public IMAPOperation {
-    public: // subclass behavior
+    public:
         IMAPCheckAccountOperation();
         virtual ~IMAPCheckAccountOperation();
+
+        virtual String * loginResponse();
+        virtual Data * loginUnparsedResponseData();
+
+    public: // subclass behavior
         virtual void main();
-        virtual String * getLoginResponse();
+
     private:
         String * mLoginResponse;
+        Data * mLoginUnparsedResponseData;
     };
+    
 }
 
 #endif

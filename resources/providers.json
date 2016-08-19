@@ -1130,6 +1130,18 @@
     },
     "comcast": {
         "servers": {
+            "imap": [
+                {
+                     "port": 993,
+                     "hostname":"imap.comcast.net",
+                     "ssl": true
+                },
+                {
+                     "port": 143,
+                     "hostname":"imap.comcast.net",
+                     "starttls": true
+                }
+            ],
             "pop": [
                 {
                     "port": 995,
@@ -1339,6 +1351,34 @@
             "trash": "Trash",
             "drafts": "Drafts",
             "allmail": "Archive"
+        }
+    },
+    "facebook": {
+        "servers": {
+            "imap": [
+                     {
+                     "port": 993,
+                     "hostname": "outlook.office365.com",
+                     "ssl": true
+                     }
+                     ],
+            "smtp": [
+                     {
+                     "port": 587,
+                     "hostname": "smtp.office365.com",
+                     "starttls": true
+                     }
+                     ]
+        },
+        "domain-match": [
+                         "fb\\.com"
+                         ],
+        "mailboxes": {
+            "allmail": "Archive",
+            "drafts": "Drafts",
+            "spam": "Junk Email",
+            "sentmail": "Sent Items",
+            "trash": "Deleted Items"
         }
     }
 }

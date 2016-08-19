@@ -16,27 +16,35 @@ using namespace mailcore;
 IMAPCheckAccountOperation::IMAPCheckAccountOperation()
 {
     mLoginResponse = NULL;
+    mLoginUnparsedResponseData = NULL;
 }
 
 IMAPCheckAccountOperation::~IMAPCheckAccountOperation()
 {
     MC_SAFE_RELEASE(mLoginResponse);
+    MC_SAFE_RELEASE(mLoginUnparsedResponseData);
 }
-
 
 void IMAPCheckAccountOperation::main()
 {
     ErrorCode error;
     session()->session()->connectIfNeeded(&error);
-    if (error == ErrorNone){
+    if (error == ErrorNone) {
         session()->session()->login(&error);
+        if (error != ErrorNone) {
+            MC_SAFE_REPLACE_COPY(String, mLoginResponse, session()->session()->loginResponse());
+            MC_SAFE_REPLACE_COPY(Data, mLoginUnparsedResponseData, session()->session()->unparsedResponseData());
+        }
     }
-    mLoginResponse = session()->session()->getResponse();
-    MC_SAFE_RETAIN(mLoginResponse);
     setError(error);
 }
 
-String * IMAPCheckAccountOperation::getLoginResponse()
+String * IMAPCheckAccountOperation::loginResponse()
 {
     return mLoginResponse;
+}
+
+Data * IMAPCheckAccountOperation::loginUnparsedResponseData()
+{
+    return mLoginUnparsedResponseData;
 }

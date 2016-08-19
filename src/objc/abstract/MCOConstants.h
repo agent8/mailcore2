@@ -191,6 +191,8 @@ typedef NS_ENUM(NSInteger, MCOIMAPSearchKind) {
     MCOIMAPSearchKindBody,
     /** Match uids */
     MCOIMAPSearchKindUids,
+    /** Match numbers */
+    MCOIMAPSearchKindNumbers,
     /** Match headers of the message.*/
     MCOIMAPSearchKindHeader,
     /** Match messages that are read.*/
@@ -425,6 +427,8 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorYahooSendMessageSpamSuspected,
     /** Daily limit of sent messages was hit */
     MCOErrorYahooSendMessageDailyLimitExceeded,
+    /** You need to login via the web browser first */
+    MCOErrorOutlookLoginViaWebBrowser,
     /** The count of all errors */
     MCOErrorCodeCount,
 };
@@ -465,5 +469,7 @@ typedef void (^MCOOperationQueueRunningChangeBlock)(void);
 
 /** MCOIMAPResponseKey is a key for NSError userInfo dictionary, the value is string with the server response. */
 #define MCOIMAPResponseKey @"MCOIMAPResponseKey"
+/** MCOIMAPUnparsedResponseDataKey is a key for NSError userInfo dictionary, the value is data with the unparsed server response in case of ParseError. */
+#define MCOIMAPUnparsedResponseDataKey @"MCOIMAPUnparsedResponseDataKey"
 
 #endif

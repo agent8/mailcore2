@@ -24,6 +24,7 @@ namespace mailcore {
     class IMAPMoveMessagesOperation;
     class IMAPFetchMessagesOperation;
     class IMAPFetchContentOperation;
+    class IMAPFetchContentToFileOperation;
     class IMAPFetchParsedContentOperation;
     class IMAPIdleOperation;
     class IMAPFolderInfoOperation;
@@ -153,7 +154,13 @@ namespace mailcore {
         virtual IMAPFetchContentOperation * fetchMessageByUIDOperation(String * folder, uint32_t uid, bool urgent = false);
         virtual IMAPFetchContentOperation * fetchMessageAttachmentByUIDOperation(String * folder, uint32_t uid, String * partID,
                                                                                  Encoding encoding, bool urgent = false);
-        
+
+        virtual IMAPFetchContentToFileOperation * fetchMessageAttachmentToFileByUIDOperation(
+                                                                                 String * folder, uint32_t uid, String * partID,
+                                                                                 Encoding encoding,
+                                                                                 String * filename,
+                                                                                 bool urgent = false);
+
         virtual IMAPFetchContentOperation * fetchMessageByNumberOperation(String * folder, uint32_t number, bool urgent = false);
         virtual IMAPCustomCommandOperation * customCommand(String *command, bool urgent);
         virtual IMAPFetchContentOperation * fetchMessageAttachmentByNumberOperation(String * folder, uint32_t number, String * partID,
@@ -224,9 +231,19 @@ namespace mailcore {
         String * mGmailUserDisplayName;
         bool mIdleEnabled;
 
+        /*! Create new IMAP session */
         virtual IMAPAsyncConnection * session();
+        /*! Returns a new or an existing session, it is best suited to run the IMAP command
+         in the specified folder. */
         virtual IMAPAsyncConnection * matchingSessionForFolder(String * folder);
-        virtual IMAPAsyncConnection * availableSession(String * folder);
+        /*! Returns a session with minimum operation queue among already created ones.
+         If @param filterByFolder is true, then function filters sessions with
+         predicate (lastFolder() EQUALS TO @param folder). In case of @param folder is NULL
+         the function would search a session among non-selected ones. */
+        virtual IMAPAsyncConnection * sessionWithMinQueue(bool filterByFolder, String * folder);
+        /*! Returns existant or new session with empty operation queue, if it can.
+         Otherwise, returns the session with the minimum size of the operation queue. */
+        virtual IMAPAsyncConnection * availableSession();
         virtual IMAPMessageRenderingOperation * renderingOperation(IMAPMessage * message,
                                                                    String * folder,
                                                                    IMAPMessageRenderingType type);

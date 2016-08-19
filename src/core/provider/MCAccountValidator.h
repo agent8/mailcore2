@@ -117,6 +117,7 @@ namespace mailcore {
         void setupServices();
         void resolveMX();
         void resolveMXDone();
+        void resolveMXTimeout(void * context);
         void startCheckingHosts();
         void checkNextHost();
         void checkNextHostDone();
