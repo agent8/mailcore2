@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MCDisabledAssert 0
 void MCAssertInternal(const char * filename, unsigned int line, int cond, const char * condString)
 {
-    if (cond) {
+    if (cond || MCDisabledAssert) {
         return;
     }
     
