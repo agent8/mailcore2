@@ -27,6 +27,13 @@
     return [[[self alloc] initWithMCPart:part] autorelease];
 }
 
+- (instancetype) init {
+    mailcore::IMAPMultipart * part = new mailcore::IMAPMultipart();
+    self = [super initWithMCPart:part];
+    part->release();
+    return self;
+}
+
 MCO_SYNTHESIZE_NSCODING
 
 @end

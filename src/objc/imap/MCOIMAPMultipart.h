@@ -15,7 +15,7 @@
 #import <MailCore/MCOAbstractMultipart.h>
 
 @interface MCOIMAPMultipart : MCOAbstractMultipart <NSCoding>
-
+     - (instancetype) init;
 @end
 
 #endif

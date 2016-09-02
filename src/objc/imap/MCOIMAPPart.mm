@@ -28,7 +28,9 @@
 }
 
 - (instancetype) init {
-    self = [super init];
+    mailcore::IMAPPart * part = new mailcore::IMAPPart();
+    self = [super initWithMCPart:part];
+    part->release();
     return self;
 }
 
