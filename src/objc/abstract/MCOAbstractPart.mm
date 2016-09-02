@@ -30,6 +30,7 @@
 {
     mailcore::AbstractPart * part = new mailcore::AbstractPart();
     self = [self initWithMCPart:part];
+    part->release();
     return self;
 }
 
