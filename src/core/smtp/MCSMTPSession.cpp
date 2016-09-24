@@ -476,6 +476,7 @@ void SMTPSession::loginIfNeeded(ErrorCode * pError)
 void SMTPSession::login(ErrorCode * pError)
 {
     int r;
+    unsigned int triedType = 0;
 
     if ((authType() != AuthTypeXOAuth2) && (authType() != AuthTypeXOAuth2Outlook) &&
         ((username() == NULL) || (password() == NULL))) {
@@ -483,8 +484,9 @@ void SMTPSession::login(ErrorCode * pError)
         * pError = ErrorNone;
         return;
     }
-
+    
     if (authType() == 0) {
+        
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
         if (0) {
         }
@@ -493,122 +495,114 @@ void SMTPSession::login(ErrorCode * pError)
             setAuthType((AuthType) (authType() | AuthTypeSASLDIGESTMD5));
         }
 #endif
-        else if (mSmtp->auth & MAILSMTP_AUTH_CRAM_MD5) {
+        
+        if (mSmtp->auth & MAILSMTP_AUTH_CRAM_MD5) {
             setAuthType((AuthType) (authType() | AuthTypeSASLCRAMMD5));
         }
-        else if (mSmtp->auth & MAILSMTP_AUTH_GSSAPI) {
-            setAuthType((AuthType) (authType() | AuthTypeSASLGSSAPI));
-        }
-        else if (mSmtp->auth & MAILSMTP_AUTH_SRP) {
-            setAuthType((AuthType) (authType() | AuthTypeSASLSRP));
-        }
-        else if (mSmtp->auth & MAILSMTP_AUTH_NTLM) {
-            setAuthType((AuthType) (authType() | AuthTypeSASLNTLM));
-        }
-        else if (mSmtp->auth & MAILSMTP_AUTH_KERBEROS_V4) {
-            setAuthType((AuthType) (authType() | AuthTypeSASLKerberosV4));
-        }
-        else if (mSmtp->auth & MAILSMTP_AUTH_PLAIN) {
+        
+        if (mSmtp->auth & MAILSMTP_AUTH_PLAIN) {
             setAuthType((AuthType) (authType() | AuthTypeSASLPlain));
         }
-        else if (mSmtp->auth & MAILSMTP_AUTH_LOGIN) {
+        
+        if (mSmtp->auth & MAILSMTP_AUTH_LOGIN) {
             setAuthType((AuthType) (authType() | AuthTypeSASLLogin));
         }
-    }
-
-    AuthType correctedAuthType = authType();
-    if (mOutlookServer) {
-        if (correctedAuthType == AuthTypeXOAuth2) {
-            correctedAuthType = AuthTypeXOAuth2Outlook;
+        
+        // Libetpan only support MD5, PLAIN, Login now.
+        /*
+         if (mSmtp->auth & MAILSMTP_AUTH_GSSAPI) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLGSSAPI));
+         }
+         
+         if (mSmtp->auth & MAILSMTP_AUTH_SRP) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLSRP));
+         }
+         
+         if (mSmtp->auth & MAILSMTP_AUTH_NTLM) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLNTLM));
+         }
+         
+         if (mSmtp->auth & MAILSMTP_AUTH_KERBEROS_V4) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLKerberosV4));
+         }
+         */
+        
+        if (mOutlookServer && (authType() & AuthTypeXOAuth2)) {
+            setAuthType((AuthType) (authType() | AuthTypeXOAuth2Outlook));
+            setAuthType((AuthType) (authType() & (~AuthTypeXOAuth2)));
         }
     }
-
-    switch (correctedAuthType) {
-        case 0:
-        default:
-            r = mailesmtp_auth_sasl(mSmtp, "PLAIN",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLCRAMMD5:
+    
+    triedType = 0;
+    while (TRUE) {
+        if (authType() & AuthTypeSASLCRAMMD5 && ((triedType & AuthTypeSASLCRAMMD5) == 0)) {
+            triedType |= AuthTypeSASLCRAMMD5;
             r = mailesmtp_auth_sasl(mSmtp, "CRAM-MD5",
                                     MCUTF8(mHostname),
                                     NULL,
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLPlain:
-            r = mailesmtp_auth_sasl(mSmtp, "PLAIN",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLGSSAPI:
-            // needs to be tested
-            r = mailesmtp_auth_sasl(mSmtp, "GSSAPI",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLDIGESTMD5:
+        } else if (authType() & AuthTypeSASLDIGESTMD5 && ((triedType & AuthTypeSASLDIGESTMD5) == 0)) {
+            triedType |= AuthTypeSASLDIGESTMD5;
             r = mailesmtp_auth_sasl(mSmtp, "DIGEST-MD5",
                                     MCUTF8(mHostname),
                                     NULL,
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLLogin:
+        } else if (authType() & AuthTypeSASLPlain && ((triedType & AuthTypeSASLPlain) == 0)) {
+            triedType |= AuthTypeSASLPlain;
+            r = mailesmtp_auth_sasl(mSmtp, "PLAIN",
+                                    MCUTF8(mHostname),
+                                    NULL,
+                                    NULL,
+                                    MCUTF8(mUsername), MCUTF8(mUsername),
+                                    MCUTF8(mPassword), NULL);
+        } else if (authType() & AuthTypeSASLLogin && ((triedType & AuthTypeSASLLogin) == 0)) {
+            triedType |= AuthTypeSASLLogin;
             r = mailesmtp_auth_sasl(mSmtp, "LOGIN",
                                     MCUTF8(mHostname),
                                     NULL,
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLSRP:
-            r = mailesmtp_auth_sasl(mSmtp, "SRP",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL);
-            break;
-            
-        case AuthTypeSASLNTLM:
-            r = mailesmtp_auth_sasl(mSmtp, "NTLM",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL /* realm */);
-            break;
-            
-        case AuthTypeSASLKerberosV4:
-            r = mailesmtp_auth_sasl(mSmtp, "KERBEROS_V4",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL /* realm */);
-            break;
-            
-        case AuthTypeXOAuth2: {
+        }/* else if (authType() & AuthTypeSASLSRP) {
+          triedType |= AuthTypeSASLSRP;
+          r = mailesmtp_auth_sasl(mSmtp, "SRP",
+          MCUTF8(mHostname),
+          NULL,
+          NULL,
+          MCUTF8(mUsername), MCUTF8(mUsername),
+          MCUTF8(mPassword), NULL);
+          } else if (authType() & AuthTypeSASLGSSAPI) {
+          triedType |= AuthTypeSASLGSSAPI;
+          r = mailesmtp_auth_sasl(mSmtp, "GSSAPI",
+          MCUTF8(mHostname),
+          NULL,
+          NULL,
+          MCUTF8(mUsername), MCUTF8(mUsername),
+          MCUTF8(mPassword), NULL);
+          } else if (authType() & AuthTypeSASLNTLM) {
+          triedType |= AuthTypeSASLNTLM;
+          r = mailesmtp_auth_sasl(mSmtp, "NTLM",
+          MCUTF8(mHostname),
+          NULL,
+          NULL,
+          MCUTF8(mUsername), MCUTF8(mUsername),
+          MCUTF8(mPassword), NULL);
+          } else if (authType() & AuthTypeSASLKerberosV4) {
+          triedType |= AuthTypeSASLKerberosV4;
+          r = mailesmtp_auth_sasl(mSmtp, "KERBEROS_V4",
+          MCUTF8(mHostname),
+          NULL,
+          NULL,
+          MCUTF8(mUsername), MCUTF8(mUsername),
+          MCUTF8(mPassword), NULL);
+          } */
+        else if (authType() & AuthTypeXOAuth2 && ((triedType & AuthTypeXOAuth2) == 0)) {
             const char * utf8Username = MCUTF8(mUsername);
+            triedType |= AuthTypeXOAuth2;
             if (utf8Username == NULL) {
                 utf8Username = "";
             }
@@ -619,37 +613,51 @@ void SMTPSession::login(ErrorCode * pError)
             else {
                 r = mailsmtp_oauth2_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
             }
-            break;
-        }
-        
-        case AuthTypeXOAuth2Outlook: {
+        } else if (authType() & AuthTypeXOAuth2Outlook && ((triedType & AuthTypeXOAuth2Outlook) == 0)) {
             const char * utf8Username = MCUTF8(mUsername);
+            triedType |= AuthTypeXOAuth2Outlook;
             if (utf8Username == NULL) {
                 utf8Username = "";
             }
             
             if (mOAuth2Token == NULL) {
                 r = MAILSMTP_ERROR_STREAM;
-            } 
+            }
             else {
                 r = mailsmtp_oauth2_outlook_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
             }
-            break;
+        } else {
+            triedType = authType();// End try
+            r = mailesmtp_auth_sasl(mSmtp, "LOGIN",
+                                    MCUTF8(mHostname),
+                                    NULL,
+                                    NULL,
+                                    MCUTF8(mUsername), MCUTF8(mUsername),
+                                    MCUTF8(mPassword), NULL);
+        }
+        
+        saveLastResponse();
+        
+        if (r == MAILSMTP_ERROR_STREAM) {
+            * pError = ErrorConnection;
+            mShouldDisconnect = true;
+            return;
+        }
+        else if (r != MAILSMTP_NO_ERROR) {
+            if (triedType == authType()) {
+                // All types retied and failed.
+                * pError = ErrorAuthentication;
+                return;
+            } else {
+                // try next auth type
+                continue;
+            }
+        } else {
+            mState = STATE_LOGGEDIN;
+            * pError = ErrorNone;
+            return;
         }
     }
-    saveLastResponse();
-    if (r == MAILSMTP_ERROR_STREAM) {
-        * pError = ErrorConnection;
-        mShouldDisconnect = true;
-        return;
-    }
-    else if (r != MAILSMTP_NO_ERROR) {
-        * pError = ErrorAuthentication;
-        return;
-    }
-    
-    mState = STATE_LOGGEDIN;
-    * pError = ErrorNone;
 }
 
 void SMTPSession::checkAccount(Address * from, ErrorCode * pError)
