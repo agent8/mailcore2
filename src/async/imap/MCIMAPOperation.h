@@ -49,6 +49,7 @@ namespace mailcore {
         // Result.
         virtual void setError(ErrorCode error);
         virtual ErrorCode error();
+        virtual String * lastResponse();
         
     private:
         IMAPAsyncSession * mMainSession;

@@ -83,4 +83,11 @@ MCO_OBJC_SYNTHESIZE_SCALAR(BOOL, bool, setUrgent, isUrgent)
 {
 }
 
+- (NSString*) lastResponse
+{
+    NSString* ns = [NSString mco_stringWithMCString:MCO_NATIVE_INSTANCE->lastResponse()];
+    return ns;
+}
+
+
 @end

@@ -231,7 +231,10 @@ namespace mailcore {
         /** Check if the automatic query of the capabilities of the IMAP server is enabled. */
         virtual bool isAutomaticConfigurationEnabled();
 
+        virtual String * lastResponse();
+
         virtual String * loginResponse();
+
         /** Filled by unparsed protocol data in case of ParseError (only for login for now). */
         virtual Data * unparsedResponseData();
         
@@ -301,6 +304,7 @@ namespace mailcore {
         bool mShouldDisconnect;
         
         String * mLoginResponse;
+        String * mLastResponse;
         String * mGmailUserDisplayName;
         Data * mUnparsedResponseData;
         

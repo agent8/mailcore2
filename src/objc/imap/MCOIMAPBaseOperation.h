@@ -37,6 +37,11 @@ typedef void (^MCOIMAPBaseOperationItemProgressBlock)(unsigned int current);
 */
 - (void)itemProgress:(unsigned int)current maximum:(unsigned int)maximum;
 
+/*
+ For query the last IMAP server response string
+ */
+- (NSString*) lastResponse;
+
 @end
 
 #endif

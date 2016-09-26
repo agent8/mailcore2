@@ -410,6 +410,7 @@ void IMAPSession::init()
     mAutomaticConfigurationDone = false;
     mShouldDisconnect = false;
     mLoginResponse = NULL;
+    mLastResponse = NULL;
     mGmailUserDisplayName = NULL;
     mUnparsedResponseData = NULL;
 }
@@ -424,6 +425,7 @@ IMAPSession::~IMAPSession()
     MC_SAFE_RELEASE(mUnparsedResponseData);
     MC_SAFE_RELEASE(mGmailUserDisplayName);
     MC_SAFE_RELEASE(mLoginResponse);
+    MC_SAFE_RELEASE(mLastResponse);
     MC_SAFE_RELEASE(mClientIdentity);
     MC_SAFE_RELEASE(mServerIdentity);
     MC_SAFE_RELEASE(mHostname);
@@ -535,6 +537,16 @@ void IMAPSession::setVoIPEnabled(bool enabled)
 bool IMAPSession::isVoIPEnabled()
 {
     return mVoIPEnabled;
+}
+
+String * IMAPSession::lastResponse()
+{
+    if (mImap != NULL && mImap->imap_response_buffer != NULL && mImap->imap_response_buffer->str != NULL) {
+        String * response = String::stringWithUTF8Characters(mImap->imap_response_buffer->str);
+        MC_SAFE_REPLACE_COPY(String, mLastResponse, response);
+    }
+
+    return mLastResponse;
 }
 
 String * IMAPSession::loginResponse()

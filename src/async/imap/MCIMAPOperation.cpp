@@ -99,6 +99,10 @@ void IMAPOperation::setError(ErrorCode error)
     mError = error;
 }
 
+String * IMAPOperation::lastResponse() {
+    return mSession->session()->lastResponse();
+}
+
 ErrorCode IMAPOperation::error()
 {
     return mError;
