@@ -42,7 +42,7 @@ function build {
   
     cd "$current_dir/jni"
     $ANDROID_NDK/ndk-build TARGET_PLATFORM=$ANDROID_PLATFORM TARGET_ARCH_ABI=$TARGET_ARCH_ABI \
-        NDK_TOOLCHAIN_VERSION=4.9 \
+        NDK_TOOLCHAIN_VERSION=4.8 \
         CTEMPLATE_PATH=$current_dir/third-party/ctemplate-android-$ctemplate_build_version \
         ICU4C_PATH=$current_dir/third-party/icu4c-android-$icu4c_build_version \
         LIBETPAN_PATH=$current_dir/third-party/libetpan-android-$libetpan_build_version \
