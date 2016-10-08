@@ -73,7 +73,7 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPSession_folderInfoOperation
   (JNIEnv * env, jobject obj, jstring path)
 {
     MC_POOL_BEGIN;
-    jobject result = MC_TO_JAVA(MC_JAVA_NATIVE_INSTANCE->folderInfoOperation(MC_FROM_JAVA(String, path)));
+    jobject result = MC_TO_JAVA(MC_JAVA_NATIVE_INSTANCE->folderInfoOperation(MC_FROM_JAVA(String, path),true));
     MC_POOL_END;
     return result;
 }
@@ -388,7 +388,7 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPSession_capabilityOperation
   (JNIEnv * env, jobject obj)
 {
     MC_POOL_BEGIN;
-    jobject result = MC_TO_JAVA(MC_JAVA_NATIVE_INSTANCE->capabilityOperation());
+    jobject result = MC_TO_JAVA(MC_JAVA_NATIVE_INSTANCE->capabilityOperation(true));
     MC_POOL_END;
     return result;
 }
