@@ -12,4 +12,5 @@ JNIEXPORT jboolean JNICALL Java_com_libmailcore_Log_isEnabled
   (JNIEnv * env, jclass cls)
 {
     return MCLogEnabled;
+    // return true;
 }

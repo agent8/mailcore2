@@ -122,6 +122,7 @@ namespace mailcore {
         
         virtual String * urlDecodedString();
         virtual String * urlEncodedString();
+        virtual int nstrcasestr(const char* str, const char* subStr);
 
     public: // private
         static String * uniquedStringWithUTF8Characters(const char * UTF8Characters);

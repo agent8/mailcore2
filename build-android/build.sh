@@ -69,7 +69,7 @@ mkdir -p "$current_dir/third-party"
 cd "$current_dir/third-party"
 download_dep "ctemplate-android" $ctemplate_build_version
 download_dep "icu4c-android" $icu4c_build_version
-download_dep "libetpan-android" $libetpan_build_version
+# download_dep "libetpan-android" $libetpan_build_version
 download_dep "libxml2-android" $libxml2_build_version
 download_dep "tidy-html5-android" $tidy_html5_build_version
 download_dep "openssl-android" $openssl_build_version

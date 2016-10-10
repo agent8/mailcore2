@@ -21,7 +21,8 @@
 #endif
 
 static pid_t sPid = -1;
-#define MCLogEnabled 0
+// #define MCLogEnabled 0
+int MCLogEnabled = 0;
 
 INITIALIZE(Log)
 {

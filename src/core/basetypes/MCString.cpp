@@ -1577,17 +1577,39 @@ int String::locationOfStringCaseInsensitive(String * occurrence)
     if (mUnicodeChars == NULL) {
         return -1;
     }
-    CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) mUnicodeChars, u_strlen(mUnicodeChars), kCFAllocatorNull);
-    CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
-    
-    CFRange range = CFStringFind(cfS, cfSubstring, kCFCompareCaseInsensitive);
-    CFRelease(cfSubstring);
-    CFRelease(cfS);
-    if (range.length == 0) {
+    #if DISABLE_ICU
+        CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) mUnicodeChars, u_strlen(mUnicodeChars), kCFAllocatorNull);
+        CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
+        
+        CFRange range = CFStringFind(cfS, cfSubstring, kCFCompareCaseInsensitive);
+        CFRelease(cfSubstring);
+        CFRelease(cfS);
+        if (range.length == 0) {
+            return -1;
+        }
+        location = (UChar *) (mUnicodeChars + range.location);
+        return (int) (location - mUnicodeChars);
+    #else
+        return nstrcasestr((const char*)unicodeCharacters(), (const char*)(occurrence->unicodeCharacters()));
+    #endif
+}
+
+int String::nstrcasestr(const char* str, const char* subStr){
+    int len = strlen(subStr);
+    if (len == 0)
+    {
         return -1;
     }
-    location = (UChar *) (mUnicodeChars + range.location);
-    return (int) (location - mUnicodeChars);
+    int i = 0;
+    while(*str){
+        if (strncasecmp(str, subStr, len) == 0)
+        {
+            return i;
+        }
+        str++;
+        i++;
+    }
+    return -1;
 }
 
 int String::lastLocationOfString(String * occurrence)

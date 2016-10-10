@@ -534,7 +534,11 @@ void SMTPSession::login(ErrorCode * pError)
     }
     
     triedType = 0;
-    while (TRUE) {
+    #if __APPLE__
+        while (TRUE) {
+    #else
+        while(true){
+    #endif
         if (authType() & AuthTypeSASLCRAMMD5 && ((triedType & AuthTypeSASLCRAMMD5) == 0)) {
             triedType |= AuthTypeSASLCRAMMD5;
             r = mailesmtp_auth_sasl(mSmtp, "CRAM-MD5",
