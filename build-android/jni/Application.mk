@@ -1,0 +1,10 @@
+# APP_ABI := armeabi armeabi-v7a
+# APP_ABI := armeabi armeabi-v7a x86 mips mips-r2 mips-r2-sf
+APP_ABI := all
+APP_STL := gnustl_static
+# APP_STL := gnustl_shared
+# APP_STL := c++_shared
+# APP_STL := stlport_static
+APP_CPPFLAGS := -frtti -fexceptions
+NDK_TOOLCHAIN_VERSION := clang
+APP_CPPFLAGS += -I boost_core/include
