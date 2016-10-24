@@ -757,7 +757,9 @@ void SMTPSession::internalSendMessage(Address * from, Array * recipients, Data *
         esmtp_address_list_add(address_list, (char *) MCUTF8(addr->mailbox()), 0, NULL);
     }
     MCLog("send");
-    if ((mSmtp->esmtp & MAILSMTP_ESMTP_PIPELINING) != 0) {
+    
+    // disable SMTP PIPELINING to reduce duplicated email issues
+    if (0 /*(mSmtp->esmtp & MAILSMTP_ESMTP_PIPELINING) != 0 */) {
         r = mailesmtp_send_quit_no_disconnect(mSmtp, MCUTF8(from->mailbox()), 0, NULL,
                                               address_list,
                                               messageData->bytes(), messageData->length());
