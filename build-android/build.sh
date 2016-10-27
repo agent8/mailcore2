@@ -1,8 +1,9 @@
 #!/bin/sh
 
 build_version=3
-ANDROID_PLATFORM=android-16
-archs="armeabi armeabi-v7a x86"
+ANDROID_PLATFORM=android-24
+archs="armeabi armeabi-v7a x86 arm64-v8a"
+#archs="arm64-v8a"
 package_name=mailcore2-android
 ctemplate_build_version=2
 cyrus_sasl_build_version=2
@@ -42,7 +43,7 @@ function build {
   
     cd "$current_dir/jni"
     $ANDROID_NDK/ndk-build TARGET_PLATFORM=$ANDROID_PLATFORM TARGET_ARCH_ABI=$TARGET_ARCH_ABI \
-        NDK_TOOLCHAIN_VERSION=4.8 \
+        NDK_TOOLCHAIN_VERSION=4.9 \
         CTEMPLATE_PATH=$current_dir/third-party/ctemplate-android-$ctemplate_build_version \
         ICU4C_PATH=$current_dir/third-party/icu4c-android-$icu4c_build_version \
         LIBETPAN_PATH=$current_dir/third-party/libetpan-android-$libetpan_build_version \
@@ -67,13 +68,13 @@ cp -R "$current_dir/cmake-build/src/include/MailCore" "$current_dir/include"
 
 mkdir -p "$current_dir/third-party"
 cd "$current_dir/third-party"
-download_dep "ctemplate-android" $ctemplate_build_version
-download_dep "icu4c-android" $icu4c_build_version
+#download_dep "ctemplate-android" $ctemplate_build_version
+#download_dep "icu4c-android" $icu4c_build_version
 # download_dep "libetpan-android" $libetpan_build_version
-download_dep "libxml2-android" $libxml2_build_version
-download_dep "tidy-html5-android" $tidy_html5_build_version
-download_dep "openssl-android" $openssl_build_version
-download_dep "cyrus-sasl-android" $cyrus_sasl_build_version
+#download_dep "libxml2-android" $libxml2_build_version
+#download_dep "tidy-html5-android" $tidy_html5_build_version
+#download_dep "openssl-android" $openssl_build_version
+#download_dep "cyrus-sasl-android" $cyrus_sasl_build_version
 
 # Start building.
 for arch in $archs ; do

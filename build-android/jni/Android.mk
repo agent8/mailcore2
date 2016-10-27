@@ -30,6 +30,8 @@ includes = \
     $(OPENSSL_PATH)/include \
     $(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libcxx/include \
 	$(ANDROID_NDK)/sources/cxx-stl/llvm-libc++abi/libcxxabi/include \
+	$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/include \
+	$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)/include \
 	$(addprefix $(src_dir)/, $(subdirs))
 core_excludes = MCWin32.cpp MCStringWin32.cpp MCMainThreadWin32.cpp MCMainThreadGTK.cpp
 core_src_files := $(filter-out \
@@ -107,6 +109,12 @@ LOCAL_SRC_FILES := $(CYRUS_SASL_PATH)/libs/$(TARGET_ARCH_ABI)/libsasl2.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE    := gunlibstd
+LOCAL_SRC_FILES := $(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)/libgnustl_static.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+
+include $(CLEAR_VARS)
 LOCAL_MODULE    := MailCore
 LOCAL_C_INCLUDES := $(includes)
 LOCAL_SRC_FILES := \
@@ -117,7 +125,8 @@ LOCAL_SRC_FILES := \
 	$(async_imap_src_files) $(async_nntp_src_files) $(async_pop_src_files) $(async_smtp_src_files)
 LOCAL_CPPFLAGS := -frtti
 LOCAL_CFLAGS := -DNOCRYPT
+LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 LOCAL_LDLIBS := -lz -llog \
 	 -lc++_shared -L$(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libs/$(TARGET_ARCH_ABI)
-LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto icu4c xml2 tidy ctemplate
+LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto icu4c xml2 tidy ctemplate gunlibstd
 include $(BUILD_SHARED_LIBRARY)
