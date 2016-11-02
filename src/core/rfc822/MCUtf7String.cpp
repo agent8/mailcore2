@@ -2,11 +2,15 @@
 #include "MCUtf7String.h"
 #include "MCAddress.h"
 #include "MCDefines.h"
+#include "MCLog.h"
 
 using namespace mailcore;
 
 String * Utf7String::jencodeMutf7(String * src){
+    
 	String * s = src->mUTF7EncodedString();
+    MCLog("start %s",s->UTF8Characters());
+    MCLog("jencodeMutf7 end");
 	return s;
 }
 

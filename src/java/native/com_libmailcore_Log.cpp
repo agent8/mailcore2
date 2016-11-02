@@ -5,7 +5,7 @@
 JNIEXPORT void JNICALL Java_com_libmailcore_Log_setEnabled
   (JNIEnv * env, jclass cls, jboolean enabled)
 {
-    MCLogEnabled = true;
+    MCLogEnabled = 1;
 }
 
 JNIEXPORT jboolean JNICALL Java_com_libmailcore_Log_isEnabled

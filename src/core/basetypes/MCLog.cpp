@@ -22,7 +22,7 @@
 
 static pid_t sPid = -1;
 // #define MCLogEnabled 0
-int MCLogEnabled = 0;
+int MCLogEnabled = 1;
 
 INITIALIZE(Log)
 {
