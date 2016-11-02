@@ -5,7 +5,7 @@ if test "x$ANDROID_SDK" = x ; then
   exit 1
 fi
 
-TARGET_PLATFORM=android-21
+TARGET_PLATFORM=android-24
 
 echo Building Java
 javac -classpath $ANDROID_SDK/platforms/$TARGET_PLATFORM/android.jar com/libmailcore/*.java
