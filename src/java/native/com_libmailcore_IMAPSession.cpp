@@ -60,6 +60,14 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPSession_clientIdentity
     return result;
 }
 
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPSession_setClientIdentity
+  (JNIEnv * env, jobject obj, jobject identity)
+{
+    MC_POOL_BEGIN;
+    MC_JAVA_NATIVE_INSTANCE->setClientIdentity(MC_FROM_JAVA(IMAPIdentity, identity));
+    MC_POOL_END;
+}
+
 JNIEXPORT jstring JNICALL Java_com_libmailcore_IMAPSession_gmailUserDisplayName
   (JNIEnv * env, jobject obj)
 {
