@@ -7,17 +7,13 @@
 using namespace mailcore;
 
 String * Utf7String::jencodeMutf7(String * src){
-    
 	String * s = src->mUTF7EncodedString();
-    MCLog("start %s",s->UTF8Characters());
-    MCLog("jencodeMutf7 end");
 	return s;
 }
 
 String * Utf7String::jdecodeMutf7(String * src){
-	String * s = s->mUTF7DecodedString();
+	String * s = src->mUTF7DecodedString();
 	return s;
-
 }
 
 String * Utf7String::jflattenHTML(String * src){
