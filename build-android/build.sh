@@ -3,7 +3,7 @@
 build_version=3
 ANDROID_PLATFORM=android-24
 archs="armeabi armeabi-v7a x86 arm64-v8a"
-# archs="x86"
+#archs="x86"
 package_name=mailcore2-android
 ctemplate_build_version=2
 cyrus_sasl_build_version=2
