@@ -235,6 +235,14 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPSession_clientIdentity
 
 /*
  * Class:     com_libmailcore_IMAPSession
+ * Method:    setClientIdentity
+ * Signature: (Lcom/libmailcore/IMAPIdentity;)V
+ */
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPSession_setClientIdentity
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     com_libmailcore_IMAPSession
  * Method:    gmailUserDisplayName
  * Signature: ()Ljava/lang/String;
  */
