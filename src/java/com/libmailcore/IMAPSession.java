@@ -123,8 +123,8 @@ public class IMAPSession extends NativeObject {
     public native IMAPIdentity serverIdentity();
     /** Returns client identity. It can be modified before establishing connection. */
     public native IMAPIdentity clientIdentity();
-    /** set client identity.
-    public native void setClientIdentity(IMAPIdentity* identify);
+    /** set client identity.*/
+    public native void setClientIdentity(IMAPIdentity identify);
 
     /** Returns the Gmail user display name. */
     public native String gmailUserDisplayName();

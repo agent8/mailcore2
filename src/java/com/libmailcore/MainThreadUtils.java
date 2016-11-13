@@ -4,24 +4,53 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import java.util.HashMap;
+import android.os.HandlerThread;
 
-class MainThreadUtils {
-    private static volatile MainThreadUtils instance = new MainThreadUtils();
+public class MainThreadUtils {
+    // private static volatile MainThreadUtils instance = new MainThreadUtils();
+    private static volatile MainThreadUtils mInstance;
     private Handler handler;
     private HashMap<Long, Runnable> runnablesForIdentifiers = new HashMap<Long, Runnable>();
     
     static MainThreadUtils singleton() {
-        return instance;
+        // return Instance;
+        return mInstance;
+
     }
 
+    public static synchronized MainThreadUtils mSingleton(Handler mHandler) {
+        if (mInstance == null) {
+            mInstance = new MainThreadUtils(mHandler);
+        }
+        return mInstance;
+    }
+
+    private MainThreadUtils(Handler mHandler){
+        System.loadLibrary("MailCore");
+        System.loadLibrary("c++_shared");
+        // handler = new Handler(Looper.getMainLooper());
+
+        handler = mHandler;
+        // HandlerThread handlerThread = new HandlerThread("MailCore-Handler-Thread");
+        // handlerThread.start();
+        // handler = new Handler(handlerThread.getLooper());
+
+        // Looper.prepare();
+        // handler = new Handler();
+        // Looper.loop();
+        setupNative();
+    }
     // private constructor
     private MainThreadUtils() {
         System.loadLibrary("MailCore");
         System.loadLibrary("c++_shared");
-        // handler = new Handler(Looper.getMainLooper());
-        Looper.prepare();
-        handler = new Handler();
-        Looper.loop();
+        handler = new Handler(Looper.getMainLooper());
+        // HandlerThread handlerThread = new HandlerThread("MailCore-Handler-Thread");
+        // handlerThread.start();
+        // handler = new Handler(handlerThread.getLooper());
+        // Looper.prepare();
+        // handler = new Handler();
+        // Looper.loop();
         setupNative();
     }
 
