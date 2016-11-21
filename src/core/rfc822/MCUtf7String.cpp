@@ -3,6 +3,10 @@
 #include "MCAddress.h"
 #include "MCDefines.h"
 #include "MCLog.h"
+#include "MCData.h"
+#include <unicode/ustring.h>
+#include <unicode/ucnv.h>
+#include <unicode/utypes.h>
 
 using namespace mailcore;
 
@@ -77,6 +81,46 @@ String * Utf7String::jhtmlEncodedString(String * src){
     return htmlString;
 }
 
+void Utf7String::setupCode(){
+    UErrorCode err;
+    err = U_ZERO_ERROR;
+    UConverter * converter = ucnv_open("utf-8", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "utf-8", err);
+    }
+    converter = ucnv_open("us-ascii", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "us-ascii", err);
+    }
+    converter = ucnv_open("gbk", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "gbk", err);
+    }
+    converter = ucnv_open("gb18030", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "gb18030", err);
+    }
+    converter = ucnv_open("IMAP-mailbox-name", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "IMAP-mailbox-name", err);
+    }
+    converter = ucnv_open("utf-16", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "utf-16", err);
+    }
+    converter = ucnv_open("HZ-GB-2312", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "HZ-GB-2312", err);
+    }
+    converter = ucnv_open("Big5", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "Big5", err);
+    }
+    converter = ucnv_open("ISO-8859-2", &err); 
+    if (converter == NULL) {
+        MCLog("invalid charset INITIALIZE %s %i", "ISO-8859-2", err);
+    }
+}
 static void * createObject()
 {
     return new Utf7String();

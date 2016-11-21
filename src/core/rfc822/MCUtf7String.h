@@ -14,6 +14,7 @@ namespace mailcore {
 		static String * jdecodeRFC822Str(String * src);
 
 		static String * jhtmlEncodedString(String * src);
+		static void setupCode();
 	};
 }
 #endif

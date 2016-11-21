@@ -69,6 +69,14 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_Utf7String_htmlEncodedString
 
 /*
  * Class:     com_libmailcore_Utf7String
+ * Method:    setupCode
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_libmailcore_Utf7String_setupCode
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_libmailcore_Utf7String
  * Method:    setupNative
  * Signature: ()V
  */

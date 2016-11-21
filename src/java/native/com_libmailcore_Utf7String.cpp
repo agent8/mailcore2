@@ -73,3 +73,12 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_Utf7String_htmlEncodedString
     MC_POOL_END;
     return (jstring)result; 
 }
+
+JNIEXPORT void JNICALL Java_com_libmailcore_Utf7String_setupCode
+  (JNIEnv *, jclass)
+  {
+      MC_POOL_BEGIN;
+      Utf7String::setupCode();
+      MC_POOL_END;
+      return;
+  }
