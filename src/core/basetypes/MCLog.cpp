@@ -16,10 +16,11 @@
 #include <execinfo.h>
 #endif
 
-int MCLogEnabled = 0;
 #if defined(ANDROID) || defined(__ANDROID__)
-MCLogEnabled = 1;
+int MCLogEnabled = 1;
 #include <android/log.h>
+#else
+int MCLogEnabled = 0;
 #endif
 
 static pid_t sPid = -1;

@@ -28,6 +28,7 @@ includes = \
     $(LIBXML2_PATH)/include \
     $(TIDY_HTML5_PATH)/include \
     $(OPENSSL_PATH)/include \
+    $(UCHARDET_PATH)/include \
     $(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libcxx/include \
 	$(ANDROID_NDK)/sources/cxx-stl/llvm-libc++abi/libcxxabi/include \
 	$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/include \
@@ -113,6 +114,10 @@ LOCAL_MODULE    := gunlibstd
 LOCAL_SRC_FILES := $(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)/libgnustl_static.a
 include $(PREBUILT_STATIC_LIBRARY)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE    := uchardet
+LOCAL_SRC_FILES := $(UCHARDET_PATH)/libs/$(TARGET_ARCH_ABI)/libuchardet.a
+include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := MailCore
@@ -128,5 +133,5 @@ LOCAL_CFLAGS := -DNOCRYPT
 LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 LOCAL_LDLIBS := -lz -llog \
 	 -lc++_shared -L$(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libs/$(TARGET_ARCH_ABI)
-LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto icu4c xml2 tidy ctemplate gunlibstd
+LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto icu4c xml2 tidy ctemplate uchardet gunlibstd
 include $(BUILD_SHARED_LIBRARY)

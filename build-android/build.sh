@@ -12,6 +12,7 @@ libetpan_build_version=4
 libxml2_build_version=2
 tidy_html5_build_version=2
 openssl_build_version=2
+uchardet_build_version=1
 
 current_dir="`pwd`"
 
@@ -50,8 +51,8 @@ function build {
         LIBXML2_PATH=$current_dir/third-party/libxml2-android-$libxml2_build_version \
         TIDY_HTML5_PATH=$current_dir/third-party/tidy-html5-android-$tidy_html5_build_version \
         OPENSSL_PATH=$current_dir/third-party/openssl-android-$openssl_build_version \
-        CYRUS_SASL_PATH=$current_dir/third-party/cyrus-sasl-android-$cyrus_sasl_build_version
-
+        CYRUS_SASL_PATH=$current_dir/third-party/cyrus-sasl-android-$cyrus_sasl_build_version \
+        UCHARDET_PATH=$current_dir/third-party/uchardet-android-$uchardet_build_version
     mkdir -p "$current_dir/bin/jni/$TARGET_ARCH_ABI"
     cp "$current_dir/libs/$TARGET_ARCH_ABI/libMailCore.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
     cp "$ANDROID_NDK/sources/cxx-stl/llvm-libc++/libs/$TARGET_ARCH_ABI/libc++_shared.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
