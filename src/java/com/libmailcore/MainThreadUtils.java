@@ -27,7 +27,9 @@ public class MainThreadUtils {
 
     private MainThreadUtils(Handler mHandler){
         System.loadLibrary("MailCore");
-        System.loadLibrary("c++_shared");
+        // System.loadLibrary("c++_shared");
+        System.loadLibrary("gnustl_shared");
+
         // handler = new Handler(Looper.getMainLooper());
 
         handler = mHandler;
