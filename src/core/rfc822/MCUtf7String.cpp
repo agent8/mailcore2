@@ -81,6 +81,11 @@ String * Utf7String::jhtmlEncodedString(String * src){
     return htmlString;
 }
 
+void Utf7String::setupICU4C(String * src){
+    u_setDataDirectory(src->fileSystemRepresentation());
+    return;
+}
+
 void Utf7String::setupCode(){
     UErrorCode err;
     err = U_ZERO_ERROR;

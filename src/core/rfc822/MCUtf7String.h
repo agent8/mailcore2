@@ -15,6 +15,7 @@ namespace mailcore {
 
 		static String * jhtmlEncodedString(String * src);
 		static void setupCode();
+		static void setupICU4C(String * src);
 	};
 }
 #endif

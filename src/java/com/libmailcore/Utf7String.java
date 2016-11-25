@@ -11,6 +11,7 @@ public class Utf7String extends NativeObject {
 	public native static String htmlEncodedString(String src);
 
 	public native static void setupCode();
+	public native static void setupICU4C(String src);
 	private native void setupNative();
 
     private static final long serialVersionUID = 1L;

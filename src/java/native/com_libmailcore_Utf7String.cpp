@@ -82,3 +82,12 @@ JNIEXPORT void JNICALL Java_com_libmailcore_Utf7String_setupCode
       MC_POOL_END;
       return;
   }
+
+  JNIEXPORT void JNICALL Java_com_libmailcore_Utf7String_setupICU4C
+  (JNIEnv * env, jclass cls, jstring src)
+  {
+      MC_POOL_BEGIN;
+      Utf7String::setupICU4C(MC_FROM_JAVA(String, src));
+      MC_POOL_END;
+      return;
+  }

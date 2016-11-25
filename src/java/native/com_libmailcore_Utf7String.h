@@ -77,6 +77,14 @@ JNIEXPORT void JNICALL Java_com_libmailcore_Utf7String_setupCode
 
 /*
  * Class:     com_libmailcore_Utf7String
+ * Method:    setupICU4C
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_libmailcore_Utf7String_setupICU4C
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_libmailcore_Utf7String
  * Method:    setupNative
  * Signature: ()V
  */
