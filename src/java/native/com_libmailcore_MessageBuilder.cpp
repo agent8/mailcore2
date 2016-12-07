@@ -23,6 +23,14 @@ JNIEXPORT void JNICALL Java_com_libmailcore_MessageBuilder_addAttachment
     MC_POOL_END;
 }
 
+JNIEXPORT void JNICALL Java_com_libmailcore_MessageBuilder_setExtraBody
+        (JNIEnv * env, jobject obj, jobject attachment)
+{
+    MC_POOL_BEGIN;
+    MC_JAVA_NATIVE_INSTANCE->setExtraBody(MC_FROM_JAVA(Attachment, attachment));
+    MC_POOL_END;
+}
+
 MC_JAVA_SYNTHESIZE(Array, setRelatedAttachments, relatedAttachments)
 
 JNIEXPORT void JNICALL Java_com_libmailcore_MessageBuilder_addRelatedAttachment

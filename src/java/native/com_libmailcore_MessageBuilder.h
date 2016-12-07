@@ -43,6 +43,15 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_MessageBuilder_textBody
 
 /*
  * Class:     com_libmailcore_MessageBuilder
+ * Method:    setExtraBody
+ * Signature: (Lcom/libmailcore/Attachment;)V
+ */
+JNIEXPORT void JNICALL Java_com_libmailcore_MessageBuilder_setExtraBody
+        (JNIEnv *, jobject, jobject);
+
+
+/*
+ * Class:     com_libmailcore_MessageBuilder
  * Method:    setAttachments
  * Signature: (Ljava/util/List;)V
  */

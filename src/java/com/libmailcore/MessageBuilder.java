@@ -19,6 +19,9 @@ public class MessageBuilder extends AbstractMessage {
     public native void setTextBody(String textBody);
     /** Returns plain/text body. */
     public native String textBody();
+
+    /** Set extra body. */
+    public native void setExtraBody(Attachment Attachment);
     
     /** Sets the list of attachments. */
     public native void setAttachments(List<Attachment> attachments);
