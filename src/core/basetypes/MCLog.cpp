@@ -17,7 +17,7 @@
 #endif
 
 #if defined(ANDROID) || defined(__ANDROID__)
-int MCLogEnabled = 1;
+int MCLogEnabled = 0;
 #include <android/log.h>
 #else
 int MCLogEnabled = 0;
