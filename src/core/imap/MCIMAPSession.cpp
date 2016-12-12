@@ -928,16 +928,16 @@ void IMAPSession::login(ErrorCode * pError)
     }
     if (hasError(r)) {
          MC_SAFE_REPLACE_COPY(String, mLoginResponse, response);
-        if (response->locationOfStringCaseInsensitive(MCSTR("bandwidth limits")) != -1) {
+        if (mIsGmail && response->locationOfStringCaseInsensitive(MCSTR("bandwidth limits")) != -1) {
             * pError = ErrorGmailExceededBandwidthLimit;
         }
-        else if (response->locationOfStringCaseInsensitive(MCSTR("Too many simultaneous connections")) != -1) {
+        else if (mIsGmail && response->locationOfStringCaseInsensitive(MCSTR("Too many simultaneous connections")) != -1) {
             * pError = ErrorGmailTooManySimultaneousConnections;
         }
-        else if (response->locationOfStringCaseInsensitive(MCSTR("Maximum number of connections")) != -1) {
+        else if (mIsGmail && response->locationOfStringCaseInsensitive(MCSTR("Maximum number of connections")) != -1) {
             * pError = ErrorGmailTooManySimultaneousConnections;
         }
-        else if (response->locationOfStringCaseInsensitive(MCSTR("Application-specific password required")) != -1) {
+        else if (mIsGmail && response->locationOfStringCaseInsensitive(MCSTR("Application-specific password required")) != -1) {
             * pError = ErrorGmailApplicationSpecificPasswordRequired;
         }
         else if (response->locationOfStringCaseInsensitive(MCSTR("http://me.com/move")) != -1) {
@@ -972,7 +972,7 @@ void IMAPSession::login(ErrorCode * pError)
         else if (response->locationOfString(MCSTR("Login to your account via a web browser")) != -1) {
             * pError = ErrorOutlookLoginViaWebBrowser;
         }
-        else if (response->locationOfStringCaseInsensitive(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
+        else if (mIsGmail && (response->locationOfStringCaseInsensitive(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
                  response->locationOfStringCaseInsensitive(MCSTR("suspended")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("locked")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("IMAP")) != -1) {
