@@ -975,7 +975,7 @@ void IMAPSession::login(ErrorCode * pError)
         else if (mIsGmail && (response->locationOfStringCaseInsensitive(MCSTR("https://support.google.com/")) != -1/*Gmail*/ ||
                  response->locationOfStringCaseInsensitive(MCSTR("suspended")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("locked")) != -1 ||
-                 response->locationOfStringCaseInsensitive(MCSTR("IMAP")) != -1) {
+                 response->locationOfStringCaseInsensitive(MCSTR("IMAP")) != -1)) {
             * pError = ErrorGmailIMAPNotEnabled;
         } else {
             * pError = ErrorInvalidAccount;
