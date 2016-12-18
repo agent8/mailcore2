@@ -1,6 +1,8 @@
 CURRENT_DIR := $(call my-dir)
 #add in android NDK_Build only
-ANDROID_NDK := /Users/farmer/Documents/Tools/AndroidSupport/ndk-bundle
+# TODO: change to your NDK Path
+ANDROID_NDK := /Users/farmer/Documents/Tools/AndroidSDK/ndk-bundle
+# TODO: Add your phone edition 
 TARGET_ARCH_ABI := x86
 build_version := 4
 ctemplate_build_version := 3
