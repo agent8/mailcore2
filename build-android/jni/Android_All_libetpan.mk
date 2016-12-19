@@ -44,130 +44,131 @@ subdirs = \
     async/pop \
     async/smtp \
     java java/native
-libetpan_src_files = $(LIBETPAN_DIR)/src/data-types/base64.c \
-    $(LIBETPAN_DIR)/src/data-types/carray.c \
-    $(LIBETPAN_DIR)/src/data-types/charconv.c \
-    $(LIBETPAN_DIR)/src/data-types/chash.c \
-    $(LIBETPAN_DIR)/src/data-types/clist.c \
-    $(LIBETPAN_DIR)/src/data-types/connect.c \
-    $(LIBETPAN_DIR)/src/data-types/mail_cache_db.c \
-    $(LIBETPAN_DIR)/src/data-types/maillock.c \
-    $(LIBETPAN_DIR)/src/data-types/mailsasl.c \
-    $(LIBETPAN_DIR)/src/data-types/mailsem.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_cancel.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_cfstream.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_compress.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_helper.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_low.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_socket.c \
-    $(LIBETPAN_DIR)/src/data-types/mailstream_ssl.c \
-    $(LIBETPAN_DIR)/src/data-types/md5.c \
-    $(LIBETPAN_DIR)/src/data-types/mmapstring.c \
-    $(LIBETPAN_DIR)/src/data-types/timeutils.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/acl.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/acl_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/acl_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/acl_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/annotatemore.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/annotatemore_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/annotatemore_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/annotatemore_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/condstore.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/condstore_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/enable.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/idle.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_compress.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_extension.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_helper.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_id.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_id_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_id_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_id_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_keywords.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_oauth2.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_print.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_socket.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_sort.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_sort_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_ssl.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/mailimap_types_helper.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/namespace.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/namespace_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/namespace_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/namespace_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/qresync.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/qresync_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/quota.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/quota_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/quota_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/quota_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/uidplus.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/uidplus_parser.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/uidplus_sender.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/uidplus_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/xgmlabels.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/xgmmsgid.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/xgmthrid.c \
-    $(LIBETPAN_DIR)/src/low-level/imap/xlist.c \
-    $(LIBETPAN_DIR)/src/low-level/imf/mailimf.c \
-    $(LIBETPAN_DIR)/src/low-level/imf/mailimf_types.c \
-    $(LIBETPAN_DIR)/src/low-level/imf/mailimf_types_helper.c \
-    $(LIBETPAN_DIR)/src/low-level/imf/mailimf_write_file.c \
-    $(LIBETPAN_DIR)/src/low-level/imf/mailimf_write_generic.c \
-    $(LIBETPAN_DIR)/src/low-level/imf/mailimf_write_mem.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_content.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_decode.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_disposition.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_types.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_types_helper.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_write_file.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_write_generic.c \
-    $(LIBETPAN_DIR)/src/low-level/mime/mailmime_write_mem.c \
-    $(LIBETPAN_DIR)/src/low-level/nntp/newsnntp.c \
-    $(LIBETPAN_DIR)/src/low-level/nntp/newsnntp_socket.c \
-    $(LIBETPAN_DIR)/src/low-level/nntp/newsnntp_ssl.c \
-    $(LIBETPAN_DIR)/src/low-level/pop3/mailpop3.c \
-    $(LIBETPAN_DIR)/src/low-level/pop3/mailpop3_helper.c \
-    $(LIBETPAN_DIR)/src/low-level/pop3/mailpop3_socket.c \
-    $(LIBETPAN_DIR)/src/low-level/pop3/mailpop3_ssl.c \
-    $(LIBETPAN_DIR)/src/low-level/smtp/mailsmtp.c \
-    $(LIBETPAN_DIR)/src/low-level/smtp/mailsmtp_helper.c \
-    $(LIBETPAN_DIR)/src/low-level/smtp/mailsmtp_oauth2.c \
-    $(LIBETPAN_DIR)/src/low-level/smtp/mailsmtp_socket.c \
-    $(LIBETPAN_DIR)/src/low-level/smtp/mailsmtp_ssl.c \
-    $(LIBETPAN_DIR)/src/main/libetpan_version.c \
-    $(LIBETPAN_DIR)/src/driver/implementation/data-message/data_message_driver.c \
-    $(LIBETPAN_DIR)/src/driver/interface/maildriver.c \
-    $(LIBETPAN_DIR)/src/driver/interface/maildriver_tools.c \
-    $(LIBETPAN_DIR)/src/driver/interface/maildriver_types.c \
-    $(LIBETPAN_DIR)/src/driver/interface/maildriver_types_helper.c \
-    $(LIBETPAN_DIR)/src/driver/interface/mailfolder.c \
-    $(LIBETPAN_DIR)/src/driver/interface/mailmessage.c \
-    $(LIBETPAN_DIR)/src/driver/interface/mailmessage_tools.c \
-    $(LIBETPAN_DIR)/src/driver/interface/mailmessage_types.c \
-    $(LIBETPAN_DIR)/src/driver/interface/mailstorage.c \
-    $(LIBETPAN_DIR)/src/driver/interface/mailstorage_tools.c
+libetpan_src_files =\
+/src/data-types/base64.c \
+/src/data-types/carray.c \
+/src/data-types/charconv.c \
+/src/data-types/chash.c \
+/src/data-types/clist.c \
+/src/data-types/connect.c \
+/src/data-types/mail_cache_db.c \
+/src/data-types/maillock.c \
+/src/data-types/mailsasl.c \
+/src/data-types/mailsem.c \
+/src/data-types/mailstream.c \
+/src/data-types/mailstream_cancel.c \
+/src/data-types/mailstream_cfstream.c \
+/src/data-types/mailstream_compress.c \
+/src/data-types/mailstream_helper.c \
+/src/data-types/mailstream_low.c \
+/src/data-types/mailstream_socket.c \
+/src/data-types/mailstream_ssl.c \
+/src/data-types/md5.c \
+/src/data-types/mmapstring.c \
+/src/data-types/timeutils.c \
+/src/low-level/imap/acl.c \
+/src/low-level/imap/acl_parser.c \
+/src/low-level/imap/acl_sender.c \
+/src/low-level/imap/acl_types.c \
+/src/low-level/imap/annotatemore.c \
+/src/low-level/imap/annotatemore_parser.c \
+/src/low-level/imap/annotatemore_sender.c \
+/src/low-level/imap/annotatemore_types.c \
+/src/low-level/imap/condstore.c \
+/src/low-level/imap/condstore_types.c \
+/src/low-level/imap/enable.c \
+/src/low-level/imap/idle.c \
+/src/low-level/imap/mailimap.c \
+/src/low-level/imap/mailimap_compress.c \
+/src/low-level/imap/mailimap_extension.c \
+/src/low-level/imap/mailimap_helper.c \
+/src/low-level/imap/mailimap_id.c \
+/src/low-level/imap/mailimap_id_parser.c \
+/src/low-level/imap/mailimap_id_sender.c \
+/src/low-level/imap/mailimap_id_types.c \
+/src/low-level/imap/mailimap_keywords.c \
+/src/low-level/imap/mailimap_oauth2.c \
+/src/low-level/imap/mailimap_parser.c \
+/src/low-level/imap/mailimap_print.c \
+/src/low-level/imap/mailimap_sender.c \
+/src/low-level/imap/mailimap_socket.c \
+/src/low-level/imap/mailimap_sort.c \
+/src/low-level/imap/mailimap_sort_types.c \
+/src/low-level/imap/mailimap_ssl.c \
+/src/low-level/imap/mailimap_types.c \
+/src/low-level/imap/mailimap_types_helper.c \
+/src/low-level/imap/namespace.c \
+/src/low-level/imap/namespace_parser.c \
+/src/low-level/imap/namespace_sender.c \
+/src/low-level/imap/namespace_types.c \
+/src/low-level/imap/qresync.c \
+/src/low-level/imap/qresync_types.c \
+/src/low-level/imap/quota.c \
+/src/low-level/imap/quota_parser.c \
+/src/low-level/imap/quota_sender.c \
+/src/low-level/imap/quota_types.c \
+/src/low-level/imap/uidplus.c \
+/src/low-level/imap/uidplus_parser.c \
+/src/low-level/imap/uidplus_sender.c \
+/src/low-level/imap/uidplus_types.c \
+/src/low-level/imap/xgmlabels.c \
+/src/low-level/imap/xgmmsgid.c \
+/src/low-level/imap/xgmthrid.c \
+/src/low-level/imap/xlist.c \
+/src/low-level/imf/mailimf.c \
+/src/low-level/imf/mailimf_types.c \
+/src/low-level/imf/mailimf_types_helper.c \
+/src/low-level/imf/mailimf_write_file.c \
+/src/low-level/imf/mailimf_write_generic.c \
+/src/low-level/imf/mailimf_write_mem.c \
+/src/low-level/mime/mailmime.c \
+/src/low-level/mime/mailmime_content.c \
+/src/low-level/mime/mailmime_decode.c \
+/src/low-level/mime/mailmime_disposition.c \
+/src/low-level/mime/mailmime_types.c \
+/src/low-level/mime/mailmime_types_helper.c \
+/src/low-level/mime/mailmime_write_file.c \
+/src/low-level/mime/mailmime_write_generic.c \
+/src/low-level/mime/mailmime_write_mem.c \
+/src/low-level/nntp/newsnntp.c \
+/src/low-level/nntp/newsnntp_socket.c \
+/src/low-level/nntp/newsnntp_ssl.c \
+/src/low-level/pop3/mailpop3.c \
+/src/low-level/pop3/mailpop3_helper.c \
+/src/low-level/pop3/mailpop3_socket.c \
+/src/low-level/pop3/mailpop3_ssl.c \
+/src/low-level/smtp/mailsmtp.c \
+/src/low-level/smtp/mailsmtp_helper.c \
+/src/low-level/smtp/mailsmtp_oauth2.c \
+/src/low-level/smtp/mailsmtp_socket.c \
+/src/low-level/smtp/mailsmtp_ssl.c \
+/src/main/libetpan_version.c \
+/src/driver/implementation/data-message/data_message_driver.c \
+/src/driver/interface/maildriver.c \
+/src/driver/interface/maildriver_tools.c \
+/src/driver/interface/maildriver_types.c \
+/src/driver/interface/maildriver_types_helper.c \
+/src/driver/interface/mailfolder.c \
+/src/driver/interface/mailmessage.c \
+/src/driver/interface/mailmessage_tools.c \
+/src/driver/interface/mailmessage_types.c \
+/src/driver/interface/mailstorage.c \
+/src/driver/interface/mailstorage_tools.c
 libetpan_c_includes = \
-    $(LIBETPAN_DIR)/src \
-    $(LIBETPAN_DIR)/src/data-types \
-    $(LIBETPAN_DIR)/src/low-level \
-    $(LIBETPAN_DIR)/src/low-level/imap \
-    $(LIBETPAN_DIR)/src/low-level/imf \
-    $(LIBETPAN_DIR)/src/low-level/mime \
-    $(LIBETPAN_DIR)/src/low-level/nntp \
-    $(LIBETPAN_DIR)/src/low-level/pop3 \
-    $(LIBETPAN_DIR)/src/low-level/smtp \
-    $(LIBETPAN_DIR)/src/main \
-    $(LIBETPAN_DIR)/src/driver/implementation/data-message \
-    $(LIBETPAN_DIR)/src/driver/interface   
+/src \
+/src/data-types \
+/src/low-level \
+/src/low-level/imap \
+/src/low-level/imf \
+/src/low-level/mime \
+/src/low-level/nntp \
+/src/low-level/pop3 \
+/src/low-level/smtp \
+/src/main \
+/src/driver/implementation/data-message \
+/src/driver/interface
 LIBETPAN_LOCAL_C_INCLUDES = $(addprefix $(LIBETPAN_DIR), $(libetpan_c_includes)) \
-  $(LIBETPAN_DIR)/include $(LIBETPAN_DIR)/include/libetpan
+  $(LIBETPAN_DIR)/build-android/include $(LIBETPAN_DIR)/build-android/include/libetpan
 includes = \
     $(CURRENT_DIR)/../include \
     $(CTEMPLATE_PATH)/include \
@@ -175,13 +176,11 @@ includes = \
     $(LIBXML2_PATH)/include \
     $(TIDY_HTML5_PATH)/include \
     $(OPENSSL_PATH)/include \
+    $(CYRUS_SASL_PATH)/include \
     $(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/include \
     $(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)/include \
     $(addprefix $(src_dir)/, $(subdirs)) \
-    LIBETPAN_LOCAL_C_INCLUDES
-  
-#     $(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libcxx/include
-# $(ANDROID_NDK)/sources/cxx-stl/llvm-libc++abi/libcxxabi/include
+    $(LIBETPAN_LOCAL_C_INCLUDES)
 
 core_excludes = MCWin32.cpp MCStringWin32.cpp MCMainThreadWin32.cpp MCMainThreadGTK.cpp
 core_src_files := $(filter-out \
@@ -270,9 +269,8 @@ LOCAL_SRC_FILES := \
     $(pop_src_files) $(provider_src_files) $(renderer_src_files) $(rfc822_src_files) \
     $(security_src_files) $(smtp_src_files) $(zip_src_files) $(minizip_src_files) \
     $(async_imap_src_files) $(async_nntp_src_files) $(async_pop_src_files) $(async_smtp_src_files) \
-    $(libetpan_src_files) \
     $(LIBETPAN_LOCAL_SRC_FILES)
-# NDK_TOOLCHAIN_VERSION := clang
+NDK_TOOLCHAIN_VERSION := clang
 LOCAL_CPPFLAGS := -frtti
 LOCAL_CFLAGS := -DNOCRYPT -DHAVE_CONFIG_H=1
 # LOCAL_LDLIBS := -lz -llog \
