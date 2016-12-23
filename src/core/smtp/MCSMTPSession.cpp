@@ -565,15 +565,13 @@ void SMTPSession::login(ErrorCode * pError)
                                     MCUTF8(mPassword), NULL);
         } else if (authType() & AuthTypeSASLLogin && ((triedType & AuthTypeSASLLogin) == 0)) {
             triedType |= AuthTypeSASLLogin;
-            r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
-            /*
+//            r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
             r = mailesmtp_auth_sasl(mSmtp, "LOGIN",
                                     MCUTF8(mHostname),
                                     NULL,
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-                                    */
         }/* else if (authType() & AuthTypeSASLSRP) {
           triedType |= AuthTypeSASLSRP;
           r = mailesmtp_auth_sasl(mSmtp, "SRP",
