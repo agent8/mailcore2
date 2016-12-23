@@ -397,6 +397,7 @@ void IMAPSession::init()
     mYahooServer = false;
     mRamblerRuServer = false;
     mHermesServer = false;
+    mBigfootServer = false;
     mLastFetchedSequenceNumber = 0;
     mCurrentFolder = NULL;
     pthread_mutex_init(&mIdleLock, NULL);
@@ -729,6 +730,7 @@ void IMAPSession::connect(ErrorCode * pError)
         }
         mRamblerRuServer = (mHostname->locationOfString(MCSTR(".rambler.ru")) != -1);
         mHermesServer = (mWelcomeString->locationOfString(MCSTR("Hermes")) != -1);
+        mBigfootServer = (mWelcomeString->locationOfString(MCSTR("Bigfoot")) != -1);
     }
     
     mState = STATE_CONNECTED;
@@ -4598,6 +4600,10 @@ bool IMAPSession::isQResyncEnabled()
 bool IMAPSession::isIdentityEnabled()
 {
     if (!mIdentityEnabled)
+        return false;
+
+    // * ID ("name", "Bigfoot", "version", "1.0", "os", "Linux", "os-version", "2.6", "vendor", "Megamailservers.com", "author", "Derek Snider")
+    if (mBigfootServer)
         return false;
 
     if (mClientIdentity == NULL)

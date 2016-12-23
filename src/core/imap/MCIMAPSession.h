@@ -289,6 +289,7 @@ namespace mailcore {
         bool mYahooServer;
         bool mRamblerRuServer;
         bool mHermesServer;
+        bool mBigfootServer;
         
         unsigned int mLastFetchedSequenceNumber;
         String * mCurrentFolder;
