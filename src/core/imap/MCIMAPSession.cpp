@@ -4597,7 +4597,19 @@ bool IMAPSession::isQResyncEnabled()
 
 bool IMAPSession::isIdentityEnabled()
 {
-    return mIdentityEnabled;
+    if (!mIdentityEnabled)
+        return false;
+
+    if (mClientIdentity == NULL)
+        return false;
+
+    if (mClientIdentity->allInfoKeys() == NULL)
+        return false;
+
+    if (mClientIdentity->allInfoKeys()->count() <= 0)
+        return false;
+
+    return true;
 }
 
 bool IMAPSession::isXOAuthEnabled()
