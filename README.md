@@ -70,3 +70,22 @@ In this sample, we retrieved and printed a list of email headers from an IMAP se
 ## License ##
 
 MailCore 2 is BSD-Licensed.
+
+
+## Add by farmer
+
+compile libetpan and mailcore2
+
+1. install homebrew.
+2. brew install automake
+3. brew install ibtool*
+4. enter libetpan folder, cd build-android,./build.sh
+5. copy libetpan-android-6.zip and dependencies/cyrus-sasl/cyrus-sasl-android-4.zip to mailcore2/build-android/third-party. unzip these files.
+6. enter mailcore2 folder, cd build-android, ./build.sh
+7. finished.
+
+debug mailcore and libetpan
+1. enter troin source folder.
+2. modify build.gradle and mailcore2's android_All_libetpan.mk. Add your NDK PATH and your Target CPU.
+3. debug android programe by android studio.
+
