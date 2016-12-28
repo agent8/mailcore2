@@ -1571,27 +1571,45 @@ int String::locationOfString(String * occurrence)
 
 int String::locationOfStringCaseInsensitive(String * occurrence)
 {
-    UChar * location;
-    const UChar * substring = occurrence->unicodeCharacters();
-    
-    if (mUnicodeChars == NULL) {
+    if (mUnicodeChars == NULL || occurrence == NULL) {
         return -1;
     }
-    #if DISABLE_ICU
-        CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) mUnicodeChars, u_strlen(mUnicodeChars), kCFAllocatorNull);
-        CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
-        
-        CFRange range = CFStringFind(cfS, cfSubstring, kCFCompareCaseInsensitive);
-        CFRelease(cfSubstring);
-        CFRelease(cfS);
-        if (range.length == 0) {
-            return -1;
-        }
-        location = (UChar *) (mUnicodeChars + range.location);
-        return (int) (location - mUnicodeChars);
-    #else
-        return nstrcasestr((const char*)unicodeCharacters(), (const char*)(occurrence->unicodeCharacters()));
-    #endif
+    UChar * location = NULL;
+    
+#if DISABLE_ICU
+    const UChar * substring = occurrence->unicodeCharacters();
+    
+    CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) mUnicodeChars, u_strlen(mUnicodeChars), kCFAllocatorNull);
+    CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
+    
+    CFRange range = CFStringFind(cfS, cfSubstring, kCFCompareCaseInsensitive);
+    CFRelease(cfSubstring);
+    CFRelease(cfS);
+    if (range.length == 0) {
+        return -1;
+    }
+    location = (UChar *) (mUnicodeChars + range.location);
+    return (int) (location - mUnicodeChars);
+#else
+    //return nstrcasestr((const char*)unicodeCharacters(), (const char*)(occurrence->unicodeCharacters()));
+    String * thisLow = this->lowercaseString();
+    String * occuLow = occurrence->lowercaseString();
+    if (thisLow == NULL || occuLow == NULL ) {
+        return -1;
+    }
+    
+    const UChar * thisUChar = thisLow->unicodeCharacters();
+    const UChar * occuUChar = occuLow->unicodeCharacters();
+    if (thisUChar == NULL || occuUChar == NULL ) {
+        return -1;
+    }
+    
+    location = u_strstr(thisUChar, occuUChar);
+    if (location == NULL) {
+        return -1;
+    }
+    return (int) (location - thisUChar);
+#endif
 }
 
 int String::nstrcasestr(const char* str, const char* subStr){
