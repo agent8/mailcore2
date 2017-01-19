@@ -75,20 +75,15 @@ cd "$current_dir/third-party"
  download_dep "cyrus-sasl-android" $cyrus_sasl_build_version
 
 # Start building.
-ANDROID_PLATFORM=android-16
-archs="armeabi armeabi-v7a x86"
-for arch in $archs ; do
-  TARGET_ARCH_ABI=$arch
-  build
-done
-ANDROID_PLATFORM=android-24
-archs="arm64-v8a"
+ANDROID_PLATFORM=android-21
+archs="armeabi armeabi-v7a x86 arm64-v8a x86_64"
 for arch in $archs ; do
   TARGET_ARCH_ABI=$arch
   build
 done
 
-ANDROID_PLATFORM=android-16
+ANDROID_PLATFORM=android-25
+
 cd "$current_dir/../src/java"
 mkdir -p "$current_dir/bin"
 javac -d "$current_dir/bin" -source 1.6 -target 1.6 -classpath $ANDROID_SDK/platforms/$ANDROID_PLATFORM/android.jar com/libmailcore/*.java
