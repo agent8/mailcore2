@@ -649,6 +649,11 @@ void SMTPSession::login(ErrorCode * pError)
             return;
         }
         else if (r != MAILSMTP_NO_ERROR) {
+            if(mSmtp->response_code == 535
+               && strstr(mSmtp->response_buffer->str, "your password is too simple") != NULL) {
+                * pError = ErrorTiscaliSimplePassword;
+                return;
+            }
             if (triedType == authType()) {
                 // All types retied and failed.
                 * pError = ErrorAuthentication;
@@ -663,27 +668,6 @@ void SMTPSession::login(ErrorCode * pError)
             return;
         }
     }
-<<<<<<< HEAD
-=======
-    saveLastResponse();
-    if (r == MAILSMTP_ERROR_STREAM) {
-        * pError = ErrorConnection;
-        mShouldDisconnect = true;
-        return;
-    }
-    else if (r != MAILSMTP_NO_ERROR) {
-        if(mSmtp->response_code == 535
-           && strstr(mSmtp->response_buffer->str, "your password is too simple") != NULL) {
-            * pError = ErrorTiscaliSimplePassword;
-        } else {
-            * pError = ErrorAuthentication;
-        }
-        return;
-    }
-    
-    mState = STATE_LOGGEDIN;
-    * pError = ErrorNone;
->>>>>>> 260c910... Smtp error: 535 5.7.0 on Tiscali smtp server (#1520)
 }
 
 void SMTPSession::checkAccount(Address * from, ErrorCode * pError)
