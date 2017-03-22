@@ -31,7 +31,7 @@
 
 using namespace mailcore;
 
-#define LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
+//#define LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
 
 class LoadByChunkProgress : public Object, public IMAPProgressCallback {
 public:
