@@ -17,6 +17,14 @@ extern "C" {
 JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPOperation_errorCode
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_libmailcore_IMAPOperation
+ * Method:    lastResponse
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_libmailcore_IMAPOperation_lastResponse
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif

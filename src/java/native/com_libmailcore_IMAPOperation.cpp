@@ -19,4 +19,13 @@ JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPOperation_errorCode
     return result;
 }
 
+JNIEXPORT jstring JNICALL Java_com_libmailcore_IMAPOperation_lastResponse
+  (JNIEnv * env, jobject obj)
+{
+  MC_POOL_BEGIN;
+  jstring result = (jstring) MC_TO_JAVA(MC_JAVA_NATIVE_INSTANCE->lastResponse());
+  MC_POOL_END;
+  return result;
+}
+
 MC_JAVA_BRIDGE

@@ -13,6 +13,8 @@ public class IMAPOperation extends Operation {
         return new MailException(errorCode());
     }
 
+    public native String lastResponse();
+
     private native int errorCode();
     
     /**

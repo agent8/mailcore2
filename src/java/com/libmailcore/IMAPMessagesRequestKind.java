@@ -34,4 +34,8 @@ public class IMAPMessagesRequestKind {
     public final static int IMAPMessagesRequestKindExtraHeaders = 1 << 9;
     /** Requests the size of the messages. */
     public final static int IMAPMessagesRequestKindSize = 1 << 10;
+    /** Plain body of message */
+    public final static int IMAPMessagesRequestKindPlainBody      = 1 << 11;
+    /** Bcc field, FullHeaders not include Bcc */
+    public final static int IMAPMessagesRequestKindHeaderBcc      = 1 << 12;
 }
