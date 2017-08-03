@@ -477,6 +477,7 @@ void SMTPSession::login(ErrorCode * pError)
 {
     int r;
     unsigned int triedType = 0;
+    int firstTry = 1;
 
     if ((authType() != AuthTypeXOAuth2) && (authType() != AuthTypeXOAuth2Outlook) &&
         ((username() == NULL) || (password() == NULL))) {
@@ -534,11 +535,7 @@ void SMTPSession::login(ErrorCode * pError)
     }
     
     triedType = 0;
-    #if __APPLE__
-        while (TRUE) {
-    #else
-        while(true){
-    #endif
+    while (1) {
         if (authType() & AuthTypeSASLCRAMMD5 && ((triedType & AuthTypeSASLCRAMMD5) == 0)) {
             triedType |= AuthTypeSASLCRAMMD5;
             r = mailesmtp_auth_sasl(mSmtp, "CRAM-MD5",
@@ -555,6 +552,9 @@ void SMTPSession::login(ErrorCode * pError)
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
+        } else if (authType() & AuthTypeSASLLogin && ((triedType & AuthTypeSASLLogin) == 0)) {
+            triedType |= AuthTypeSASLLogin;
+            r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
         } else if (authType() & AuthTypeSASLPlain && ((triedType & AuthTypeSASLPlain) == 0)) {
             triedType |= AuthTypeSASLPlain;
             r = mailesmtp_auth_sasl(mSmtp, "PLAIN",
@@ -563,49 +563,7 @@ void SMTPSession::login(ErrorCode * pError)
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-        } else if (authType() & AuthTypeSASLLogin && ((triedType & AuthTypeSASLLogin) == 0)) {
-            triedType |= AuthTypeSASLLogin;
-//            r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
-            r = mailesmtp_auth_sasl(mSmtp, "LOGIN",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL);
-        }/* else if (authType() & AuthTypeSASLSRP) {
-          triedType |= AuthTypeSASLSRP;
-          r = mailesmtp_auth_sasl(mSmtp, "SRP",
-          MCUTF8(mHostname),
-          NULL,
-          NULL,
-          MCUTF8(mUsername), MCUTF8(mUsername),
-          MCUTF8(mPassword), NULL);
-          } else if (authType() & AuthTypeSASLGSSAPI) {
-          triedType |= AuthTypeSASLGSSAPI;
-          r = mailesmtp_auth_sasl(mSmtp, "GSSAPI",
-          MCUTF8(mHostname),
-          NULL,
-          NULL,
-          MCUTF8(mUsername), MCUTF8(mUsername),
-          MCUTF8(mPassword), NULL);
-          } else if (authType() & AuthTypeSASLNTLM) {
-          triedType |= AuthTypeSASLNTLM;
-          r = mailesmtp_auth_sasl(mSmtp, "NTLM",
-          MCUTF8(mHostname),
-          NULL,
-          NULL,
-          MCUTF8(mUsername), MCUTF8(mUsername),
-          MCUTF8(mPassword), NULL);
-          } else if (authType() & AuthTypeSASLKerberosV4) {
-          triedType |= AuthTypeSASLKerberosV4;
-          r = mailesmtp_auth_sasl(mSmtp, "KERBEROS_V4",
-          MCUTF8(mHostname),
-          NULL,
-          NULL,
-          MCUTF8(mUsername), MCUTF8(mUsername),
-          MCUTF8(mPassword), NULL);
-          } */
-        else if (authType() & AuthTypeXOAuth2 && ((triedType & AuthTypeXOAuth2) == 0)) {
+        } else if (authType() & AuthTypeXOAuth2 && ((triedType & AuthTypeXOAuth2) == 0)) {
             const char * utf8Username = MCUTF8(mUsername);
             triedType |= AuthTypeXOAuth2;
             if (utf8Username == NULL) {
@@ -633,25 +591,26 @@ void SMTPSession::login(ErrorCode * pError)
             }
         } else {
             triedType = authType();// End try
-            r = mailesmtp_auth_sasl(mSmtp, "LOGIN",
-                                    MCUTF8(mHostname),
-                                    NULL,
-                                    NULL,
-                                    MCUTF8(mUsername), MCUTF8(mUsername),
-                                    MCUTF8(mPassword), NULL);
+            r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
         }
         
-        saveLastResponse();
-        
+        if (firstTry) {
+            saveLastResponse();
+        }
+
         if (r == MAILSMTP_ERROR_STREAM) {
-            * pError = ErrorConnection;
-            mShouldDisconnect = true;
+            if (firstTry) {
+                * pError = ErrorConnection;
+                mShouldDisconnect = true;
+            } else {
+                * pError = ErrorAuthentication;
+            }
             return;
         }
         else if (r != MAILSMTP_NO_ERROR) {
             if(mSmtp->response_code == 535
                && strstr(mSmtp->response_buffer->str, "your password is too simple") != NULL) {
-                * pError = ErrorTiscaliSimplePassword;
+                * pError = ErrorAuthentication;
                 return;
             }
             if (triedType == authType()) {
@@ -660,6 +619,7 @@ void SMTPSession::login(ErrorCode * pError)
                 return;
             } else {
                 // try next auth type
+                firstTry = 0;
                 continue;
             }
         } else {
