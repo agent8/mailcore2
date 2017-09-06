@@ -332,8 +332,6 @@ namespace mailcore {
                             IMAPProgressCallback * progressCallback, ErrorCode * pError);
         void storeFlagsAndCustomFlags(String * folder, bool identifier_is_uid, IndexSet * identifiers,
                                       IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags, ErrorCode * pError);
-        void storeFlagsAndCustomFlags2(String * folder, bool identifier_is_uid, IndexSet * identifiers,
-                                       IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags, ErrorCode * pError);
         Data * fetchMessageAttachment(String * folder, bool identifier_is_uid,
                                       uint32_t identifier, String * partID,
                                       Encoding encoding, IMAPProgressCallback * progressCallback, ErrorCode * pError);

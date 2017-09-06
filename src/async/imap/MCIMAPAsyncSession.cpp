@@ -391,6 +391,7 @@ IMAPAsyncConnection * IMAPAsyncSession::matchingSessionForFolder(String * folder
     // otherwise returns existant session with minumum size of queue or create new one.
     return availableSession();
 }
+
 IMAPAsyncConnection * IMAPAsyncSession::sessionWithMinQueue(bool filterByFolder, String * folder)
 {
     IMAPAsyncConnection * chosenSession = NULL;
@@ -645,7 +646,6 @@ IMAPFetchContentOperation * IMAPAsyncSession::fetchMessageAttachmentByUIDOperati
     return op;
 }
 
-
 IMAPFetchContentToFileOperation * IMAPAsyncSession::fetchMessageAttachmentToFileByUIDOperation(
                                                                                    String * folder, uint32_t uid, String * partID,
                                                                                    Encoding encoding,
@@ -663,6 +663,7 @@ IMAPFetchContentToFileOperation * IMAPAsyncSession::fetchMessageAttachmentToFile
     op->autorelease();
     return op;
 }
+
 IMAPFetchContentOperation * IMAPAsyncSession::fetchMessageByNumberOperation(String * folder, uint32_t number, bool urgent)
 {
     IMAPFetchContentOperation * op = new IMAPFetchContentOperation();

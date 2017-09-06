@@ -31,8 +31,6 @@
 
 using namespace mailcore;
 
-//#define LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
-
 class LoadByChunkProgress : public Object, public IMAPProgressCallback {
 public:
     LoadByChunkProgress();
@@ -659,11 +657,16 @@ void IMAPSession::connect(ErrorCode * pError)
     int r;
     
     setup();
-    
+
     MCLog("connect %s", MCUTF8DESC(this));
-    
+
     MCAssert(mState == STATE_DISCONNECTED);
-    
+
+    if (mHostname == NULL) {
+        * pError = ErrorConnection;
+        goto close;
+    }
+
     switch (mConnectionType) {
         case ConnectionTypeStartTLS:
         MCLog("STARTTLS connect");
@@ -937,6 +940,12 @@ void IMAPSession::login(ErrorCode * pError)
         if (mIsGmail && response->locationOfStringCaseInsensitive(MCSTR("bandwidth limits")) != -1) {
             * pError = ErrorGmailExceededBandwidthLimit;
         }
+        else if (response->locationOfString(MCSTR("not enabled for IMAP use")) != -1) {
+            * pError = ErrorGmailIMAPNotEnabled;
+        }
+        else if (response->locationOfString(MCSTR("IMAP access is disabled")) != -1) {
+            * pError = ErrorGmailIMAPNotEnabled;
+        }
         else if (mIsGmail && response->locationOfStringCaseInsensitive(MCSTR("Too many simultaneous connections")) != -1) {
             * pError = ErrorGmailTooManySimultaneousConnections;
         }
@@ -951,6 +960,13 @@ void IMAPSession::login(ErrorCode * pError)
         }
         else if (response->locationOfStringCaseInsensitive(MCSTR("OCF12")) != -1) {
             * pError = ErrorYahooUnavailable;
+        }
+        else if (response->locationOfString(MCSTR("Login to your account via a web browser")) != -1) {
+            * pError = ErrorOutlookLoginViaWebBrowser;
+        }
+        else if (response->locationOfString(MCSTR("Service temporarily unavailable")) != -1) {
+            mShouldDisconnect = true;
+            * pError = ErrorConnection;
         }
         /*
          Full error list: https://docs.google.com/spreadsheets/d/1dGLOjZtv4OqFj-ENW9CdN1Q-QURuZQwCpvYn8q5_NOA/edit#gid=1970104932
@@ -972,7 +988,8 @@ void IMAPSession::login(ErrorCode * pError)
                       response->locationOfStringCaseInsensitive(MCSTR("Lookup")) != -1
                      )
                  )
-                 ){
+                 )
+        {
             * pError = ErrorAuthentication;
         }
         else if (response->locationOfString(MCSTR("Login to your account via a web browser")) != -1) {
@@ -3946,162 +3963,12 @@ void IMAPSession::storeFlagsByUID(String * folder, IndexSet * uids, IMAPStoreFla
 
 void IMAPSession::storeFlagsAndCustomFlagsByUID(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags, ErrorCode * pError)
 {
-    storeFlagsAndCustomFlags2(folder, true, uids, kind, flags, customFlags, pError);
+    storeFlagsAndCustomFlags(folder, true, uids, kind, flags, customFlags, pError);
 }
 
+
+//Store Deleted flag separately (fro EC-2220)
 void IMAPSession::storeFlagsAndCustomFlags(String * folder, bool identifier_is_uid, IndexSet * identifiers,
-                                                      IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags, ErrorCode * pError)
-{
-    struct mailimap_set * imap_set;
-    struct mailimap_store_att_flags * store_att_flags;
-    struct mailimap_flag_list * flag_list;
-    int r;
-    clist * setList;
-
-    selectIfNeeded(folder, pError);
-    if (* pError != ErrorNone)
-        return;
-
-    imap_set = setFromIndexSet(identifiers);
-    if (clist_count(imap_set->set_list) == 0) {
-        mailimap_set_free(imap_set);
-        return;
-    }
-
-    setList = splitSet(imap_set, 50);
-
-    flag_list = mailimap_flag_list_new_empty();
-    if ((flags & MessageFlagSeen) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_seen();
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagAnswered) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_answered();
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagFlagged) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_flagged();
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagDeleted) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_deleted();
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagDraft) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_draft();
-        mailimap_flag_list_add(flag_list, f);
-    }
-    //https://tools.ietf.org/html/rfc5788#section-3.4.2
-    if ((flags & MessageFlagMDNSent) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_flag_keyword(strdup("$MDNSent"));
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagForwarded) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_flag_keyword(strdup("$Forwarded"));
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagSubmitPending) != 0) {
-        struct mailimap_flag * f;
-
-        f = mailimap_flag_new_flag_keyword(strdup("$SubmitPending"));
-        mailimap_flag_list_add(flag_list, f);
-    }
-    if ((flags & MessageFlagSubmitted) != 0) {
-        struct mailimap_flag * f;
-        
-        f = mailimap_flag_new_flag_keyword(strdup("$Submitted"));
-        mailimap_flag_list_add(flag_list, f);
-    }
-    
-    if (customFlags != NULL) {
-        for (unsigned int i = 0 ; i < customFlags->count() ; i ++) {
-            struct mailimap_flag * f;
-            String * customFlag = (String *) customFlags->objectAtIndex(i);
-            
-            f = mailimap_flag_new_flag_keyword(strdup(customFlag->UTF8Characters()));
-            mailimap_flag_list_add(flag_list, f);
-        }
-    }
-
-    store_att_flags = NULL;
-    for(clistiter * iter = clist_begin(setList) ; iter != NULL ; iter = clist_next(iter)) {
-        struct mailimap_set * current_set;
-
-        current_set = (struct mailimap_set *) clist_content(iter);
-
-        switch (kind) {
-            case IMAPStoreFlagsRequestKindRemove:
-            store_att_flags = mailimap_store_att_flags_new_remove_flags_silent(flag_list);
-            break;
-            case IMAPStoreFlagsRequestKindAdd:
-            store_att_flags = mailimap_store_att_flags_new_add_flags_silent(flag_list);
-            break;
-            case IMAPStoreFlagsRequestKindSet:
-            store_att_flags = mailimap_store_att_flags_new_set_flags_silent(flag_list);
-            break;
-        }
-
-#ifdef LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
-        if (mQipServer) {
-            mailimap_set_qip_workaround_enabled(mImap, 1);
-        }
-#endif
-
-        if (identifier_is_uid) {
-            r = mailimap_uid_store(mImap, current_set, store_att_flags);
-        }
-        else {
-            r = mailimap_store(mImap, current_set, store_att_flags);
-        }
-
-#ifdef LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
-        mailimap_set_qip_workaround_enabled(mImap, 0);
-#endif
-
-        if (r == MAILIMAP_ERROR_STREAM) {
-            mShouldDisconnect = true;
-            * pError = ErrorConnection;
-            goto release;
-        }
-        else if (r == MAILIMAP_ERROR_PARSE) {
-            mShouldDisconnect = true;
-            * pError = ErrorParse;
-            goto release;
-        }
-        else if (hasError(r)) {
-            * pError = ErrorStore;
-            goto release;
-        }
-    }
-    * pError = ErrorNone;
-
-    release:
-    for(clistiter * iter = clist_begin(setList) ; iter != NULL ; iter = clist_next(iter)) {
-        struct mailimap_set * current_set;
-
-        current_set = (struct mailimap_set *) clist_content(iter);
-        mailimap_set_free(current_set);
-    }
-    clist_free(setList);
-    mailimap_store_att_flags_free(store_att_flags);
-    mailimap_set_free(imap_set);
-}
-//Store Deleted flag separately
-void IMAPSession::storeFlagsAndCustomFlags2(String * folder, bool identifier_is_uid, IndexSet * identifiers,
                                                       IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags, ErrorCode * pError)
 {
     struct mailimap_set * imap_set;
@@ -4223,12 +4090,23 @@ void IMAPSession::storeFlagsAndCustomFlags2(String * folder, bool identifier_is_
             store_att_flags = mailimap_store_att_flags_new_set_flags_silent(flag_list);
             break;
         }
+
+#ifdef LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
+        if (mQipServer) {
+            mailimap_set_qip_workaround_enabled(mImap, 1);
+        }
+#endif
+
         if (identifier_is_uid) {
             r = mailimap_uid_store(mImap, current_set, store_att_flags);
         }
         else {
             r = mailimap_store(mImap, current_set, store_att_flags);
         }
+
+#ifdef LIBETPAN_HAS_MAILIMAP_QIP_WORKAROUND
+        mailimap_set_qip_workaround_enabled(mImap, 0);
+#endif
 
         if (r == MAILIMAP_ERROR_STREAM) {
             mShouldDisconnect = true;
@@ -4312,7 +4190,7 @@ void IMAPSession::storeFlagsByNumber(String * folder, IndexSet * numbers, IMAPSt
 
 void IMAPSession::storeFlagsAndCustomFlagsByNumber(String * folder, IndexSet * numbers, IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags, ErrorCode * pError)
 {
-    storeFlagsAndCustomFlags2(folder, false, numbers, kind, flags, customFlags, pError);
+    storeFlagsAndCustomFlags(folder, false, numbers, kind, flags, customFlags, pError);
 }
 
 void IMAPSession::storeLabelsByUID(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, Array * labels, ErrorCode * pError)

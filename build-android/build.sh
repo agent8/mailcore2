@@ -83,7 +83,6 @@ for arch in $archs ; do
 done
 
 ANDROID_PLATFORM=android-25
-
 cd "$current_dir/../src/java"
 mkdir -p "$current_dir/bin"
 javac -d "$current_dir/bin" -source 1.6 -target 1.6 -classpath $ANDROID_SDK/platforms/$ANDROID_PLATFORM/android.jar com/libmailcore/*.java

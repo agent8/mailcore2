@@ -487,7 +487,7 @@ void SMTPSession::login(ErrorCode * pError)
     }
     
     if (authType() == 0) {
-        
+
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
         if (0) {
         }
@@ -534,9 +534,16 @@ void SMTPSession::login(ErrorCode * pError)
         }
     }
     
+    AuthType correctedAuthType = authType();
+    if (mOutlookServer) {
+        if (correctedAuthType == AuthTypeXOAuth2) {
+            correctedAuthType = AuthTypeXOAuth2Outlook;
+        }
+    }
+    
     triedType = 0;
     while (1) {
-        if (authType() & AuthTypeSASLCRAMMD5 && ((triedType & AuthTypeSASLCRAMMD5) == 0)) {
+        if (correctedAuthType & AuthTypeSASLCRAMMD5 && ((triedType & AuthTypeSASLCRAMMD5) == 0)) {
             triedType |= AuthTypeSASLCRAMMD5;
             r = mailesmtp_auth_sasl(mSmtp, "CRAM-MD5",
                                     MCUTF8(mHostname),
@@ -544,7 +551,7 @@ void SMTPSession::login(ErrorCode * pError)
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-        } else if (authType() & AuthTypeSASLDIGESTMD5 && ((triedType & AuthTypeSASLDIGESTMD5) == 0)) {
+        } else if (correctedAuthType & AuthTypeSASLDIGESTMD5 && ((triedType & AuthTypeSASLDIGESTMD5) == 0)) {
             triedType |= AuthTypeSASLDIGESTMD5;
             r = mailesmtp_auth_sasl(mSmtp, "DIGEST-MD5",
                                     MCUTF8(mHostname),
@@ -552,10 +559,10 @@ void SMTPSession::login(ErrorCode * pError)
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-        } else if (authType() & AuthTypeSASLLogin && ((triedType & AuthTypeSASLLogin) == 0)) {
+        } else if (correctedAuthType & AuthTypeSASLLogin && ((triedType & AuthTypeSASLLogin) == 0)) {
             triedType |= AuthTypeSASLLogin;
             r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
-        } else if (authType() & AuthTypeSASLPlain && ((triedType & AuthTypeSASLPlain) == 0)) {
+        } else if (correctedAuthType & AuthTypeSASLPlain && ((triedType & AuthTypeSASLPlain) == 0)) {
             triedType |= AuthTypeSASLPlain;
             r = mailesmtp_auth_sasl(mSmtp, "PLAIN",
                                     MCUTF8(mHostname),
@@ -563,7 +570,7 @@ void SMTPSession::login(ErrorCode * pError)
                                     NULL,
                                     MCUTF8(mUsername), MCUTF8(mUsername),
                                     MCUTF8(mPassword), NULL);
-        } else if (authType() & AuthTypeXOAuth2 && ((triedType & AuthTypeXOAuth2) == 0)) {
+        } else if (correctedAuthType & AuthTypeXOAuth2 && ((triedType & AuthTypeXOAuth2) == 0)) {
             const char * utf8Username = MCUTF8(mUsername);
             triedType |= AuthTypeXOAuth2;
             if (utf8Username == NULL) {
@@ -576,7 +583,7 @@ void SMTPSession::login(ErrorCode * pError)
             else {
                 r = mailsmtp_oauth2_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
             }
-        } else if (authType() & AuthTypeXOAuth2Outlook && ((triedType & AuthTypeXOAuth2Outlook) == 0)) {
+        } else if (correctedAuthType & AuthTypeXOAuth2Outlook && ((triedType & AuthTypeXOAuth2Outlook) == 0)) {
             const char * utf8Username = MCUTF8(mUsername);
             triedType |= AuthTypeXOAuth2Outlook;
             if (utf8Username == NULL) {
@@ -590,7 +597,7 @@ void SMTPSession::login(ErrorCode * pError)
                 r = mailsmtp_oauth2_outlook_authenticate(mSmtp, utf8Username, MCUTF8(mOAuth2Token));
             }
         } else {
-            triedType = authType();// End try
+            triedType = correctedAuthType;// End try
             r = mailsmtp_auth_login(mSmtp, MCUTF8(mUsername),MCUTF8(mPassword));
         }
         
@@ -613,7 +620,7 @@ void SMTPSession::login(ErrorCode * pError)
                 * pError = ErrorAuthentication;
                 return;
             }
-            if (triedType == authType()) {
+            if (triedType == correctedAuthType) {
                 // All types retied and failed.
                 * pError = ErrorAuthentication;
                 return;

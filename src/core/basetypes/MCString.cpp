@@ -2541,11 +2541,7 @@ String * String::stringWithMUTF7Data(Data * data)
 String * String::mUTF7EncodedString()
 {
     Data * data = mUTF7EncodedData();
-    #if __APPLE__
-    return data->stringWithCharset("ascii");
-    #else
     return data->stringWithCharset("us-ascii");
-    #endif
 }
 
 String * String::mUTF7DecodedString()

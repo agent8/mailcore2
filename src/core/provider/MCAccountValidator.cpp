@@ -378,7 +378,15 @@ void AccountValidator::checkNextHostDone()
     ErrorCode error = ErrorNone;
     
     if (mCurrentServiceTested == SERVICE_IMAP) {
-        mImapError = ((IMAPOperation *)mOperation)->error();
+        if (mImapError == ErrorAuthentication) {
+            if (((IMAPOperation *)mOperation)->error() != ErrorConnection) {
+                mImapError = ((IMAPOperation *)mOperation)->error();
+            }
+        }
+        else {
+            mImapError = ((IMAPOperation *)mOperation)->error();
+        }
+        MCLog("checking imap done %i\n", mImapError);
         error = mImapError;
         mImapSession->setConnectionLogger(NULL);
         MC_SAFE_RELEASE(mImapSession);
