@@ -391,7 +391,6 @@ IMAPAsyncConnection * IMAPAsyncSession::matchingSessionForFolder(String * folder
     // otherwise returns existant session with minumum size of queue or create new one.
     return availableSession();
 }
-
 IMAPAsyncConnection * IMAPAsyncSession::sessionWithMinQueue(bool filterByFolder, String * folder)
 {
     IMAPAsyncConnection * chosenSession = NULL;
