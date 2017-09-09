@@ -21,7 +21,6 @@
 		27780C3219CF9CD100C77E44 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6ED6D1917A1919500A4A14C /* Security.framework */; };
 		27780C3619CF9CD100C77E44 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = 84AF9E7D172DBAF600E60AA3 /* providers.json */; };
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
-		27780C3E19CF9DDF00C77E44 /* libMailCore-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BA2C191705F4E6003F0E9E /* libMailCore-ios.a */; };
 		27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
 		3D09FB251C2497CE0046685A /* MCIMAPCheckAccountOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
@@ -476,6 +475,8 @@
 		3D9C2E351B96637E008F57C6 /* MCOIMAPQuotaOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */; };
 		3D9C2E361B96637E008F57C6 /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
 		3DE0D1F31C1B5C4B005CFA6D /* MCOIMAPCheckAccountOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
+		3DF679991F60FB3C00D4BDC4 /* libEdo Mailcore2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9C2E3C1B96637E008F57C6 /* libEdo Mailcore2.a */; };
+		3DF6799B1F60FB8F00D4BDC4 /* libetpan-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D35B5F1C8A832700D3EC11 /* libetpan-ios.a */; };
 		4B3C1BDE17ABF309008BBF4C /* MCOIMAPQuotaOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */; };
 		4B3C1BE117ABF4BC008BBF4C /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
 		4B3C1BE217ABFF7C008BBF4C /* MCOIMAPQuotaOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B3C1BDC17ABF306008BBF4C /* MCOIMAPQuotaOperation.h */; };
@@ -500,13 +501,6 @@
 		5C123A9B1D65C2B800102898 /* MCDataDecoderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811320AE1D02388A004B7ECF /* MCDataDecoderUtils.cpp */; };
 		5C123A9C1D65C2C300102898 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
 		5C123A9D1D65C2C300102898 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
-		810DB78E1C68F4F000017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
-		810DB7921C68F50B00017B12 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
-		811320B01D02388A004B7ECF /* MCDataDecoderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811320AE1D02388A004B7ECF /* MCDataDecoderUtils.cpp */; };
-		81416BDF1CF8BB18000A4299 /* MCDataStreamDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81416BDC1CF8BB17000A4299 /* MCDataStreamDecoder.cpp */; };
-		817FA5271C69013C006146BD /* MCIMAPFetchContentToFileOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 810DB78C1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.h */; };
-		636F55A01BCFA9A600AA00DB /* MailCore.h in Headers */ = {isa = PBXBuildFile; fileRef = C64EA7A4169F2A3E00778456 /* MailCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		636F55A11BCFA9A600AA00DB /* MailCore.h in Headers */ = {isa = PBXBuildFile; fileRef = C64EA7A4169F2A3E00778456 /* MailCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		810DB78D1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
 		810DB78E1C68F4F000017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
 		810DB7911C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
@@ -1409,10 +1403,6 @@
 		C6EFFBC9182BBF5700CFF656 /* MCIMAPMultiDisconnectOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6EFFBC6182BBF5700CFF656 /* MCIMAPMultiDisconnectOperation.cpp */; };
 		C6EFFBCC1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6EFFBCB1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.mm */; };
 		C6EFFBCD1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6EFFBCB1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.mm */; };
-		C6F49A8F1C8E96D00087F4B7 /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
-		C6F49A901C8E96D70087F4B7 /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
-		C6F49A931C8EA1450087F4B7 /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F49A921C8EA1450087F4B7 /* MCOIMAPCheckAccountOperation.mm */; };
-		C6F49A941C8EA1450087F4B7 /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F49A921C8EA1450087F4B7 /* MCOIMAPCheckAccountOperation.mm */; };
 		C6F5B9E216FEA1E800D9DABD /* MCOIMAPMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F5B9E116FEA1E800D9DABD /* MCOIMAPMessage.mm */; };
 		C6F5B9E516FEA27500D9DABD /* MCOIMAPMessagePart.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F5B9E416FEA27500D9DABD /* MCOIMAPMessagePart.mm */; };
 		C6F5B9E816FEA28600D9DABD /* MCOIMAPMultipart.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F5B9E716FEA28600D9DABD /* MCOIMAPMultipart.mm */; };
@@ -1486,12 +1476,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		27780C3F19CF9DE600C77E44 /* PBXContainerItemProxy */ = {
+		3DF6796F1F60EAEC00D4BDC4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C64EA52E169E772200778456 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = C6BA2B091705F4E6003F0E9E;
-			remoteInfo = "static mailcore2 ios";
+			remoteGlobalIDString = 3D9C2C6E1B96637E008F57C6;
+			remoteInfo = "Edo Mailcore2";
+		};
+		3DF6798A1F60F40600D4BDC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C682E21815B315EF00BE9DA7;
+			remoteInfo = "libetpan ios";
 		};
 		A1D35B5A1C8A832700D3EC11 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1512,13 +1509,6 @@
 			containerPortal = A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C682E2C015B315EF00BE9DA7;
-			remoteInfo = "libetpan ios";
-		};
-		A1D35B601C8A848100D3EC11 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C682E21815B315EF00BE9DA7;
 			remoteInfo = "libetpan ios";
 		};
 		C600B61E1A244BD8000728F1 /* PBXContainerItemProxy */ = {
@@ -2089,12 +2079,6 @@
 				C6D4FD3519FA9F4D001F7E01 /* MCONNTPFetchServerTimeOperation.h in CopyFiles */,
 				C6D4FD3319FA9EB3001F7E01 /* MCONNTPFetchOverviewOperation.h in CopyFiles */,
 				C6D4FD3219FA9E8D001F7E01 /* MCNNTPFetchOverviewOperation.h in CopyFiles */,
-				849F53D817F28443002D417F /* MCOPOPNoopOperation.h in CopyFiles */,
-				849F53D917F28443002D417F /* MCIMAPNoopOperation.h in CopyFiles */,
-				849F53DA17F28443002D417F /* MCPOPNoopOperation.h in CopyFiles */,
-				849F53DB17F28443002D417F /* MCSMTPNoopOperation.h in CopyFiles */,
-				184805441BE751AF001B80AA /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
-				18707E221BE24E0800B494C3 /* MCIMAPCustomCommandOperation.h in CopyFiles */,
 				84915BB8199C4B0400EDDED9 /* MCNNTP.h in CopyFiles */,
 				84D7377C199C00F7005124E5 /* MCONNTP.h in CopyFiles */,
 				84D7374A199BFB92005124E5 /* MCAsyncNNTP.h in CopyFiles */,
@@ -2941,7 +2925,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27780C3E19CF9DDF00C77E44 /* libMailCore-ios.a in Frameworks */,
+				3DF679991F60FB3C00D4BDC4 /* libEdo Mailcore2.a in Frameworks */,
 				27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */,
 				27780C3219CF9CD100C77E44 /* Security.framework in Frameworks */,
 			);
@@ -2951,6 +2935,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DF6799B1F60FB8F00D4BDC4 /* libetpan-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4033,7 +4018,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				27780C4019CF9DE600C77E44 /* PBXTargetDependency */,
+				3DF679701F60EAEC00D4BDC4 /* PBXTargetDependency */,
 			);
 			name = "mailcore ios";
 			productName = "mailcore framework";
@@ -4053,7 +4038,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A1D35B611C8A848100D3EC11 /* PBXTargetDependency */,
+				3DF6798B1F60F40600D4BDC4 /* PBXTargetDependency */,
 			);
 			name = "Edo Mailcore2";
 			productName = mailcore;
@@ -5211,15 +5196,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		27780C4019CF9DE600C77E44 /* PBXTargetDependency */ = {
+		3DF679701F60EAEC00D4BDC4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C6BA2B091705F4E6003F0E9E /* static mailcore2 ios */;
-			targetProxy = 27780C3F19CF9DE600C77E44 /* PBXContainerItemProxy */;
+			target = 3D9C2C6E1B96637E008F57C6 /* Edo Mailcore2 */;
+			targetProxy = 3DF6796F1F60EAEC00D4BDC4 /* PBXContainerItemProxy */;
 		};
-		A1D35B611C8A848100D3EC11 /* PBXTargetDependency */ = {
+		3DF6798B1F60F40600D4BDC4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "libetpan ios";
-			targetProxy = A1D35B601C8A848100D3EC11 /* PBXContainerItemProxy */;
+			targetProxy = 3DF6798A1F60F40600D4BDC4 /* PBXContainerItemProxy */;
 		};
 		C600B61F1A244BD8000728F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5261,7 +5246,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
@@ -5295,7 +5280,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
@@ -5491,7 +5476,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
@@ -5597,7 +5582,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEAD_CODE_STRIPPING = NO;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"",
@@ -5627,7 +5612,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"",
@@ -5657,7 +5642,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEAD_CODE_STRIPPING = NO;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"",
