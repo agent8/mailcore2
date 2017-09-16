@@ -487,7 +487,6 @@ void SMTPSession::login(ErrorCode * pError)
     }
     
     if (authType() == 0) {
-
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
         if (0) {
         }
@@ -496,50 +495,36 @@ void SMTPSession::login(ErrorCode * pError)
             setAuthType((AuthType) (authType() | AuthTypeSASLDIGESTMD5));
         }
 #endif
-        
         if (mSmtp->auth & MAILSMTP_AUTH_CRAM_MD5) {
             setAuthType((AuthType) (authType() | AuthTypeSASLCRAMMD5));
         }
-        
+        if (mSmtp->auth & MAILSMTP_AUTH_GSSAPI) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLGSSAPI));
+         }
+        if (mSmtp->auth & MAILSMTP_AUTH_SRP) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLSRP));
+         }
+        if (mSmtp->auth & MAILSMTP_AUTH_NTLM) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLNTLM));
+         }
+        else if (mSmtp->auth & MAILSMTP_AUTH_KERBEROS_V4) {
+         setAuthType((AuthType) (authType() | AuthTypeSASLKerberosV4));
+         }
         if (mSmtp->auth & MAILSMTP_AUTH_PLAIN) {
             setAuthType((AuthType) (authType() | AuthTypeSASLPlain));
         }
-        
         if (mSmtp->auth & MAILSMTP_AUTH_LOGIN) {
             setAuthType((AuthType) (authType() | AuthTypeSASLLogin));
-        }
-        
-        // Libetpan only support MD5, PLAIN, Login now.
-        /*
-         if (mSmtp->auth & MAILSMTP_AUTH_GSSAPI) {
-         setAuthType((AuthType) (authType() | AuthTypeSASLGSSAPI));
-         }
-         
-         if (mSmtp->auth & MAILSMTP_AUTH_SRP) {
-         setAuthType((AuthType) (authType() | AuthTypeSASLSRP));
-         }
-         
-         if (mSmtp->auth & MAILSMTP_AUTH_NTLM) {
-         setAuthType((AuthType) (authType() | AuthTypeSASLNTLM));
-         }
-         
-         if (mSmtp->auth & MAILSMTP_AUTH_KERBEROS_V4) {
-         setAuthType((AuthType) (authType() | AuthTypeSASLKerberosV4));
-         }
-         */
-        
-        if (mOutlookServer && (authType() & AuthTypeXOAuth2)) {
-            setAuthType((AuthType) (authType() | AuthTypeXOAuth2Outlook));
-            setAuthType((AuthType) (authType() & (~AuthTypeXOAuth2)));
         }
     }
     
     AuthType correctedAuthType = authType();
-    if (mOutlookServer) {
-        if (correctedAuthType == AuthTypeXOAuth2) {
-            correctedAuthType = AuthTypeXOAuth2Outlook;
-        }
-    }
+    //This will cause Send failure for outlook account
+//    if (mOutlookServer) {
+//        if (correctedAuthType == AuthTypeXOAuth2) {
+//            correctedAuthType = AuthTypeXOAuth2Outlook;
+//        }
+//    }
     
     triedType = 0;
     while (1) {
