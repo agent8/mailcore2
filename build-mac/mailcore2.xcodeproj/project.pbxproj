@@ -501,17 +501,11 @@
 		5C123A9B1D65C2B800102898 /* MCDataDecoderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811320AE1D02388A004B7ECF /* MCDataDecoderUtils.cpp */; };
 		5C123A9C1D65C2C300102898 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
 		5C123A9D1D65C2C300102898 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
-		810DB78D1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
 		810DB78E1C68F4F000017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
-		810DB7911C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
 		810DB7921C68F50B00017B12 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
-		811320AF1D02388A004B7ECF /* MCDataDecoderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811320AE1D02388A004B7ECF /* MCDataDecoderUtils.cpp */; };
 		811320B01D02388A004B7ECF /* MCDataDecoderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811320AE1D02388A004B7ECF /* MCDataDecoderUtils.cpp */; };
-		81416BDE1CF8BB17000A4299 /* MCDataStreamDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81416BDC1CF8BB17000A4299 /* MCDataStreamDecoder.cpp */; };
 		81416BDF1CF8BB18000A4299 /* MCDataStreamDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81416BDC1CF8BB17000A4299 /* MCDataStreamDecoder.cpp */; };
 		817FA5271C69013C006146BD /* MCIMAPFetchContentToFileOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 810DB78C1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.h */; };
-		817FA5281C69016A006146BD /* MCIMAPFetchContentToFileOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 810DB78C1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.h */; };
-		817FA5291C69037B006146BD /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 810DB78F1C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.h */; };
 		817FA52A1C69038F006146BD /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 810DB78F1C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.h */; };
 		8199FBEB19FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8199FBE819FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm */; };
 		8199FBEC19FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8199FBE819FAEA440040BBC3 /* MCOIMAPFetchParsedContentOperation.mm */; };
@@ -1828,8 +1822,6 @@
 				5C123A8F1D65B9D200102898 /* MCIMAPFetchContentToFileOperation.h in CopyFiles */,
 				F38221A81C7B63E500E00721 /* MCONNTPPostOperation.h in CopyFiles */,
 				F38221A71C7B638200E00721 /* MCNNTPPostOperation.h in CopyFiles */,
-				817FA5291C69037B006146BD /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */,
-				817FA5281C69016A006146BD /* MCIMAPFetchContentToFileOperation.h in CopyFiles */,
 				C6BEC1AB1B1256C100546519 /* MCHTMLCleaner.h in CopyFiles */,
 				27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */,
 				27478E861A76475F004AE621 /* MCOAccountValidator.h in CopyFiles */,
@@ -4181,7 +4173,7 @@
 		C64EA52E169E772200778456 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = MailCore;
 				TargetAttributes = {
 					C600B6131A242C3F000728F1 = {
@@ -4693,7 +4685,6 @@
 				BDCD7CCB1A70771B0001DCC3 /* csrmbcs.cpp in Sources */,
 				C64EA732169E847800778456 /* MCIMAPSearchExpression.cpp in Sources */,
 				BDCD7CE11A70771B0001DCC3 /* uinvchar.c in Sources */,
-				810DB78D1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */,
 				C64EA734169E847800778456 /* MCIMAPSession.cpp in Sources */,
 				C68B2AF717797389005E61EF /* MCConnectionLoggerUtils.cpp in Sources */,
 				C64EA737169E847800778456 /* MCPOPMessageInfo.cpp in Sources */,
@@ -4755,7 +4746,6 @@
 				BDCD7CD11A70771B0001DCC3 /* csrutf8.cpp in Sources */,
 				C62C6EEF16A7B67600737497 /* MCPOPAsyncSession.cpp in Sources */,
 				C62C6EF216A7C6DE00737497 /* MCPOPFetchHeaderOperation.cpp in Sources */,
-				81416BDE1CF8BB17000A4299 /* MCDataStreamDecoder.cpp in Sources */,
 				C62C6EF516A7C6EA00737497 /* MCPOPFetchMessageOperation.cpp in Sources */,
 				C62C6EF816A7C6F500737497 /* MCPOPDeleteMessagesOperation.cpp in Sources */,
 				C62C6EFB16A7C94000737497 /* MCPOPOperation.cpp in Sources */,
@@ -4796,7 +4786,6 @@
 				BDCD7CE51A70771B0001DCC3 /* ustring.cpp in Sources */,
 				C64BB23916EDAA3F000DB34C /* MCOAbstractMessagePart.mm in Sources */,
 				C64BB23C16EDAAC7000DB34C /* MCOAbstractMultipart.mm in Sources */,
-				811320AF1D02388A004B7ECF /* MCDataDecoderUtils.cpp in Sources */,
 				BDCD7CD71A70771B0001DCC3 /* uarrsort.c in Sources */,
 				8568A41A1C610F6600FF4470 /* MCOIMAPMoveMessagesOperation.mm in Sources */,
 				C6D4FD4319FB7DAA001F7E01 /* MCDataMac.mm in Sources */,
@@ -4882,7 +4871,6 @@
 				84D7378F199C02A8005124E5 /* MCONNTPDisconnectOperation.mm in Sources */,
 				BD7C0F461B545CE2003337DF /* MCZipMac.mm in Sources */,
 				C6CF62BD175324CE006398B9 /* MCONetService.mm in Sources */,
-				810DB7911C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm in Sources */,
 				C6EFFBCC1833334900CFF656 /* MCOIMAPMultiDisconnectOperation.mm in Sources */,
 				C6CF62C6175324F0006398B9 /* MCMailProvider.cpp in Sources */,
 				C6CF62C8175324F0006398B9 /* MCMailProvidersManager.cpp in Sources */,
@@ -5309,12 +5297,18 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -5756,12 +5750,18 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -5821,12 +5821,18 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
