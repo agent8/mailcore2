@@ -23,6 +23,7 @@
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
 		27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
 		3D09FB251C2497CE0046685A /* MCIMAPCheckAccountOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
+		3D71AC481F8BDDB0008241FA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */; };
 		3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		3D9C2C741B96637E008F57C6 /* MCMXRecordResolverOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
 		3D9C2C751B96637E008F57C6 /* MCOAccountValidator.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 27478E821A7646F8004AE621 /* MCOAccountValidator.h */; };
@@ -2283,6 +2284,7 @@
 		27780C3A19CF9CD100C77E44 /* MailCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MailCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27780C3C19CF9D9800C77E44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		27780D3419CFA19500C77E44 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/usr/lib/libstdc++.dylib"; sourceTree = DEVELOPER_DIR; };
+		3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		3D9C2E3C1B96637E008F57C6 /* libEdo Mailcore2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libEdo Mailcore2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3C1BDC17ABF306008BBF4C /* MCOIMAPQuotaOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPQuotaOperation.h; sourceTree = "<group>"; };
 		4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPQuotaOperation.mm; sourceTree = "<group>"; };
@@ -3310,6 +3312,7 @@
 		C64EA52C169E772200778456 = {
 			isa = PBXGroup;
 			children = (
+				3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */,
 				A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */,
 				C6BD28A1170BD78E00A91AC1 /* mailcore-framework */,
 				C64EA545169E78B100778456 /* src */,
@@ -4274,6 +4277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C668E2DD1736333900A2BB47 /* providers.json in Resources */,
+				3D71AC481F8BDDB0008241FA /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
