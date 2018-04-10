@@ -4364,6 +4364,11 @@ IndexSet * IMAPSession::capability(ErrorCode * pError)
 
 void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
 {
+    // bug fix for imap.nate.com server without any capability info in login response
+    if (mImap->imap_connection_info->imap_capability->cap_list == NULL) {
+        return;
+    }
+
     if (mailimap_has_extension(mImap, (char *)"STARTTLS")) {
         capabilities->addIndex(IMAPCapabilityStartTLS);
     }
