@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		128D757D2140C54300086BE0 /* MCOIMAPCheckAccountOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
-		128D757E2140C54300086BE0 /* MCOIMAPCustomCommandOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		1265FDDE2141361800FB57EE /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288D170BD71100A91AC1 /* MailCore.framework */; };
+		1265FDE52141398000FB57EE /* libMailCore-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore-osx.a */; };
 		128D757F2140C5B700086BE0 /* MCIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1210FD372122DB7500B044A9 /* MCIMAPCustomCommandOperation.h */; };
 		128D75832140C6C000086BE0 /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1210FD362122DB6900B044A9 /* MCIMAPCheckAccountOperation.h */; };
 		128D75852140CAA100086BE0 /* MCIMAPCheckAccountOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1210FD362122DB6900B044A9 /* MCIMAPCheckAccountOperation.h */; };
@@ -1313,9 +1313,7 @@
 		C6BA2C131705F4E6003F0E9E /* MCOIMAPFolderInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F61F9E17016EA00073032E /* MCOIMAPFolderInfo.mm */; };
 		C6BA2C141705F4E6003F0E9E /* MCOIMAPBaseOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F61FB41702AB2F0073032E /* MCOIMAPBaseOperation.mm */; };
 		C6BD288F170BD71100A91AC1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288E170BD71100A91AC1 /* Cocoa.framework */; };
-		C6BD28A3170BD84F00A91AC1 /* libMailCore-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore-osx.a */; };
 		C6BD28AB170BDB6B00A91AC1 /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
-		C6BD28AC170BDEA200A91AC1 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288D170BD71100A91AC1 /* MailCore.framework */; };
 		C6BEC1AA1B1256BA00546519 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		C6BEC1AB1B1256C100546519 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		C6CCC5C716FFE5190077A5FC /* MCORange.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6CCC5C616FFE5190077A5FC /* MCORange.mm */; };
@@ -2974,7 +2972,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6BD28AC170BDEA200A91AC1 /* MailCore.framework in Frameworks */,
+				1265FDDE2141361800FB57EE /* MailCore.framework in Frameworks */,
 				C64EA7B116A00BBB00778456 /* CoreServices.framework in Frameworks */,
 				C64EA790169F259200778456 /* Foundation.framework in Frameworks */,
 			);
@@ -3012,9 +3010,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1265FDE52141398000FB57EE /* libMailCore-osx.a in Frameworks */,
 				C6ED6D1B17A191B100A4A14C /* CoreServices.framework in Frameworks */,
 				C6ED6D1A17A1919500A4A14C /* Security.framework in Frameworks */,
-				C6BD28A3170BD84F00A91AC1 /* libMailCore-osx.a in Frameworks */,
 				C6BD288F170BD71100A91AC1 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4006,9 +4004,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				128D757D2140C54300086BE0 /* MCOIMAPCheckAccountOperation.h in Headers */,
 				12BF36492137C3D500C1B967 /* MailCore.h in Headers */,
-				128D757E2140C54300086BE0 /* MCOIMAPCustomCommandOperation.h in Headers */,
 				12BF36452137C0A900C1B967 /* MCOIMAP.h in Headers */,
 				128D75852140CAA100086BE0 /* MCIMAPCheckAccountOperation.h in Headers */,
 				128D75862140CAA100086BE0 /* MCIMAPCustomCommandOperation.h in Headers */,

@@ -35,7 +35,7 @@ void testObjC()
   session.connectionType = MCOConnectionTypeTLS;
   
   NSLog(@"check account");
-  MCOIMAPOperation *checkOp = [session checkAccountOperation];
+  MCOIMAPBaseOperation *checkOp = [session checkAccountOperation];
   [checkOp start:^(NSError *err) {
     NSLog(@"check account done");
     if (err) {
