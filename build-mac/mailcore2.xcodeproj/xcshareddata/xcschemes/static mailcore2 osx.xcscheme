@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C64EA536169E772200778456"
-               BuildableName = "libMailCore-osx.a"
+               BuildableName = "libMailCore.a"
                BlueprintName = "static mailcore2 osx"
                ReferencedContainer = "container:mailcore2.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C64EA536169E772200778456"
-            BuildableName = "libMailCore-osx.a"
+            BuildableName = "libMailCore.a"
             BlueprintName = "static mailcore2 osx"
             ReferencedContainer = "container:mailcore2.xcodeproj">
          </BuildableReference>

@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1265FDDE2141361800FB57EE /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288D170BD71100A91AC1 /* MailCore.framework */; };
-		1265FDE52141398000FB57EE /* libMailCore-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore-osx.a */; };
-		128D757F2140C5B700086BE0 /* MCIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1210FD372122DB7500B044A9 /* MCIMAPCustomCommandOperation.h */; };
-		128D75832140C6C000086BE0 /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1210FD362122DB6900B044A9 /* MCIMAPCheckAccountOperation.h */; };
-		128D75852140CAA100086BE0 /* MCIMAPCheckAccountOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1210FD362122DB6900B044A9 /* MCIMAPCheckAccountOperation.h */; };
-		128D75862140CAA100086BE0 /* MCIMAPCustomCommandOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1210FD372122DB7500B044A9 /* MCIMAPCustomCommandOperation.h */; };
-		128D759A2140CD0800086BE0 /* libetpan-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D35B5D1C8A832700D3EC11 /* libetpan-osx.a */; };
-		12BF36432137C08600C1B967 /* MCOIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
-		12BF36452137C0A900C1B967 /* MCOIMAP.h in Headers */ = {isa = PBXBuildFile; fileRef = C64BB25416FD32A0000DB34C /* MCOIMAP.h */; };
-		12BF36492137C3D500C1B967 /* MailCore.h in Headers */ = {isa = PBXBuildFile; fileRef = C64EA7A4169F2A3E00778456 /* MailCore.h */; };
-		12BF364B2137C67700C1B967 /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
 		2744B16A1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		2744B16B1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		27478E801A764698004AE621 /* MCAccountValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27478E7E1A764698004AE621 /* MCAccountValidator.cpp */; };
@@ -33,6 +22,7 @@
 		27780C3619CF9CD100C77E44 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = 84AF9E7D172DBAF600E60AA3 /* providers.json */; };
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
 		27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
+		3D09FB251C2497CE0046685A /* MCIMAPCheckAccountOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		3D71AC481F8BDDB0008241FA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */; };
 		3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		3D9C2C741B96637E008F57C6 /* MCMXRecordResolverOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
@@ -667,6 +657,7 @@
 		A1B491ED1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
 		A1B491EE1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */; };
 		A1B491F01C0C6D2D00699CF5 /* MCOIMAPCustomCommandOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		A1B491F11C0C6D2D00699CF5 /* MCIMAPCustomCommandOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */; };
 		A1D35B641C8A870800D3EC11 /* MCONNTPPostOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = F38221A21C7AAD8100E00721 /* MCONNTPPostOperation.mm */; };
 		A1D35B651C8A872300D3EC11 /* MCNNTPPostOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = F382219D1C7A60A800E00721 /* MCNNTPPostOperation.h */; };
 		A1D35B661C8A87B800D3EC11 /* MCOSMTPNoopOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 8416A99B17F284F400B3C7DA /* MCOSMTPNoopOperation.h */; };
@@ -756,7 +747,7 @@
 		C07AD99B2E2054C684DB8FF6 /* NSError+MCO.mm in Sources */ = {isa = PBXBuildFile; fileRef = C07ADFE43E22B38EFF23ADB5 /* NSError+MCO.mm */; };
 		C07ADC28B83E7959BF114D46 /* MCOIMAPSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = C07AD057D3C8FBDC7AC95733 /* MCOIMAPSession.mm */; };
 		C600B61C1A242C6A000728F1 /* unittest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C600B61B1A242C6A000728F1 /* unittest.cpp */; };
-		C600B61D1A244BD1000728F1 /* libMailCore-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore-osx.a */; };
+		C600B61D1A244BD1000728F1 /* libMailCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore.a */; };
 		C600B6201A244C9A000728F1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6ED6D1917A1919500A4A14C /* Security.framework */; };
 		C600B6211A244CB2000728F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD2893170BD71100A91AC1 /* Foundation.framework */; };
 		C600B6231A244CC3000728F1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C600B6221A244CC3000728F1 /* CFNetwork.framework */; };
@@ -1313,7 +1304,9 @@
 		C6BA2C131705F4E6003F0E9E /* MCOIMAPFolderInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F61F9E17016EA00073032E /* MCOIMAPFolderInfo.mm */; };
 		C6BA2C141705F4E6003F0E9E /* MCOIMAPBaseOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F61FB41702AB2F0073032E /* MCOIMAPBaseOperation.mm */; };
 		C6BD288F170BD71100A91AC1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288E170BD71100A91AC1 /* Cocoa.framework */; };
+		C6BD28A3170BD84F00A91AC1 /* libMailCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore.a */; };
 		C6BD28AB170BDB6B00A91AC1 /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
+		C6BD28AC170BDEA200A91AC1 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288D170BD71100A91AC1 /* MailCore.framework */; };
 		C6BEC1AA1B1256BA00546519 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		C6BEC1AB1B1256C100546519 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		C6CCC5C716FFE5190077A5FC /* MCORange.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6CCC5C616FFE5190077A5FC /* MCORange.mm */; };
@@ -1478,13 +1471,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		128D75B02140DDEB00086BE0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C69AB10910546FE500F32FBD;
-			remoteInfo = "static libetpan";
-		};
 		3DF6796F1F60EAEC00D4BDC4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C64EA52E169E772200778456 /* Project object */;
@@ -1593,8 +1579,10 @@
 				A1D35B7C1C8A87B800D3EC11 /* MCSMTPCheckAccountOperation.h in Copy Files (244 items) */,
 				A1D35B7D1C8A87B800D3EC11 /* MCCertificateUtils.h in Copy Files (244 items) */,
 				A1D35B651C8A872300D3EC11 /* MCNNTPPostOperation.h in Copy Files (244 items) */,
+				3D09FB251C2497CE0046685A /* MCIMAPCheckAccountOperation.h in Copy Files (244 items) */,
 				3DE0D1F31C1B5C4B005CFA6D /* MCOIMAPCheckAccountOperation.h in Copy Files (244 items) */,
 				A1B491F01C0C6D2D00699CF5 /* MCOIMAPCustomCommandOperation.h in Copy Files (244 items) */,
+				A1B491F11C0C6D2D00699CF5 /* MCIMAPCustomCommandOperation.h in Copy Files (244 items) */,
 				3D9C2C731B96637E008F57C6 /* MCHTMLCleaner.h in Copy Files (244 items) */,
 				3D9C2C741B96637E008F57C6 /* MCMXRecordResolverOperation.h in Copy Files (244 items) */,
 				3D9C2C751B96637E008F57C6 /* MCOAccountValidator.h in Copy Files (244 items) */,
@@ -1829,8 +1817,6 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
-				128D757F2140C5B700086BE0 /* MCIMAPCustomCommandOperation.h in CopyFiles */,
-				128D75832140C6C000086BE0 /* MCIMAPCheckAccountOperation.h in CopyFiles */,
 				5C123A951D65BA1500102898 /* MCDataStreamDecoder.h in CopyFiles */,
 				5C123A941D65BA0B00102898 /* MCDataDecoderUtils.h in CopyFiles */,
 				5C123A8E1D65B9D200102898 /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */,
@@ -2054,8 +2040,6 @@
 				C64EA77F169E859600778456 /* MCSMTPSession.h in CopyFiles */,
 				F8EA941716BB1C9D0011AC6F /* MCOIMAPSession.h in CopyFiles */,
 				C07AD5D7FD82F8ACAB576231 /* NSError+MCO.h in CopyFiles */,
-				12BF364B2137C67700C1B967 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
-				12BF36432137C08600C1B967 /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2291,8 +2275,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1210FD362122DB6900B044A9 /* MCIMAPCheckAccountOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPCheckAccountOperation.h; sourceTree = "<group>"; };
-		1210FD372122DB7500B044A9 /* MCIMAPCustomCommandOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPCustomCommandOperation.h; sourceTree = "<group>"; };
 		2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCMXRecordResolverOperation.cpp; sourceTree = "<group>"; };
 		2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCMXRecordResolverOperation.h; sourceTree = "<group>"; };
 		27478E7E1A764698004AE621 /* MCAccountValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCAccountValidator.cpp; sourceTree = "<group>"; };
@@ -2402,6 +2384,7 @@
 		9EF9AB16175F35C60027FA3B /* MCOIMAPFolderStatusOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPFolderStatusOperation.h; sourceTree = "<group>"; };
 		9EF9AB18175F36600027FA3B /* MCOIMAPFolderStatusOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPFolderStatusOperation.mm; sourceTree = "<group>"; };
 		A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPCustomCommandOperation.cpp; sourceTree = "<group>"; };
+		A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPCustomCommandOperation.h; sourceTree = "<group>"; };
 		A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPCustomCommandOperation.h; sourceTree = "<group>"; };
 		A1B491EB1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPCustomCommandOperation.mm; sourceTree = "<group>"; };
 		A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "../../libetpan/build-mac/libetpan.xcodeproj"; sourceTree = "<group>"; };
@@ -2610,7 +2593,7 @@
 		C64BB26B16FD4C3B000DB34C /* MCORFC822.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCORFC822.h; sourceTree = "<group>"; };
 		C64BB26C16FD62FB000DB34C /* MCOUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCOUtils.h; sourceTree = "<group>"; };
 		C64BB26D16FD63F6000DB34C /* MCOConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOConstants.h; sourceTree = "<group>"; };
-		C64EA537169E772200778456 /* libMailCore-osx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libMailCore-osx.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C64EA537169E772200778456 /* libMailCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMailCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C64EA68C169E847800778456 /* MCIMAPAsyncConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPAsyncConnection.h; sourceTree = "<group>"; };
 		C64EA68F169E847800778456 /* MCSMTPAsyncSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCSMTPAsyncSession.cpp; sourceTree = "<group>"; };
 		C64EA690169E847800778456 /* MCSMTPAsyncSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCSMTPAsyncSession.h; sourceTree = "<group>"; };
@@ -2721,6 +2704,7 @@
 		C64EA7F016A15A4D00778456 /* MCIMAPOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPOperation.h; sourceTree = "<group>"; };
 		C64EA7F416A15A6300778456 /* MCIMAPOperationCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPOperationCallback.h; sourceTree = "<group>"; };
 		C64EA7F616A15A7800778456 /* MCIMAPCheckAccountOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPCheckAccountOperation.cpp; sourceTree = "<group>"; };
+		C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPCheckAccountOperation.h; sourceTree = "<group>"; };
 		C64EA7F916A15A9200778456 /* MCAsyncIMAP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCAsyncIMAP.h; sourceTree = "<group>"; };
 		C64EA7FA16A2959700778456 /* MCIMAPFetchFoldersOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPFetchFoldersOperation.cpp; sourceTree = "<group>"; };
 		C64EA7FB16A2959700778456 /* MCIMAPFetchFoldersOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPFetchFoldersOperation.h; sourceTree = "<group>"; };
@@ -2956,7 +2940,7 @@
 				C600B6231A244CC3000728F1 /* CFNetwork.framework in Frameworks */,
 				C600B6211A244CB2000728F1 /* Foundation.framework in Frameworks */,
 				C600B6201A244C9A000728F1 /* Security.framework in Frameworks */,
-				C600B61D1A244BD1000728F1 /* libMailCore-osx.a in Frameworks */,
+				C600B61D1A244BD1000728F1 /* libMailCore.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2964,7 +2948,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				128D759A2140CD0800086BE0 /* libetpan-osx.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2972,7 +2955,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1265FDDE2141361800FB57EE /* MailCore.framework in Frameworks */,
+				C6BD28AC170BDEA200A91AC1 /* MailCore.framework in Frameworks */,
 				C64EA7B116A00BBB00778456 /* CoreServices.framework in Frameworks */,
 				C64EA790169F259200778456 /* Foundation.framework in Frameworks */,
 			);
@@ -3010,9 +2993,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1265FDE52141398000FB57EE /* libMailCore-osx.a in Frameworks */,
 				C6ED6D1B17A191B100A4A14C /* CoreServices.framework in Frameworks */,
 				C6ED6D1A17A1919500A4A14C /* Security.framework in Frameworks */,
+				C6BD28A3170BD84F00A91AC1 /* libMailCore.a in Frameworks */,
 				C6BD288F170BD71100A91AC1 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3140,7 +3123,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D35B5B1C8A832700D3EC11 /* libetpan.framework */,
-				A1D35B5D1C8A832700D3EC11 /* libetpan-osx.a */,
+				A1D35B5D1C8A832700D3EC11 /* libetpan.a */,
 				A1D35B5F1C8A832700D3EC11 /* libetpan-ios.a */,
 			);
 			name = Products;
@@ -3345,7 +3328,7 @@
 		C64EA538169E772200778456 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C64EA537169E772200778456 /* libMailCore-osx.a */,
+				C64EA537169E772200778456 /* libMailCore.a */,
 				C64EA78C169F259200778456 /* tests */,
 				C6BA2C191705F4E6003F0E9E /* libMailCore-ios.a */,
 				C6A81B911706840C00882C15 /* test-ios.app */,
@@ -3385,8 +3368,6 @@
 		C64EA68B169E847800778456 /* imap */ = {
 			isa = PBXGroup;
 			children = (
-				1210FD372122DB7500B044A9 /* MCIMAPCustomCommandOperation.h */,
-				1210FD362122DB6900B044A9 /* MCIMAPCheckAccountOperation.h */,
 				C64EA7F916A15A9200778456 /* MCAsyncIMAP.h */,
 				C64EA7FD16A295B500778456 /* MCIMAPAsyncConnection.cpp */,
 				C64EA68C169E847800778456 /* MCIMAPAsyncConnection.h */,
@@ -3396,6 +3377,7 @@
 				C64EA7F016A15A4D00778456 /* MCIMAPOperation.h */,
 				C64EA7F416A15A6300778456 /* MCIMAPOperationCallback.h */,
 				C64EA7F616A15A7800778456 /* MCIMAPCheckAccountOperation.cpp */,
+				C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */,
 				943F1A9817D964F600F0C798 /* MCIMAPConnectOperation.cpp */,
 				943F1A9917D964F600F0C798 /* MCIMAPConnectOperation.h */,
 				C64EA7FA16A2959700778456 /* MCIMAPFetchFoldersOperation.cpp */,
@@ -3455,6 +3437,7 @@
 				C6EFFBC6182BBF5700CFF656 /* MCIMAPMultiDisconnectOperation.cpp */,
 				C6EFFBC7182BBF5700CFF656 /* MCIMAPMultiDisconnectOperation.h */,
 				A1B491E51C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.cpp */,
+				A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */,
 			);
 			path = imap;
 			sourceTree = "<group>";
@@ -4004,10 +3987,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12BF36492137C3D500C1B967 /* MailCore.h in Headers */,
-				12BF36452137C0A900C1B967 /* MCOIMAP.h in Headers */,
-				128D75852140CAA100086BE0 /* MCIMAPCheckAccountOperation.h in Headers */,
-				128D75862140CAA100086BE0 /* MCIMAPCustomCommandOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4092,11 +4071,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				128D75B12140DDEB00086BE0 /* PBXTargetDependency */,
 			);
 			name = "static mailcore2 osx";
 			productName = mailcore;
-			productReference = C64EA537169E772200778456 /* libMailCore-osx.a */;
+			productReference = C64EA537169E772200778456 /* libMailCore.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		C64EA78B169F259200778456 /* tests */ = {
@@ -4248,10 +4226,10 @@
 			remoteRef = A1D35B5A1C8A832700D3EC11 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		A1D35B5D1C8A832700D3EC11 /* libetpan-osx.a */ = {
+		A1D35B5D1C8A832700D3EC11 /* libetpan.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libetpan-osx.a";
+			path = libetpan.a;
 			remoteRef = A1D35B5C1C8A832700D3EC11 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -5210,11 +5188,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		128D75B12140DDEB00086BE0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "static libetpan";
-			targetProxy = 128D75B02140DDEB00086BE0 /* PBXContainerItemProxy */;
-		};
 		3DF679701F60EAEC00D4BDC4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3D9C2C6E1B96637E008F57C6 /* Edo Mailcore2 */;
@@ -5397,17 +5370,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				OTHER_LDFLAGS = (
-					"-lctemplate",
-					"-lxml2",
-					"-lsasl2",
-					"-liconv",
-					"-all_load",
-					"-ltidy",
-					"-lz",
-					"-lresolv",
-				);
-				PRODUCT_NAME = "MailCore-osx";
+				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
 			};
 			name = Privacy;
@@ -5484,6 +5447,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lctemplate",
+					"-letpan",
 					"-lxml2",
 					"-lsasl2",
 					"-liconv",
@@ -5492,8 +5456,6 @@
 					"-lz",
 					"-lresolv",
 				);
-				OTHER_LIBTOOLFLAGS = "";
-				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
@@ -5719,17 +5681,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				OTHER_LDFLAGS = (
-					"-lctemplate",
-					"-lxml2",
-					"-lsasl2",
-					"-liconv",
-					"-all_load",
-					"-ltidy",
-					"-lz",
-					"-lresolv",
-				);
-				PRODUCT_NAME = "MailCore-osx";
+				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
 			};
 			name = Staging;
@@ -5806,6 +5758,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lctemplate",
+					"-letpan",
 					"-lxml2",
 					"-lssl",
 					"-lcrypto",
@@ -5816,8 +5769,6 @@
 					"-lz",
 					"-lresolv",
 				);
-				OTHER_LIBTOOLFLAGS = "";
-				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
@@ -6246,17 +6197,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				OTHER_LDFLAGS = (
-					"-lctemplate",
-					"-lxml2",
-					"-lsasl2",
-					"-liconv",
-					"-all_load",
-					"-ltidy",
-					"-lz",
-					"-lresolv",
-				);
-				PRODUCT_NAME = "MailCore-osx";
+				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -6266,17 +6207,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				OTHER_LDFLAGS = (
-					"-lctemplate",
-					"-lxml2",
-					"-lsasl2",
-					"-liconv",
-					"-all_load",
-					"-ltidy",
-					"-lz",
-					"-lresolv",
-				);
-				PRODUCT_NAME = "MailCore-osx";
+				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -6482,6 +6413,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lctemplate",
+					"-letpan",
 					"-lxml2",
 					"-lsasl2",
 					"-liconv",
@@ -6490,8 +6422,6 @@
 					"-lz",
 					"-lresolv",
 				);
-				OTHER_LIBTOOLFLAGS = "";
-				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
@@ -6511,6 +6441,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lctemplate",
+					"-letpan",
 					"-lxml2",
 					"-lsasl2",
 					"-liconv",
@@ -6519,8 +6450,6 @@
 					"-lz",
 					"-lresolv",
 				);
-				OTHER_LIBTOOLFLAGS = "";
-				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
