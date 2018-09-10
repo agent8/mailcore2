@@ -64,16 +64,16 @@ void testAllMac()
 {
   mailcore::setICUDataDirectory(MCSTR("/usr/local/share/icu"));
   
-  email = MCSTR("email@gmail.com");
-  password = MCSTR("MyP4ssw0rd");
-  displayName = MCSTR("My Email");
+  email = MCSTR("xxx@126.com");
+  password = MCSTR("xxx");
+  displayName = MCSTR("Xxx Xx");
   
   mailcore::AutoreleasePool * pool = new mailcore::AutoreleasePool();
   MCLogEnabled = 1;
   mailstream_debug = 1;
   
-  //testProviders();
-  //testObjC();
+  testProviders();
+  testObjC();
   
   pool->release();
 }
