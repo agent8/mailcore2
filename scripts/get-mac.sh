@@ -4,6 +4,8 @@ pushd "`dirname "$0"`" > /dev/null
 scriptpath="`pwd`"
 popd > /dev/null
 
+echo "In get-mac.sh  scriptpath: $scriptpath"
+
 . "$scriptpath/include.sh/build-dep.sh"
 
 deps="ctemplate-osx libetpan-osx"
@@ -13,6 +15,7 @@ for dep in $deps ; do
 done
 
 if test "x$CONFIGURATION_BUILD_DIR" != x ; then
+	echo "In get-mac.sh  CONFIGURATION_BUILD_DIR: $CONFIGURATION_BUILD_DIR"
   mkdir -p "$CONFIGURATION_BUILD_DIR"
   cd "$scriptpath/../Externals"
   for dep in $deps ; do
