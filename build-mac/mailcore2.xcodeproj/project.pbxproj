@@ -3003,13 +3003,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3D9C2A8D1B966332008F57C6 /* MailCore-ios-edo */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "MailCore-ios-edo";
-			sourceTree = "<group>";
-		};
 		8491899A18C93F6E002063A3 /* nntp */ = {
 			isa = PBXGroup;
 			children = (
@@ -3319,7 +3312,6 @@
 				C64EA7A916A00AF400778456 /* tests */,
 				C6A81BB517068C0600882C15 /* tests-ios */,
 				C6B5AE0319F630B3001352A6 /* unittest */,
-				3D9C2A8D1B966332008F57C6 /* MailCore-ios-edo */,
 				C64EA78E169F259200778456 /* Frameworks */,
 				C64EA538169E772200778456 /* Products */,
 			);
@@ -5256,6 +5248,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -5290,6 +5283,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -5493,6 +5487,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Privacy;
@@ -5578,7 +5573,7 @@
 		3D0DE625207D36E200C464C3 /* Privacy */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = YES;
@@ -5803,6 +5798,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.libmailcore.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Staging;
@@ -5888,7 +5884,7 @@
 		3D2DB9461C62AC7200C247D2 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = YES;
@@ -5918,7 +5914,7 @@
 		3D9C2E3A1B96637E008F57C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = YES;
@@ -5948,7 +5944,7 @@
 		3D9C2E3B1B96637E008F57C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = YES;
