@@ -533,6 +533,72 @@ static void testAttachments()
     MCLog("%s", MCUTF8DESC(str));
 }
 
+static void testMailCoreString() {
+    mailcore::String * str = MCSTR("test string");
+    MCLog("%s", MCUTF8DESC(str));
+    
+    str->appendUTF8Format("%s", " aa");
+    MCLog("%s", MCUTF8DESC(str));
+    
+    str->release();
+}
+
+static void testJSONString() {
+    
+    mailcore::HashMap * hashmap = mailcore::HashMap::hashMap();
+    
+    mailcore::String * key1 = MCSTR("key - 1");
+    mailcore::String * val1 = MCSTR("value - 1");
+    
+    mailcore::String * key2 = MCSTR("key - 2");
+    mailcore::String * val2 = MCSTR("value - 2");
+    
+    mailcore::String * key3 = MCSTR("key - 3");
+    mailcore::String * val3 = MCSTR("value - 3");
+    
+    hashmap->setObjectForKey(key1, val1);
+    hashmap->setObjectForKey(key2, val2);
+    hashmap->setObjectForKey(key3, val3);
+    
+    mailcore::String * jsonString = mailcore::JSON::objectToJSONString(hashmap);
+    MCLog("%s", MCUTF8DESC(jsonString));
+    
+    key1->release();
+    val1->release();
+    
+    key2->release();
+    val2->release();
+    
+    key3->release();
+    val3->release();
+    
+    hashmap->release();
+    
+    jsonString->release();
+}
+
+static void testJSONObject() {
+    mailcore::String * jsonStr = MCSTR("{\"key - 2\":\"value - 2\",\"key - 1\":\"value - 1\",\"key - 3\":\"value - 3\"}");
+
+    mailcore::Object * jsonObj = mailcore::JSON::objectFromJSONString(jsonStr);
+    
+    if (jsonObj->className()->isEqual(MCSTR("mailcore::HashMap"))) {
+        int count;
+        mailcore::HashMap * hashmap = (mailcore::HashMap *)jsonObj;
+        mailcore::Array * keys = hashmap->allKeys();
+        count = keys->count();
+        for (int i = 0; i < count; i++) {
+            mailcore::Object * key = keys->objectAtIndex(i);
+            mailcore::Object * value = hashmap->objectForKey(key);
+            
+            MCLog("key=%s  value=%s", MCUTF8DESC(key), MCUTF8DESC(value));
+        }
+    }
+
+    jsonObj->release();
+    jsonStr->release();
+}
+
 void testAll()
 {
     mailcore::setICUDataDirectory(MCSTR("/usr/local/share/icu"));
@@ -550,8 +616,8 @@ void testAll()
     mailcore::AutoreleasePool * pool = new mailcore::AutoreleasePool();
     MCLogEnabled = 1;
     
-    mailcore::Data * data = testMessageBuilder();
-    testMessageParser(data);
+    //mailcore::Data * data = testMessageBuilder();
+    //testMessageParser(data);
     //testSMTP(data);
     
     //testSendingMessageFromFileViaSMTP(data);
@@ -566,6 +632,11 @@ void testAll()
     //testAsyncPOP();
     //testAddresses();
     //testAttachments();
+    
+    testMailCoreString();
+    
+    testJSONString();
+    testJSONObject();
 
     mainLoop();
     
