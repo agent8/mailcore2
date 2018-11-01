@@ -1307,7 +1307,7 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
     clistiter * cur;
     
     
-    if (status != NULL) {
+    if (status != NULL && status->st_info_list != NULL) {
         
             struct mailimap_status_info * status_info;
             for(cur = clist_begin(status->st_info_list) ; cur != NULL ;
