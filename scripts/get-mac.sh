@@ -19,11 +19,14 @@ if test "x$CONFIGURATION_BUILD_DIR" != x ; then
   mkdir -p "$CONFIGURATION_BUILD_DIR"
   cd "$scriptpath/../Externals"
   for dep in $deps ; do
+  	echo "In get-mac.sh  dep: $dep"
     if test -d "$dep" ; then
       if test -d "$dep"/lib ; then
+      	echo "rsync -a ${dep}/lib/ ${CONFIGURATION_BUILD_DIR}"
         rsync -a "$dep"/lib/ "$CONFIGURATION_BUILD_DIR"
       fi
       if test -d "$dep"/include ; then
+      	echo "rsync -a ${dep}/include/ ${CONFIGURATION_BUILD_DIR}/include"
         rsync -a "$dep"/include/ "$CONFIGURATION_BUILD_DIR/include/"
       fi
     fi
