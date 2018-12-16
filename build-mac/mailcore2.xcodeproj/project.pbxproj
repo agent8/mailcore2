@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1263ED8421C6204A00E85F6E /* MCIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */; };
+		1263ED8521C6207D00E85F6E /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		2744B16A1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		2744B16B1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		27478E801A764698004AE621 /* MCAccountValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27478E7E1A764698004AE621 /* MCAccountValidator.cpp */; };
@@ -1817,6 +1819,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				1263ED8521C6207D00E85F6E /* MCIMAPCheckAccountOperation.h in CopyFiles */,
+				1263ED8421C6204A00E85F6E /* MCIMAPCustomCommandOperation.h in CopyFiles */,
 				5C123A951D65BA1500102898 /* MCDataStreamDecoder.h in CopyFiles */,
 				5C123A941D65BA0B00102898 /* MCDataDecoderUtils.h in CopyFiles */,
 				5C123A8E1D65B9D200102898 /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */,

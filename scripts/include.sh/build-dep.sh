@@ -290,6 +290,8 @@ build_git_osx()
 get_prebuilt_dep()
 {
   url="http://d.etpan.org/mailcore2-deps"
+  
+  echo "get_prebuilt_dep name=$name"
 
   if test "x$name" = x ; then
     return
@@ -319,23 +321,31 @@ get_prebuilt_dep()
   BUILD_TIMESTAMP=`date +'%Y%m%d%H%M%S'`
   tempbuilddir="$scriptpath/../Externals/workdir/$BUILD_TIMESTAMP"
   
-  mkdir -p "$tempbuilddir"
-  cd "$tempbuilddir"
-  echo "Downloading $name-$version"
-  curl -O "$url/$name/$name-$version.zip"
-  unzip -q "$name-$version.zip"
-  rm -rf "$scriptpath/../Externals/$name"
-  cd "$name-$version"
-  for folder in * ; do
+  if test "$name" = "libetpan-osx" ; then
+  	echo "Skip Downloading $name"
+  	mkdir -p "$scriptpath/../Externals/$name/include/libetpan/"
+  	echo "cp -f  $scriptpath/../../libetpan/include/libetpan/*  $scriptpath/../Externals/$name/include/libetpan/"
+  	cp -f  "$scriptpath"/../../libetpan/include/libetpan/* "$scriptpath"/../Externals/"$name"/include/libetpan/
+  else
+  	mkdir -p "$tempbuilddir"
+  	cd "$tempbuilddir"
+  	echo "Downloading $url/$name/$name-$version.zip"
+  	curl -O "$url/$name/$name-$version.zip"
+  	unzip -q "$name-$version.zip"
+  	rm -rf "$scriptpath/../Externals/$name"
+  	cd "$name-$version"
+  	for folder in * ; do
       rm -rf "$scriptpath/../Externals/$folder"
       mv "$folder" "$scriptpath/../Externals"
-  done
-  cd ..
-  rm -f "$scriptpath/../Externals/git-rev"
-  rm -rf "$tempbuilddir"
+  	done
+  	cd ..
+  	rm -f "$scriptpath/../Externals/git-rev"
+  	rm -rf "$tempbuilddir"
+  fi
   
   if test -d "$scriptpath/../Externals/$name" ; then
     defaults write "$installed_versions_path" "$name" "$version"
+    echo "installed_versions_path = $installed_versions_path"
     plutil -convert xml1 "$installed_versions_path"
   fi
 }
