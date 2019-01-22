@@ -1,3 +1,6 @@
+#if _MSC_VER
+#include <libetpan/win_etpan.h>
+#endif
 #include "MCWin32.h" // should be first include.
 
 #include "MCData.h"
@@ -11,7 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#if __APPLE__
 #include <sys/mman.h>
+#endif
 #include <pthread.h>
 #if USE_UCHARDET
 #include <uchardet/uchardet.h>
@@ -543,6 +548,28 @@ static void mmapDeallocator(char * bytes, unsigned int length) {
     if (bytes) {
         munmap(bytes, length);
     }
+}
+
+void *mmap(void *__addr, size_t __len, int __prot,
+	int __flags, int __fd, size_t __offset) {
+#ifdef _DEBUG
+	fprintf(stderr, "mmap inimplemented\n");
+#endif
+	return MAP_FAILED;
+}
+
+int munmap(void *__addr, size_t __len) {
+#ifdef _DEBUG
+	fprintf(stderr, "mmap inimplemented\n");
+#endif
+	return -1;
+}
+
+int msync(void *__addr, size_t __len, int __flags) {
+#ifdef _DEBUG
+	fprintf(stderr, "mmap inimplemented\n");
+#endif
+	return -1;
 }
 
 Data * Data::dataWithContentsOfFile(String * filename)
