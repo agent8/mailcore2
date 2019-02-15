@@ -549,7 +549,7 @@ static void mmapDeallocator(char * bytes, unsigned int length) {
         munmap(bytes, length);
     }
 }
-
+#if _MSC_VER
 void *mmap(void *__addr, size_t __len, int __prot,
 	int __flags, int __fd, size_t __offset) {
 #ifdef _DEBUG
@@ -571,6 +571,7 @@ int msync(void *__addr, size_t __len, int __flags) {
 #endif
 	return -1;
 }
+#endif
 
 Data * Data::dataWithContentsOfFile(String * filename)
 {
