@@ -1,4 +1,4 @@
-#include "MCWin32.h" // should be included first.
+﻿#include "MCWin32.h" // should be included first.
 
 #include "MCString.h"
 
