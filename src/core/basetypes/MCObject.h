@@ -6,6 +6,7 @@
 #if __APPLE__
 #include <dispatch/dispatch.h>
 #include <libkern/OSAtomic.h>
+#include <os/lock.h>   //huiliu
 #endif
 
 #include <MailCore/MCUtils.h>
@@ -58,7 +59,8 @@ namespace mailcore {
         
     private:
 #if __APPLE__
-        OSSpinLock mLock;
+        //OSSpinLock mLock;     //huiliu 
+        os_unfair_lock mLock;   //huiliu
 #else
         pthread_mutex_t mLock;
 #endif
