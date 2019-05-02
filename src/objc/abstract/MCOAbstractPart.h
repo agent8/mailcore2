@@ -11,7 +11,7 @@
 #define MAILCORE_MCOABSTRACTPART_H
 
 #import <Foundation/Foundation.h>
-#import <MailCore/MCOConstants.h>
+
 @class MCOAbstractMessage;
 
 typedef NS_ENUM(NSInteger, MCOPartType) {
@@ -117,6 +117,7 @@ namespace mailcore {
 /** Returns an array with the names of all content type parameters.*/
 - (NSArray * /* NSString */) allContentTypeParametersNames;
 
+
 /**
  Returns the decoded size of the part.
  For example, for a part that's encoded with base64, it will return actual_size * 3/4.
@@ -125,6 +126,9 @@ namespace mailcore {
 @end
 
 @interface MCOAbstractPart (MCOUnavailable)
+
+
+#pragma mark - Unavailable initializers
 
 /** Do not invoke this directly. */
 - (instancetype) init NS_UNAVAILABLE;
