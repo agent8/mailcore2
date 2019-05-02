@@ -1398,7 +1398,7 @@ void String::appendBytes(const char * bytes, unsigned int length, const char * c
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset appendBytes %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return;
     }
     
@@ -2351,7 +2351,7 @@ Data * String::dataUsingEncoding(const char * charset)
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset dataUsingEncoding %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return NULL;
     }
 
@@ -2546,9 +2546,7 @@ String * String::mUTF7EncodedString()
 
 String * String::mUTF7DecodedString()
 {
-    MCLog("data %s start","mUTF7DecodedString");
     Data * data = dataUsingEncoding("utf-8");
-    MCLog("data %s end","mUTF7DecodedString");
     return stringWithMUTF7Data(data);
 }
 

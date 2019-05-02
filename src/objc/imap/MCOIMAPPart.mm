@@ -36,4 +36,13 @@
 
 MCO_SYNTHESIZE_NSCODING
 
+MCO_OBJC_SYNTHESIZE_STRING(setPartID, partID)
+MCO_OBJC_SYNTHESIZE_SCALAR(unsigned int, unsigned int, setSize, size)
+MCO_OBJC_SYNTHESIZE_SCALAR(MCOEncoding, mailcore::Encoding, setEncoding, encoding)
+
+- (unsigned int) decodedSize
+{
+    return MCO_NATIVE_INSTANCE->decodedSize();
+}
+
 @end

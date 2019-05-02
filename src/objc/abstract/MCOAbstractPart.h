@@ -11,6 +11,7 @@
 #define MAILCORE_MCOABSTRACTPART_H
 
 #import <Foundation/Foundation.h>
+#include <MailCore/MCOConstants.h>
 
 @class MCOAbstractMessage;
 

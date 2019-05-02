@@ -1,9 +1,9 @@
 //
-//  MCOIMAPCheckAccount.h
+//  MCOIMAPCheckAccountOperation.h
 //  mailcore2
 //
-//  Created by andy on 15/12/11.
-//  Copyright © 2015年 MailCore. All rights reserved.
+//  Created by Hoa V. DINH on 3/7/16.
+//  Copyright © 2016 MailCore. All rights reserved.
 //
 
 #ifndef MAILCORE_MCOIMAPCHECKACCOUNTOPERATION_H

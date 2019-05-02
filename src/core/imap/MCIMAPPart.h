@@ -17,6 +17,17 @@ namespace mailcore {
         IMAPPart();
         virtual ~IMAPPart();
         
+        virtual void setPartID(String * partID);
+        virtual String * partID();
+        
+        virtual void setSize(unsigned int size);
+        virtual unsigned int size();
+        
+        virtual unsigned int decodedSize();
+        
+        virtual void setEncoding(Encoding encoding);
+        virtual Encoding encoding();
+        
     public: // subclass behavior
         IMAPPart(IMAPPart * other);
         virtual Object * copy();
@@ -30,6 +41,9 @@ namespace mailcore {
                                       struct mailimap_body_ext_1part * extension);
         
     private:
+        String * mPartID;
+        Encoding mEncoding;
+        unsigned int mSize;
         void init();
         static AbstractPart * attachmentWithIMAPBodyInternal(struct mailimap_body * body, String * partID);
         static AbstractPart * attachmentWithIMAPBody1Part(struct mailimap_body_type_1part * body_1part,
