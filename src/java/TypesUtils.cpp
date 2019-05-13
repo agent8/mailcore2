@@ -28,6 +28,7 @@ jobject mailcore::rangeToJava(JNIEnv * env, Range range)
     else {
         javaObject = env->NewObject(cls, constructor, (jlong) range.location, (jlong) range.length);
     }
+    env->DeleteLocalRef(cls);
     return javaObject;
 }
 
