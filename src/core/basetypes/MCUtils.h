@@ -37,12 +37,14 @@
 #define MCISKINDOFCLASS(instance, class) (dynamic_cast<class *>(instance) != NULL)
 
 #endif
-
+// need Mailcore2 static library, close Dynamic library define
 #ifdef _MSC_VER
 #	ifdef MAILCORE_DLL
-#		define MAILCORE_EXPORT __declspec(dllexport)
+#		//define MAILCORE_EXPORT __declspec(dllexport)
+		#define MAILCORE_EXPORT
 #	else
-#		define MAILCORE_EXPORT __declspec(dllimport)
+#		//define MAILCORE_EXPORT __declspec(dllimport)
+		#define MAILCORE_EXPORT
 #   endif
 #else
 #	define MAILCORE_EXPORT
