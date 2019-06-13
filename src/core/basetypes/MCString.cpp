@@ -1187,6 +1187,7 @@ String * String::stringByDecodingMIMEHeaderValueRfc2231(const char * phrase){
     if(dest != NULL) {
         result = new String(dest);
         result->autorelease();
+        free(dest); //yyb: memory leak
     }
     return result;
 }
