@@ -25,6 +25,9 @@ IMAPOperation::IMAPOperation()
     mError = ErrorNone;
     mFolder = NULL;
     mUrgent = false;
+    
+    //added by yyb
+    mFolderFlag = mailcore::IMAPFolderFlagNone;
 }
 
 IMAPOperation::~IMAPOperation()
@@ -74,6 +77,15 @@ String * IMAPOperation::folder()
     return mFolder;
 }
 
+//added by yyb:
+void IMAPOperation::setFolderFlag(mailcore::IMAPFolderFlag flag) {
+    this->mFolderFlag = flag;
+}
+
+mailcore::IMAPFolderFlag IMAPOperation::folderFlag() {
+    return mFolderFlag;
+}
+
 void IMAPOperation::setUrgent(bool urgent)
 {
     mUrgent = urgent;
@@ -111,7 +123,7 @@ ErrorCode IMAPOperation::error()
 void IMAPOperation::start()
 {
     if (session() == NULL) {
-        IMAPAsyncConnection * connection = mMainSession->sessionForFolder(mFolder, mUrgent);
+        IMAPAsyncConnection * connection = mMainSession->sessionForFolder(mFolder, mFolderFlag, mUrgent);
         setSession(connection);
     }
     session()->runOperation(this);

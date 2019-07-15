@@ -200,7 +200,8 @@ namespace mailcore {
     public: // private
         virtual void automaticConfigurationDone(IMAPSession * session);
         virtual void operationRunningStateChanged();
-        virtual IMAPAsyncConnection * sessionForFolder(String * folder, bool urgent = false);
+        //yyb: add parameter
+        virtual IMAPAsyncConnection * sessionForFolder(String * folder, mailcore::IMAPFolderFlag flag, bool urgent = false);
         
     private:
         Array * mSessions;

@@ -112,6 +112,9 @@ namespace mailcore {
         bool mQueueRunning;
         bool mScheduledAutomaticDisconnect;
         
+        //added by yyb:
+        mailcore::IMAPFolderFlag mLastFolderFlag;
+        
         virtual void tryAutomaticDisconnectAfterDelay(void * context);
 
     public: // private
@@ -124,6 +127,10 @@ namespace mailcore {
         virtual void setLastFolder(String * folder);
         virtual String * lastFolder();
         
+        //added by yyb:
+        virtual void setLastFolderFlag(mailcore::IMAPFolderFlag flag);
+        virtual mailcore::IMAPFolderFlag lastFolderFlag();
+
         virtual void tryAutomaticDisconnect();
         virtual void queueStartRunning();
         virtual void queueStoppedRunning();

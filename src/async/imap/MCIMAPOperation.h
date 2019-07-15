@@ -35,6 +35,10 @@ namespace mailcore {
         virtual void setFolder(String * folder);
         virtual String * folder();
         
+        //added by yyb:
+        virtual void setFolderFlag(mailcore::IMAPFolderFlag flag);
+        virtual mailcore::IMAPFolderFlag folderFlag();
+        
         virtual void setUrgent(bool urgent);
         virtual bool isUrgent();
         
@@ -59,6 +63,9 @@ namespace mailcore {
         IMAPOperationCallback * mImapCallback;
         ErrorCode mError;
         bool mUrgent;
+        
+        //added by yyb:
+        mailcore::IMAPFolderFlag mFolderFlag;
         
     private:
         virtual void bodyProgress(IMAPSession * session, unsigned int current, unsigned int maximum);
