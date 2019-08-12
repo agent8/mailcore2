@@ -16,6 +16,10 @@
 
 @interface MCOIMAPMultipart : MCOAbstractMultipart <NSCoding>
      - (instancetype) init;
+
+/** A part identifier looks like 1.2.1 */
+@property (nonatomic, copy) NSString * partID;
+
 @end
 
 #endif

@@ -13,6 +13,9 @@ namespace mailcore {
         IMAPMultipart();
         virtual ~IMAPMultipart();
         
+        virtual void setPartID(String * partID);
+        virtual String * partID();
+        
     public: // subclass behavior
         IMAPMultipart(IMAPMultipart * other);
         virtual Object * copy();
@@ -20,6 +23,7 @@ namespace mailcore {
         virtual void importSerializable(HashMap * serializable);
         
     private:
+        String * mPartID;
         void init();
     };
     

@@ -1,4 +1,4 @@
-﻿#include "MCWin32.h" // should be included first.
+#include "MCWin32.h" // should be included first.
 
 #include "MCString.h"
 
@@ -14,7 +14,6 @@
 #include <unicode/ustring.h>
 #include <unicode/ucnv.h>
 #include <unicode/utypes.h>
-
 #endif
 #if !defined(_MSC_VER) && !defined(ANDROID) && !defined(__ANDROID__)
 #include <uuid/uuid.h>
@@ -577,7 +576,7 @@ static inline int skip_subj_refwd(char * subj, size_t * begin,
     
     if (!has_suffix) {
         if (length - cur_token >= 3) {
-            if (strncmp(subj + cur_token, "：", 3) == 0) {
+            if (strncasecmp(subj + cur_token, "：", 3) == 0) {
                 cur_token += 3;
                 has_suffix = 1;
             }
@@ -1188,6 +1187,7 @@ String * String::stringByDecodingMIMEHeaderValueRfc2231(const char * phrase){
     if(dest != NULL) {
         result = new String(dest);
         result->autorelease();
+        free(dest); //yyb: memory leak
     }
     return result;
 }
@@ -1399,7 +1399,7 @@ void String::appendBytes(const char * bytes, unsigned int length, const char * c
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset appendBytes %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return;
     }
     
@@ -1836,7 +1836,7 @@ static void returnToLineAtBeginningOfBlock(struct parserState * state)
 static Set * blockElements(void)
 {
     static Set * elements = NULL;
-    MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
+    static MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
     
     MC_LOCK(&lock);
     if (elements == NULL) {
@@ -2352,7 +2352,7 @@ Data * String::dataUsingEncoding(const char * charset)
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset dataUsingEncoding %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return NULL;
     }
 
@@ -2438,39 +2438,6 @@ String * String::stringByDeletingPathExtension()
         return this;
     }
     return substringToIndex(location);
-}
-
-/*
- * Find the first occurrence of the byte string s in byte string l.
- *  lm add memmem Func
- */
-
-void *memmem(const void *start, unsigned int s_len, const void *find, unsigned int f_len)
-{
-	char          *p = (char *)start;
-	char		  *q = (char *)find;;
-	unsigned int  len = 0;
-
-	if (s_len == 0 || f_len == 0)
-		return NULL;
-
-	if (s_len < f_len)
-		return NULL;
-
-	while ((p - (char *)start + f_len) <= s_len)
-	{
-		while (*p++ == *q++)
-		{
-			len++;
-			if (len == f_len)
-				return(p - f_len);
-		};
-
-		q = (char *)find;
-		len = 0;
-	};
-
-	return NULL;
 }
 
 Array * String::componentsSeparatedByString(String * separator)
@@ -2580,9 +2547,7 @@ String * String::mUTF7EncodedString()
 
 String * String::mUTF7DecodedString()
 {
-    MCLog("data %s start","mUTF7DecodedString");
     Data * data = dataUsingEncoding("utf-8");
-    MCLog("data %s end","mUTF7DecodedString");
     return stringWithMUTF7Data(data);
 }
 

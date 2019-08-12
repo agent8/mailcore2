@@ -289,9 +289,10 @@ build_git_osx()
 
 get_prebuilt_dep()
 {
-  url="http://d.etpan.org/mailcore2-deps"
-  
+  url="https://d.etpan.org/mailcore2-deps"
+
   echo "get_prebuilt_dep name=$name"
+
 
   if test "x$name" = x ; then
     return

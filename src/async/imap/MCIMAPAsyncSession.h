@@ -200,7 +200,8 @@ namespace mailcore {
     public: // private
         virtual void automaticConfigurationDone(IMAPSession * session);
         virtual void operationRunningStateChanged();
-        virtual IMAPAsyncConnection * sessionForFolder(String * folder, bool urgent = false);
+        //yyb: add parameter
+        virtual IMAPAsyncConnection * sessionForFolder(String * folder, mailcore::IMAPFolderFlag flag, bool urgent = false);
         
     private:
         Array * mSessions;
@@ -238,7 +239,7 @@ namespace mailcore {
         virtual IMAPAsyncConnection * matchingSessionForFolder(String * folder);
         /*! Returns a session with minimum operation queue among already created ones.
          If @param filterByFolder is true, then function filters sessions with
-         predicate (lastFolder() EQUALS TO @param folder). In case of @param folder is NULL
+         predicate ( lastFolder() EQUALS TO @param folder ). In case of param folder is NULL
          the function would search a session among non-selected ones. */
         virtual IMAPAsyncConnection * sessionWithMinQueue(bool filterByFolder, String * folder);
         /*! Returns existant or new session with empty operation queue, if it can.

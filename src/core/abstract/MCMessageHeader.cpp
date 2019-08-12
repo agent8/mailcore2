@@ -407,7 +407,9 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
         time_t timestamp;
         timestamp = timestampFromDate(single_fields.fld_orig_date->dt_date_time);
         setDate(timestamp);
-        setReceivedDate(timestamp);
+        if (receivedDate() == (time_t)-1) {
+            setReceivedDate(timestamp);
+        }
         //MCLog("%lu %lu", (unsigned long) timestamp, date());
     }
     
@@ -816,7 +818,9 @@ void MessageHeader::importIMAPEnvelope(struct mailimap_envelope * env)
             // date
             timestamp = timestampFromDate(date_time);
             setDate(timestamp);
-            setReceivedDate(timestamp);
+            if (receivedDate() == (time_t)-1) {
+                setReceivedDate(timestamp);
+            }
             mailimf_date_time_free(date_time);
         }
         else {
@@ -828,7 +832,9 @@ void MessageHeader::importIMAPEnvelope(struct mailimap_envelope * env)
 
                 timestamp = timestampFromIMAPDate(imap_date);
                 setDate(timestamp);
-                setReceivedDate(timestamp);
+                if (receivedDate() == (time_t)-1) {
+                    setReceivedDate(timestamp);
+                }
                 mailimap_date_time_free(imap_date);
             }
         }

@@ -12,10 +12,12 @@ IMAPMultipart::IMAPMultipart()
 IMAPMultipart::IMAPMultipart(IMAPMultipart * other) : AbstractMultipart(other)
 {
     init();
+    MC_SAFE_REPLACE_COPY(String, mPartID, other->mPartID);
 }
 
 IMAPMultipart::~IMAPMultipart()
 {
+    MC_SAFE_RELEASE(mPartID);
 }
 
 Object * IMAPMultipart::copy()
@@ -25,7 +27,17 @@ Object * IMAPMultipart::copy()
 
 void IMAPMultipart::init()
 {
+    mPartID = NULL;
+}
 
+void IMAPMultipart::setPartID(String * partID)
+{
+    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
+}
+
+String * IMAPMultipart::partID()
+{
+    return mPartID;
 }
 
 HashMap * IMAPMultipart::serializable()
