@@ -1,4 +1,4 @@
-#ifndef MAILCORE_MCIMAPSESSION_H
+﻿#ifndef MAILCORE_MCIMAPSESSION_H
 
 #define MAILCORE_MCIMAPSESSION_H
 
@@ -208,7 +208,7 @@ namespace mailcore {
         virtual bool isCompressionEnabled();
         virtual bool allowsNewPermanentFlags();
       
-        virtual String * gmailUserDisplayName() DEPRECATED_ATTRIBUTE;
+		virtual String * gmailUserDisplayName(); //DEPRECATED_ATTRIBUTE;
         virtual String * getResponse();
         
         virtual void setConnectionLogger(ConnectionLogger * logger);

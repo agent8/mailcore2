@@ -136,6 +136,7 @@
     <ClInclude Include="..\..\..\src\core\basetypes\MCWin32.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAP.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolder.h" />
+    <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolderReport.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolderStatus.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPIdentity.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPMessage.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="..\..\..\src\core\basetypes\MCValue.cpp" />
     <ClCompile Include="..\..\..\src\core\basetypes\MCWin32.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolder.cpp" />
+    <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolderReport.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolderStatus.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPIdentity.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPMessage.cpp" />
