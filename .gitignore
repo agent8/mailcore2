@@ -33,6 +33,16 @@ Podfile.lock
 *.opensdf
 *.suo
 Externals
+Externals-win/dll/x64/exp
+Externals-win/dll/x86/pdb
+Externals-win/dll/exp
+Externals-win/dll/pdb
+Externals-win/lib/x64/exp
+Externals-win/lib/x86/pdb
+Externals-win/lib/exp
+Externals-win/lib/pdb
+Externals-win/lib64/exp
+Externals-win/lib64/pdb
 build-windows/mailcore2/.vs
 build-mac/mailcore2.xcodeproj/project.xcworkspace/xcshareddata
 build-windows/include
