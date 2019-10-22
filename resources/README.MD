@@ -8,3 +8,5 @@
     we should not depend on this for it can be changed by the user in some ISPs. 
   - mailboxes(Deprecated)
     we should not depend on this for it will change when the langudge changes in some ISPs.
+## IMPORTANT(注意事项)
+正则表达式匹配的时候必须在所有的匹配项
