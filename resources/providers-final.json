@@ -2507,9 +2507,6 @@
             "spam": "EdoJunk",
             "trash": "Deleted"
         },
-        "mx-match": [
-            ".*\\.protection\\.outlook\\.com"
-        ],
         "servers": {
             "imap": [
                 {
