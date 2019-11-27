@@ -14,9 +14,6 @@ using namespace mailcore;
 
 void IMAPPart::init()
 {
-    mPartID = NULL;
-    mEncoding = Encoding8Bit;
-    mSize = 0;
 }
 
 IMAPPart::IMAPPart()
@@ -27,14 +24,10 @@ IMAPPart::IMAPPart()
 IMAPPart::IMAPPart(IMAPPart * other) : AbstractPart(other)
 {
     init();
-    MC_SAFE_REPLACE_COPY(String, mPartID, other->mPartID);
-    mEncoding = other->mEncoding;
-    mSize = other->mSize;
 }
 
 IMAPPart::~IMAPPart()
 {
-    MC_SAFE_RELEASE(mPartID);
 }
 
 Object * IMAPPart::copy()
@@ -42,44 +35,15 @@ Object * IMAPPart::copy()
     return new IMAPPart(this);
 }
 
-void IMAPPart::setPartID(String * partID)
-{
-    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
-}
-
-String * IMAPPart::partID()
-{
-    return mPartID;
-}
-
-void IMAPPart::setSize(unsigned int size)
-{
-    mSize = size;
-}
-
-unsigned int IMAPPart::size()
-{
-    return mSize;
-}
-
-void IMAPPart::setEncoding(Encoding encoding)
-{
-    mEncoding = encoding;
-}
-
-Encoding IMAPPart::encoding()
-{
-    return mEncoding;
-}
-
 unsigned int IMAPPart::decodedSize()
 {
-    switch (mEncoding) {
+    Encoding encoding = this->encoding();
+    unsigned int size = this->size();
+    switch (encoding) {
         case MAILIMAP_BODY_FLD_ENC_BASE64:
-            return mSize * 3 / 4;
-            
+            return size * 3 / 4;
         default:
-            return mSize;
+            return size;
     }
 }
 
