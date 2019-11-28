@@ -133,7 +133,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
             // RFC: https://tools.ietf.org/html/rfc2387
             // we need to find the root part, by default it is 0
             unsigned int rootIndex = 0;
-            String * rootCid = multipart->contentTypeParameterValueForName(MCSTR("start"));;
+            String * rootCid = multipart->contentTypeParameterValueForName(MCSTR("start"));
             for(unsigned int i = 0 ; i < multipart->parts()->count() ; i ++) {
                 AbstractPart * subpart = (AbstractPart *) multipart->parts()->objectAtIndex(i);
                 if (rootCid != NULL && rootCid->isEqual(subpart->contentID())) {
@@ -151,7 +151,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                         subpart->setInlineAttachment(true);
                     }
                 } else {
-                    parsePart(subpart, htmlParts, plainParts, NULL, inlineAttachments, multipart->charset());
+                    parsePart(subpart, htmlParts, plainParts, attachments, inlineAttachments, multipart->charset());
                 }
             }
         }

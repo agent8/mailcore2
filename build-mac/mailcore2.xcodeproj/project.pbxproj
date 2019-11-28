@@ -524,6 +524,7 @@
 		5C713914238F780400E2D64B /* MCIMAPPartParser.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
 		5C713915238F782700E2D64B /* MCIMAPFolderReport.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
 		5C713916238F79D400E2D64B /* MCIMAPPartParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
+		5C713934238FE89B00E2D64B /* MCHTMLRenderer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD67C16BDCDD400DB18F1 /* MCHTMLRenderer.h */; };
 		810DB78E1C68F4F000017B12 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
 		810DB7921C68F50B00017B12 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
 		811320B01D02388A004B7ECF /* MCDataDecoderUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811320AE1D02388A004B7ECF /* MCDataDecoderUtils.cpp */; };
@@ -1841,6 +1842,7 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				5C713934238FE89B00E2D64B /* MCHTMLRenderer.h in CopyFiles */,
 				5C713916238F79D400E2D64B /* MCIMAPPartParser.h in CopyFiles */,
 				127F30AD22F98D72008C2455 /* MCIMAPFolderReport.h in CopyFiles */,
 				1263ED8521C6207D00E85F6E /* MCIMAPCheckAccountOperation.h in CopyFiles */,
