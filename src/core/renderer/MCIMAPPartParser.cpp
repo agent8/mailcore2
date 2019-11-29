@@ -186,7 +186,6 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 else {
                    preferedHTML = (AbstractPart *) multipart->parts()->objectAtIndex(0);
                 }
-                parsePart(preferedHTML, htmlParts, NULL, attachments, inlineAttachments, multipart->charset());
             }
             if (preferedPlain == NULL) {
                 if (preferedHTML) {
@@ -198,6 +197,11 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 else {
                    preferedPlain = (AbstractPart *) multipart->parts()->objectAtIndex(0);
                 }
+            }
+            if (preferedHTML) {
+                parsePart(preferedHTML, htmlParts, NULL, attachments, inlineAttachments,  multipart->charset());
+            }
+            if (preferedPlain) {
                 parsePart(preferedPlain, NULL, plainParts, attachments, inlineAttachments, multipart->charset());
             }
             //If there is a calendar part in alternative, we will also choose it with html part
