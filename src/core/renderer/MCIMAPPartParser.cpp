@@ -11,9 +11,19 @@
 using namespace mailcore;
 static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 
-static bool canPreviewPart(AbstractPart * part) {
+static bool isInlinePart(AbstractPart * part, bool strict) {
     String * mimeType = part->mimeType();
     String * filename = part->filename();
+    if (strict) {
+        if (part->isAttachment()) {
+            return false;
+        }
+    } else {
+        // In multipart/related
+        if (part->contentID() == NULL || part->contentID() == MCSTR("")) {
+            return false;
+        }
+    }
     // is mimetype start with image/ or filename endwith .jpg/.jpeg/.png/.gif, .etc.
     if (mimeType != NULL) {
         if (mimeType->lowercaseString()->hasPrefix(MCSTR("image/"))) {
@@ -28,6 +38,7 @@ static bool canPreviewPart(AbstractPart * part) {
     }
     return false;
 }
+
 static bool isTextPart(AbstractPart * part)
 {
     String * mimeType = part->mimeType();
@@ -46,10 +57,11 @@ static bool isTextPart(AbstractPart * part)
         return false;
     }
 }
+
 static bool partContainsMimeType(AbstractPart * part, String * mimeType)
 {
     MCAssert(part != NULL);
-    if (part->mimeType()->isEqualCaseInsensitive(mimeType)) {
+    if (part->mimeType() != NULL && part->mimeType()->isEqualCaseInsensitive(mimeType)) {
         return true;
     }
     switch (part->partType()) {
@@ -86,11 +98,11 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
     if ((charset == NULL || charset == MCSTR("")) && defaultCharset != NULL) {
         part->setCharset(defaultCharset);
     }
-    if (part->mimeType() == NULL) {
-        part->setMimeType(MCSTR("application/octet-stream"));
-    }
     switch (part->partType()) {
         case PartTypeSingle: {
+            if (part->mimeType() == NULL) {
+                part->setMimeType(MCSTR("application/octet-stream"));
+            }
             if (isTextPart(part)) {
                 if (htmlParts != NULL) {
                     htmlParts->addObject(part);
@@ -98,7 +110,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 if (plainParts != NULL) {
                     plainParts->addObject(part);
                 }
-            } else if (canPreviewPart(part)) {
+            } else if (isInlinePart(part, true)) {
                 // We prefer to display an image into html body instead of attachments.
                 if (htmlParts != NULL) {
                     htmlParts->addObject(part);
@@ -144,8 +156,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 AbstractPart * subpart = (AbstractPart *) multipart->parts()->objectAtIndex(i);
                 if (i == rootIndex) {
                     parsePart(subpart, htmlParts, plainParts, attachments, inlineAttachments, multipart->charset());
-                } else if (canPreviewPart(subpart) && subpart->contentID() != NULL && subpart->contentID() != MCSTR("")) {
-                    // This is the ONLY case that DONOT call recursion
+                } else if (isInlinePart(subpart, false)) {
                     if (inlineAttachments != NULL) {
                         inlineAttachments->addObject(subpart);
                         subpart->setInlineAttachment(true);
@@ -154,6 +165,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                     parsePart(subpart, htmlParts, plainParts, attachments, inlineAttachments, multipart->charset());
                 }
             }
+            break;
         }
         case PartTypeMultipartAlternative:{
             AbstractPart * preferedHTML = NULL;
@@ -176,38 +188,24 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                     preferedCalendar = subpart;
                 }
             }
-            if (preferedHTML == NULL) {
-                if (preferedPlain) {
-                    preferedHTML = preferedPlain;
-                }
-                else if (preferedCalendar) {
-                    preferedHTML = preferedCalendar;
-                }
-                else {
-                   preferedHTML = (AbstractPart *) multipart->parts()->objectAtIndex(0);
-                }
+            if (!preferedHTML && preferedPlain) {
+                preferedHTML = preferedPlain;
             }
-            if (preferedPlain == NULL) {
-                if (preferedHTML) {
-                    preferedPlain = preferedHTML;
-                }
-                else if (preferedCalendar) {
-                    preferedPlain = preferedCalendar;
-                }
-                else {
-                   preferedPlain = (AbstractPart *) multipart->parts()->objectAtIndex(0);
-                }
+            if (!preferedPlain && preferedHTML) {
+                preferedPlain = preferedHTML;
             }
-            if (preferedHTML) {
+            //Note: preferedHTML&preferedPlain should be 1,1 or 0,0; never be 0,1 or 1,0
+            if (preferedHTML && preferedPlain) {
                 parsePart(preferedHTML, htmlParts, NULL, attachments, inlineAttachments,  multipart->charset());
-            }
-            if (preferedPlain) {
                 parsePart(preferedPlain, NULL, plainParts, attachments, inlineAttachments, multipart->charset());
             }
             //If there is a calendar part in alternative, we will also choose it with html part
-            if (preferedCalendar && preferedCalendar != preferedHTML) {
-                parsePart(preferedCalendar, htmlParts, NULL, NULL, NULL, multipart->charset());
+            if (preferedCalendar) {
+                if (htmlParts) {
+                    htmlParts->addObject(preferedCalendar);
+                }
             }
+            
             break;
         }
         case PartTypeMultipartMixed:
