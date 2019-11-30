@@ -11,6 +11,21 @@
 using namespace mailcore;
 static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 
+void fixFilename(AbstractPart * part) {
+    if (part->filename() == NULL || MCSTR("")->isEqual(part->filename())) {
+        if (part->mimeType()) {
+            String * filename = String::stringWithUTF8Format("%s.%s",MCSTR("attachment")->UTF8Characters(), part->mimeType()->lastPathComponent()->UTF8Characters());
+            part->setFilename(filename);
+        }
+        else {
+            part->setFilename(MCSTR("attachment.dat"));
+        }
+    } else {
+        // Fix issue if file name is something like: /usr/bin/xxx.pdf
+        part->setFilename(part->filename()->lastPathComponent());
+    }
+}
+
 static bool isInlinePart(AbstractPart * part, bool strict) {
     String * mimeType = part->mimeType();
     String * filename = part->filename();
@@ -118,6 +133,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 else if (attachments != NULL) {
                     attachments->addObject(part);
                     part->setAttachment(true);
+                    fixFilename(part);
                 }
                 // This is ONLY for the email that do not follow the RFC2387.
                 // Adding irrelevant part into inlineattachments does not matter.
@@ -129,6 +145,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 if (attachments != NULL) {
                     attachments->addObject(part);
                     part->setAttachment(true);
+                    fixFilename(part);
                 }
             }
             break;
@@ -137,6 +154,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
             if (attachments != NULL) {
                 attachments->addObject(part);
                 part->setAttachment(true);
+                fixFilename(part);
             }
             break;
         }
