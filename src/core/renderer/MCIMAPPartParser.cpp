@@ -148,17 +148,17 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 // We prefer to display an image into html body instead of attachments.
                 if (htmlParts != NULL) {
                     htmlParts->addObject(part);
+                    // This is ONLY for the email that do not follow the RFC2387.
+                    // Adding irrelevant part into inlineattachments does not matter.
+                    if (inlineAttachments != NULL) {
+                        inlineAttachments->addObject(part);
+                        part->setInlineAttachment(true);
+                    }
                 }
                 else if (attachments != NULL) {
                     attachments->addObject(part);
                     part->setAttachment(true);
                     fixFilename(part);
-                }
-                // This is ONLY for the email that do not follow the RFC2387.
-                // Adding irrelevant part into inlineattachments does not matter.
-                if (inlineAttachments != NULL && part->contentID() != NULL && part->contentID() != MCSTR("")) {
-                    inlineAttachments->addObject(part);
-                    part->setInlineAttachment(true);
                 }
             } else {
                 if (attachments != NULL) {
