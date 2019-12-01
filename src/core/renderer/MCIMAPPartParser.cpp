@@ -13,8 +13,27 @@ static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 
 void fixFilename(AbstractPart * part) {
     if (part->filename() == NULL || MCSTR("")->isEqual(part->filename())) {
-        if (part->mimeType()) {
-            String * filename = String::stringWithUTF8Format("%s.%s",MCSTR("attachment")->UTF8Characters(), part->mimeType()->lastPathComponent()->UTF8Characters());
+        String * mimetype = part->mimeType();
+        if (mimetype) {
+            String * ext = NULL;
+            if (mimetype->hasPrefix(MCSTR("text/"))) {
+                if (MCSTR("text/html")->isEqualCaseInsensitive(mimetype)) {
+                    ext = MCSTR("html");
+                }
+                else if (MCSTR("text/calendar")->isEqualCaseInsensitive(mimetype)) {
+                    ext = MCSTR("ics");
+                }
+                else {
+                    ext = MCSTR("txt");
+                }
+            }
+            else if (part->partType() == PartTypeMessage) {
+                ext = MCSTR("eml");
+            }
+            else {
+                ext = mimetype->lastPathComponent();
+            }
+            String * filename = String::stringWithUTF8Format("attachment.%s", ext->UTF8Characters());
             part->setFilename(filename);
         }
         else {
