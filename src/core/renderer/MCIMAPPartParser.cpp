@@ -125,6 +125,69 @@ static bool partContainsMimeType(AbstractPart * part, String * mimeType)
     }
 }
 
+static void prettyPrintPart(String * output, AbstractPart * part,Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments, int level) {
+    for (int i=0; i<level; i++){
+        output->appendString(MCSTR("    "));
+    }
+    String * mimetype = part->mimeType();
+    switch (part->partType()) {
+        case PartTypeSingle:
+        case PartTypeMessage: {
+            String * tags = String::string();
+            if (htmlParts && htmlParts->containsObject(part)) {
+                tags->appendString(MCSTR(" html"));
+            }
+            if (plainParts && plainParts->containsObject(part)) {
+                tags->appendString(MCSTR(" plain"));
+            }
+            if (attachments && attachments->containsObject(part)) {
+                // part->isAttachment()
+                tags->appendString(MCSTR(" attachment"));
+            }
+            if (inlineAttachments && inlineAttachments->containsObject(part)) {
+                // part->isInlineAttachment()
+                tags->appendString(MCSTR(" inline"));
+            }
+            if (mimetype == NULL) {
+                mimetype = MCSTR("application/x-unknown-edison");
+            }
+            output->appendString(String::stringWithUTF8Format("%s %s >%s\r\n", part->partID()->UTF8Characters(), mimetype->UTF8Characters(), tags->UTF8Characters()));
+            break;
+        }
+        default: {
+            if (mimetype == NULL) {
+                if (part->partType() == PartTypeMultipartMixed) {
+                    mimetype = MCSTR("multipart/mixed");
+                }
+                else if (part->partType() == PartTypeMultipartSigned) {
+                    mimetype = MCSTR("multipart/signed");
+                }
+                else if (part->partType() == PartTypeMultipartRelated) {
+                    mimetype = MCSTR("multipart/related");
+                }
+                else if (part->partType() == PartTypeMultipartAlternative) {
+                    mimetype = MCSTR("multipart/alternative");
+                }
+                else {
+                    mimetype = MCSTR("multipart/x-edison-unknown");
+                }
+            }
+            if (part->partID() == NULL || MCSTR("")->isEqual(part->partID())) {
+                output->appendString(String::stringWithUTF8Format("%s(root)\r\n", mimetype->UTF8Characters()));
+            }
+            else {
+                output->appendString(String::stringWithUTF8Format("%s %s\r\n", part->partID()->UTF8Characters(), mimetype->UTF8Characters()));
+            }
+            AbstractMultipart * multipart = (AbstractMultipart *)part;
+            for(unsigned int i = 0 ; i < multipart->parts()->count() ; i ++) {
+                AbstractPart * subpart = (AbstractPart *) multipart->parts()->objectAtIndex(i);
+                prettyPrintPart(output, subpart, htmlParts, plainParts, attachments, inlineAttachments, level+1);
+            }
+            break;
+        }
+    }
+}
+
 void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments, String * defaultCharset){
     // https://tools.ietf.org/html/rfc2046
     // Note: Fill the fields(charset and mimetype). We DO NOT trust inline and attachment field from RFC822.
@@ -286,4 +349,27 @@ void IMAPPartParser::parseMessage(AbstractMessage * message, Array * htmlParts, 
         return;
     }
     parsePart(mainPart, htmlParts, plainParts, attachments, inlineAttachments, mainPart->charset());
+}
+
+void IMAPPartParser::parseMessage(String * filepath, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments) {
+    mailcore::MessageParser * parser = mailcore::MessageParser::messageParserWithContentsOfFile(filepath);
+    parseMessage(parser, htmlParts, plainParts, attachments, inlineAttachments);
+}
+
+String * IMAPPartParser::prettyPrint(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments) {
+    AbstractPart * mainPart = NULL;
+    if (message->className()->isEqual(MCSTR("mailcore::IMAPMessage"))) {
+        mainPart = ((IMAPMessage *) message)->mainPart();
+    }
+    else if (message->className()->isEqual(MCSTR("mailcore::MessageParser"))) {
+        mainPart = ((MessageParser *) message)->mainPart();
+    }
+    if (mainPart == NULL) {
+        // needs a mainPart.
+        MCAssert(mainPart != NULL);
+        return NULL;
+    }
+    String * output = String::string();
+    prettyPrintPart(output, mainPart, htmlParts, plainParts, attachments, inlineAttachments, 0);
+    return output;
 }
