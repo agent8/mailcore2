@@ -65,8 +65,17 @@ static bool isInlinePart(AbstractPart * part, bool strict) {
         }
     }
     if (filename != NULL) {
-        if (filename->hasSuffix(MCSTR("./jpg")) || filename->hasSuffix(MCSTR("./jpeg")) ||
-            filename->hasSuffix(MCSTR("./png")) || filename->hasSuffix(MCSTR("./gif"))) {
+        String * ext = filename->pathExtension();
+        if (MCSTR("jpg")->isEqualCaseInsensitive(ext) ||
+            MCSTR("jpeg")->isEqualCaseInsensitive(ext) ||
+            MCSTR("png")->isEqualCaseInsensitive(ext) ||
+            MCSTR("gif")->isEqualCaseInsensitive(ext) ||
+            MCSTR("bmp")->isEqualCaseInsensitive(ext)) {
+            // ICO,SVG,TIFF,APNG,WebP
+            // https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support
+            // We need to support two web browsers: chrome(Desktop,Android) & Safari(iOS).
+            // I only add the image formats that supported both of the two browsers.
+            // We can add more formats if need to support special platform only.
             return true;
         }
     }
