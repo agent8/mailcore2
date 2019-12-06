@@ -1187,6 +1187,7 @@ String * String::stringByDecodingMIMEHeaderValueRfc2231(const char * phrase){
     if(dest != NULL) {
         result = new String(dest);
         result->autorelease();
+        free(dest); //yyb: memory leak
     }
     return result;
 }
@@ -1398,7 +1399,7 @@ void String::appendBytes(const char * bytes, unsigned int length, const char * c
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset appendBytes %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return;
     }
     
@@ -1835,7 +1836,7 @@ static void returnToLineAtBeginningOfBlock(struct parserState * state)
 static Set * blockElements(void)
 {
     static Set * elements = NULL;
-    MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
+    static MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
     
     MC_LOCK(&lock);
     if (elements == NULL) {
@@ -2351,7 +2352,7 @@ Data * String::dataUsingEncoding(const char * charset)
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset dataUsingEncoding %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return NULL;
     }
 
@@ -2546,9 +2547,7 @@ String * String::mUTF7EncodedString()
 
 String * String::mUTF7DecodedString()
 {
-    MCLog("data %s start","mUTF7DecodedString");
     Data * data = dataUsingEncoding("utf-8");
-    MCLog("data %s end","mUTF7DecodedString");
     return stringWithMUTF7Data(data);
 }
 

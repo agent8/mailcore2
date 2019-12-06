@@ -21,6 +21,7 @@ namespace mailcore {
     class IMAPProgressCallback;
     class IMAPSyncResult;
     class IMAPFolderStatus;
+    class IMAPFolderReport;
     class IMAPIdentity;
     
     class MAILCORE_EXPORT IMAPSession : public Object {
@@ -172,6 +173,7 @@ namespace mailcore {
         
         virtual bool setupIdle();
         virtual void idle(String * folder, uint32_t lastKnownUID, ErrorCode * pError);
+        virtual IMAPFolderReport * idle(String * folder, ErrorCode * pError);
         virtual void interruptIdle();
         virtual void unsetupIdle();
         

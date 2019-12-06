@@ -12,12 +12,10 @@ IMAPMessagePart::IMAPMessagePart()
 IMAPMessagePart::IMAPMessagePart(IMAPMessagePart * other) : AbstractMessagePart(other)
 {
     init();
-    MC_SAFE_REPLACE_COPY(String, mPartID, other->mPartID);
 }
 
 IMAPMessagePart::~IMAPMessagePart()
 {
-    MC_SAFE_RELEASE(mPartID);
 }
 
 Object * IMAPMessagePart::copy()
@@ -27,27 +25,8 @@ Object * IMAPMessagePart::copy()
 
 void IMAPMessagePart::init()
 {
-    mPartID = NULL;
-    mSize = 0;
 }
 
-void IMAPMessagePart::setPartID(String * partID)
-{
-    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
-}
-
-String * IMAPMessagePart::partID()
-{
-    return mPartID;
-}
-
-void IMAPMessagePart::setSize(unsigned int size){
-    mSize = size;
-}
-
-unsigned int IMAPMessagePart::size(){
-    return mSize;
-}
 
 HashMap * IMAPMessagePart::serializable()
 {

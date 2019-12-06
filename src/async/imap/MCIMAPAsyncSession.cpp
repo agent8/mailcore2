@@ -314,7 +314,7 @@ IMAPAsyncConnection * IMAPAsyncSession::session()
     return session;
 }
 
-IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool urgent)
+IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, mailcore::IMAPFolderFlag flag, bool urgent)
 {
     if (folder == NULL) {
         return matchingSessionForFolder(NULL);
@@ -325,6 +325,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
         s = sessionWithMinQueue(true, folder);
         if (s != NULL && s->operationsCount() <= 0) {
             s->setLastFolder(folder);
+            s->setLastFolderFlag(flag); //added by yyb:
             return s;
         }
         if (urgent && mAllowsFolderConcurrentAccessEnabled) {
@@ -333,6 +334,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
             s = availableSession();
             if (s->operationsCount() <= 0) {
                 s->setLastFolder(folder);
+                s->setLastFolderFlag(flag);  //added by yyb:
                 return s;
             }
         }
@@ -340,6 +342,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
         // otherwise returns session with minimum size of queue among selected to the folder.
         s = matchingSessionForFolder(folder);
         s->setLastFolder(folder);
+        s->setLastFolderFlag(flag);  //added by yyb:
         return s;
     }
 }

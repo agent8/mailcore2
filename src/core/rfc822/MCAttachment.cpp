@@ -223,7 +223,6 @@ Attachment * Attachment::attachmentWithText(String * text)
 void Attachment::init()
 {
     mData = NULL;
-    mPartID = NULL;
     setMimeType(MCSTR("application/octet-stream"));
 }
 
@@ -247,7 +246,6 @@ Attachment::Attachment(Attachment * other) : AbstractPart(other)
 
 Attachment::~Attachment()
 {
-    MC_SAFE_RELEASE(mPartID);
     MC_SAFE_RELEASE(mData);
 }
 
@@ -285,16 +283,6 @@ String * Attachment::description()
 Object * Attachment::copy()
 {
     return new Attachment(this);
-}
-
-void Attachment::setPartID(String * partID)
-{
-    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
-}
-
-String * Attachment::partID()
-{
-    return mPartID;
 }
 
 void Attachment::setData(Data * data)

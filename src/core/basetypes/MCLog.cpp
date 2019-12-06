@@ -17,13 +17,11 @@
 #endif
 
 #if defined(ANDROID) || defined(__ANDROID__)
-int MCLogEnabled = 0;
 #include <android/log.h>
-#else
-int MCLogEnabled = 0;
 #endif
 
 static pid_t sPid = -1;
+int MCLogEnabled = 0;
 
 INITIALIZE(Log)
 {

@@ -58,14 +58,18 @@ namespace mailcore {
 
         virtual void queueStartRunning() {
             mConnection->setQueueRunning(true);
-            mConnection->owner()->operationRunningStateChanged();
+            if (mConnection->owner()) {
+                mConnection->owner()->operationRunningStateChanged();
+            }
             mConnection->queueStartRunning();
         }
 
         virtual void queueStoppedRunning() {
             mConnection->setQueueRunning(false);
             mConnection->tryAutomaticDisconnect();
-            mConnection->owner()->operationRunningStateChanged();
+            if (mConnection->owner()) {
+                mConnection->owner()->operationRunningStateChanged();
+            }
             mConnection->queueStoppedRunning();
         }
 
@@ -358,7 +362,8 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
             )
         ){
         //Weicheng: does need to keep all session or just the [Gmail]/All Mail and INBOX
-        if (this->lastFolder() != NULL && (mLastFolder->isEqual(MCSTR("[Gmail]/All Mail")) || mLastFolder->isEqual(MCSTR("INBOX")))){
+        //modified by yyb: "[Gmail]/All Mail" is different in different language
+        if (this->lastFolder() != NULL && (mLastFolder->isEqual(MCSTR("[Gmail]/All Mail")) || mLastFolder->isEqual(MCSTR("INBOX"))) || mLastFolderFlag == mailcore::IMAPFolderFlagAllMail){
             MCLog("keep session(%s) from disconnecting %d times with error:%d\n",this->lastFolder()->UTF8Characters(), noopRepeatCount, noopError);
             IMAPOperation * op = owner()->noopOperation();
             op->setCallback(mNoopCallback);
@@ -406,6 +411,15 @@ void IMAPAsyncConnection::setLastFolder(String * folder)
 String * IMAPAsyncConnection::lastFolder()
 {
     return mLastFolder;
+}
+
+//added by yyb:
+void IMAPAsyncConnection::setLastFolderFlag(mailcore::IMAPFolderFlag flag) {
+    this->mLastFolderFlag = flag;
+}
+
+mailcore::IMAPFolderFlag IMAPAsyncConnection::lastFolderFlag() {
+    return mLastFolderFlag;
 }
 
 void IMAPAsyncConnection::setOwner(IMAPAsyncSession * owner)
