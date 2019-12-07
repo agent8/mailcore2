@@ -35,18 +35,6 @@ Object * IMAPPart::copy()
     return new IMAPPart(this);
 }
 
-unsigned int IMAPPart::decodedSize()
-{
-    Encoding encoding = this->encoding();
-    unsigned int size = this->size();
-    switch (encoding) {
-        case MAILIMAP_BODY_FLD_ENC_BASE64:
-            return size * 3 / 4;
-        default:
-            return size;
-    }
-}
-
 AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)
 {
     String * partID;

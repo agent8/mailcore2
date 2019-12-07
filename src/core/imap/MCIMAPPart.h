@@ -17,8 +17,6 @@ namespace mailcore {
         IMAPPart();
         virtual ~IMAPPart();
         
-        virtual unsigned int decodedSize();
-        
     public: // subclass behavior
         IMAPPart(IMAPPart * other);
         virtual Object * copy();
