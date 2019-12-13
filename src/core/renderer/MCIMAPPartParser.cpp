@@ -9,6 +9,11 @@
 #include "MCIMAPPartParser.h"
 
 using namespace mailcore;
+#ifdef ENABLE_INLINE_ALL_IMAGE
+bool ALL_IMAGE_AS_INLINE = true;
+#else
+bool ALL_IMAGE_AS_INLINE = false;
+#endif
 static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 
 void fixFilename(AbstractPart * part) {
@@ -41,23 +46,47 @@ void fixFilename(AbstractPart * part) {
         }
     } else {
         // Fix issue if file name is something like: /usr/bin/xxx.pdf
-        part->setFilename(part->filename()->lastPathComponent());
+        // In Linux/Unix ".",".." & filename with "/" are illegal.
+        String * filename = part->filename()->lastPathComponent();
+        if (MCSTR(".")->isEqual(filename) || MCSTR("..")->isEqual(filename)) {
+            filename = MCSTR("attachment.dat");
+        }
+        else if (filename->length() > 63) {
+            // On Linux/Unix, filename should less than 255 bytes，not UChar length
+            // unicode chars should no more than 63.
+            // TODO: (Weicheng)I did not find a high performance way to trim to 255 bytes.
+            // int length = strlen(filename->UTF8Characters());
+            const char * ext = filename->pathExtension()->UTF8Characters();
+            int cutLength = 63 - strlen(ext);
+            filename = String::stringWithUTF8Format("%s.%s", filename->substringToIndex(cutLength)->UTF8Characters(),
+               ext);
+        }
+        part->setFilename(filename);
     }
 }
 
-static bool isInlinePart(AbstractPart * part, bool strict) {
+static bool isTextPart(AbstractPart * part)
+{
     String * mimeType = part->mimeType();
-    String * filename = part->filename();
-    if (strict) {
-        if (part->isAttachment()) {
-            return false;
-        }
-    } else {
-        // In multipart/related
-        if (part->contentID() == NULL || part->contentID() == MCSTR("")) {
+    if (!part->isInlineAttachment()) {
+        if (part->isAttachment() || part->filename() != NULL) {
             return false;
         }
     }
+    if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
+        return true;
+    }
+    else if (MCSTR("text/html")->isEqualCaseInsensitive(mimeType)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+static bool isImagePart(AbstractPart * part) {
+    String * mimeType = part->mimeType();
+    String * filename = part->filename();
     // is mimetype start with image/ or filename endwith .jpg/.jpeg/.png/.gif, .etc.
     if (mimeType != NULL) {
         if (mimeType->lowercaseString()->hasPrefix(MCSTR("image/"))) {
@@ -81,24 +110,20 @@ static bool isInlinePart(AbstractPart * part, bool strict) {
     }
     return false;
 }
-
-static bool isTextPart(AbstractPart * part)
-{
-    String * mimeType = part->mimeType();
-    if (!part->isInlineAttachment()) {
-        if (part->isAttachment() || part->filename() != NULL) {
-            return false;
+static bool isInlinePart(AbstractPart * part, bool strict) {
+    if (strict) {
+        // In single part
+        if (ALL_IMAGE_AS_INLINE || !part->isAttachment()) {
+           return isImagePart(part);
         }
     }
-    if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
-        return true;
-    }
-    else if (MCSTR("text/html")->isEqualCaseInsensitive(mimeType)) {
-        return true;
-    }
     else {
-        return false;
+        // In multipart/related
+        if (part->contentID() != NULL && part->contentID() != MCSTR("")) {
+            return isImagePart(part);
+        }
     }
+    return false;
 }
 
 static bool partContainsMimeType(AbstractPart * part, String * mimeType)
@@ -218,19 +243,32 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 }
             } else if (isInlinePart(part, true)) {
                 // We prefer to display an image into html body instead of attachments.
-                if (htmlParts != NULL) {
-                    htmlParts->addObject(part);
-                    // This is ONLY for the email that do not follow the RFC2387.
-                    // Adding irrelevant part into inlineattachments does not matter.
+                if (part->contentID() == NULL || part->contentID() == MCSTR("")) {
+                    if (htmlParts != NULL) {
+                        htmlParts->addObject(part);
+                    }
                     if (inlineAttachments != NULL) {
                         inlineAttachments->addObject(part);
                         part->setInlineAttachment(true);
                     }
                 }
-                else if (attachments != NULL) {
-                    attachments->addObject(part);
-                    part->setAttachment(true);
-                    fixFilename(part);
+                else {
+                    if (part->isInlineAttachment()) {
+                        // Normal inline images
+                        if (inlineAttachments != NULL) {
+                            inlineAttachments->addObject(part);
+                            part->setInlineAttachment(true);
+                        }
+                    }
+                    else {
+                        // This is ONLY for the email that do not follow the RFC2387.
+                        // Add into attachments instead of inline for safety
+                        if (attachments != NULL) {
+                            attachments->addObject(part);
+                            part->setAttachment(true);
+                            fixFilename(part);
+                        }
+                    }
                 }
             } else {
                 if (attachments != NULL) {
@@ -320,6 +358,12 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
         case PartTypeMultipartMixed:
         case PartTypeMultipartSigned:
         default: {
+            if (!MCSTR("mailcore::Multipart")->isEqual(part->className()) &&
+                !MCSTR("mailcore::IMAPMultipart")->isEqual(part->className())) {
+                printf("Should never get here. Not supported class:%s\n",part->className()->UTF8Characters());
+                MCAssert(false);
+                break;
+            }
             AbstractMultipart * multipart = (AbstractMultipart *)part;
             String * mimeType = multipart->mimeType();
             // RFC: https://tools.ietf.org/html/rfc6522
@@ -335,7 +379,8 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 }
             }
             else {
-                for(unsigned int i = 0 ; i < multipart->parts()->count() ; i ++) {
+                unsigned int partLength = multipart->parts()->count();
+                for(unsigned int i = 0 ; i < partLength ; i ++) {
                     AbstractPart * subpart = (AbstractPart *) multipart->parts()->objectAtIndex(i);
                     parsePart(subpart, htmlParts, plainParts, attachments, inlineAttachments, multipart->charset());
                 }
@@ -360,9 +405,10 @@ void IMAPPartParser::parseMessage(AbstractMessage * message, Array * htmlParts, 
     parsePart(mainPart, htmlParts, plainParts, attachments, inlineAttachments, mainPart->charset());
 }
 
-void IMAPPartParser::parseMessage(String * filepath, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments) {
+AbstractMessage * IMAPPartParser::parseMessage(String * filepath, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments) {
     mailcore::MessageParser * parser = mailcore::MessageParser::messageParserWithContentsOfFile(filepath);
     parseMessage(parser, htmlParts, plainParts, attachments, inlineAttachments);
+    return parser;
 }
 
 String * IMAPPartParser::prettyPrint(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments) {

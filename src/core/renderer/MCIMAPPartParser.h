@@ -22,7 +22,7 @@ namespace mailcore {
            If need to parse rfc822 attachment, it needs to call parsePart with the rfc822 part.
          */
         static void parseMessage(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
-        static void parseMessage(String * filepath, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
+        static AbstractMessage * parseMessage(String * filepath, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
         static void parsePart(AbstractPart * part, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments, String * defaultCharset);
         static String * prettyPrint(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
     };
