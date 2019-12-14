@@ -46,9 +46,13 @@
 #if defined(_MSC_VER)
 #define PATH_SEPARATOR_CHAR '\\'
 #define PATH_SEPARATOR_STRING "\\"
+#define FILENAME_ILLEGAL_STRING "\/:*?\"<>|"
+#define FILENAME_MAX_LENGHT 255
 #else
 #define PATH_SEPARATOR_CHAR '/'
 #define PATH_SEPARATOR_STRING "/"
+#define FILENAME_ILLEGAL_STRING "/"
+#define FILENAME_MAX_LENGHT 255
 #endif
 
 using namespace mailcore;
@@ -2310,32 +2314,113 @@ String * String::pathExtension()
 
 String * String::filenameFix()
 {
-    // Filter out illegal in filename, and check the length.
+    // Filter out illegal chars in filename, and check the length.
     // In Linux/Unix ".",".." & filename with "/" are illegal.
-    // filename should less than 255 bytes，a UChar's length is 1-4 bytes
-    // TODO: We need to filter out the illegal chars in windows.
-    // TODO: (Weicheng) Should refer to String::stripWhitespace --a high performance way to trim UTF8 to 255 bytes & filter illegal chars.
-    String * filename = NULL;
-    UChar * component = u_strrchr(mUnicodeChars, PATH_SEPARATOR_CHAR);
-    if (component != NULL) {
-       filename = String::stringWithCharacters(component + 1);
+    // filename should less than 255 bytes，a UChar's length cost 1-4 bytes
+    String * filename = (String *)this->copy()->autorelease();
+    UChar * source = filename->mUnicodeChars;
+    UChar * dest = source;
+    // Trim leading ., replace illegal chars, trim to 255 bytes
+    unsigned int illegalLen = strlen(FILENAME_ILLEGAL_STRING);
+    unsigned int bytesLeft = FILENAME_MAX_LENGHT;
+    int stage = 0;
+    while (* source != 0) {
+        if (stage == 0) {
+            //start
+            if (* source == '.' ||
+                * source == ' ' ||
+                * source == '\t' ||
+                * source == '\r'||
+                * source == PATH_SEPARATOR_CHAR) {
+                source ++;
+            }
+            else {
+                bytesLeft = FILENAME_MAX_LENGHT;
+                if (* source < 127) {
+                    bytesLeft --;
+                } else {
+                    // Note: a UChar to UTF-8 will cost 1-4 bytes.
+                    // We use the max length(4 bytes) for performance.
+                    bytesLeft -= 4;
+                }
+                * dest = * source;
+                stage = 1;
+                source ++;
+                dest ++;
+            }
+        } else if (stage == 1) {
+            UChar c1 = * source;
+            for (int i = 0; i < illegalLen; i++) {
+                char c2 = FILENAME_ILLEGAL_STRING[i];
+                if ( c1 == c2) {
+                    if (c2 == PATH_SEPARATOR_CHAR) {
+                        // Encounter a PATH_SEPARATOR_CHAR, reset
+                        stage = 0;
+                    } else {
+                        // Replace the illegal to whitespace.
+                        c1 = ' ';
+                    }
+                    break;
+                }
+            }
+            if (stage == 1) {
+                if (* source < 127) {
+                    if (bytesLeft > 0) {
+                        bytesLeft --;
+                        * dest = c1;
+                        source ++;
+                        dest ++;
+                    }
+                    else {
+                        stage = 2;
+                    }
+                } else {
+                    // Note: a UChar to UTF-8 will cost 1-4 bytes. Use the max length for performance.
+                    if (bytesLeft > 3) {
+                        bytesLeft -= 4;
+                        * dest = c1;
+                        source ++;
+                        dest ++;
+                    }
+                    else {
+                        stage = 2;
+                    }
+                }
+            }
+            else {
+                dest = filename->mUnicodeChars;
+                bytesLeft = FILENAME_MAX_LENGHT;
+                source ++;
+            }
+        }
+        else if (stage == 2) {
+            // Note: we may append the "..."
+            UChar c1 = * source;
+            if (c1 == '.') {
+                unsigned int extLength = filename->mLength - (source - filename->mUnicodeChars);
+                dest -= extLength;
+                * dest = c1;
+                bytesLeft += extLength;
+                stage = 1;
+                dest ++;
+            }
+            source ++;
+            // If do not append the ext, then just break;
+            // break;
+        }
+    }
+    * dest = 0;
+    filename->mLength = (unsigned int) (dest - filename->mUnicodeChars);
+    if (filename->mLength > 1) {
+        while (* (dest - 1) == ' ') {
+            dest --;
+        }
+        * dest = 0;
+        filename->mLength = (unsigned int) (dest - filename->mUnicodeChars);
     }
     else {
-        filename = (String *)this->copy()->autorelease();
-    }
-    if (MCSTR(".")->isEqual(filename) || MCSTR("..")->isEqual(filename)) {
         filename = MCSTR("attachment.dat");
     }
-    else if (filename->length() > 255) {
-        // TODO: (Weicheng) Is there a better way? We don't need to copy a string every time.
-        // So this version does not support UChar with more than two bytes.
-        // int length = strlen(filename->UTF8Characters());
-        const char * ext = filename->pathExtension()->UTF8Characters();
-        int cutLength = 255 - 1 - strlen(ext);
-        filename = String::stringWithUTF8Format("%s.%s", filename->substringToIndex(cutLength)->UTF8Characters(),
-           ext);
-    }
-    // printf("%s\n", filename->UTF8Characters());
     return filename;
 }
 
