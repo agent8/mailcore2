@@ -45,22 +45,7 @@ void fixFilename(AbstractPart * part) {
             part->setFilename(MCSTR("attachment.dat"));
         }
     } else {
-        // Fix issue if file name is something like: /usr/bin/xxx.pdf
-        // In Linux/Unix ".",".." & filename with "/" are illegal.
-        String * filename = part->filename()->lastPathComponent();
-        if (MCSTR(".")->isEqual(filename) || MCSTR("..")->isEqual(filename)) {
-            filename = MCSTR("attachment.dat");
-        }
-        else if (filename->length() > 63) {
-            // On Linux/Unix, filename should less than 255 bytes，not UChar length
-            // unicode chars should no more than 63.
-            // TODO: (Weicheng)I did not find a high performance way to trim to 255 bytes.
-            // int length = strlen(filename->UTF8Characters());
-            const char * ext = filename->pathExtension()->UTF8Characters();
-            int cutLength = 63 - strlen(ext);
-            filename = String::stringWithUTF8Format("%s.%s", filename->substringToIndex(cutLength)->UTF8Characters(),
-               ext);
-        }
+        String * filename = part->filename()->filenameFix();
         part->setFilename(filename);
     }
 }

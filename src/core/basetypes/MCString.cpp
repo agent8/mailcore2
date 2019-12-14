@@ -2308,6 +2308,37 @@ String * String::pathExtension()
     return String::stringWithCharacters(component + 1);
 }
 
+String * String::filenameFix()
+{
+    // Filter out illegal in filename, and check the length.
+    // In Linux/Unix ".",".." & filename with "/" are illegal.
+    // filename should less than 255 bytes，a UChar's length is 1-4 bytes
+    // TODO: We need to filter out the illegal chars in windows.
+    // TODO: (Weicheng) Should refer to String::stripWhitespace --a high performance way to trim UTF8 to 255 bytes & filter illegal chars.
+    String * filename = NULL;
+    UChar * component = u_strrchr(mUnicodeChars, PATH_SEPARATOR_CHAR);
+    if (component != NULL) {
+       filename = String::stringWithCharacters(component + 1);
+    }
+    else {
+        filename = (String *)this->copy()->autorelease();
+    }
+    if (MCSTR(".")->isEqual(filename) || MCSTR("..")->isEqual(filename)) {
+        filename = MCSTR("attachment.dat");
+    }
+    else if (filename->length() > 255) {
+        // TODO: (Weicheng) Is there a better way? We don't need to copy a string every time.
+        // So this version does not support UChar with more than two bytes.
+        // int length = strlen(filename->UTF8Characters());
+        const char * ext = filename->pathExtension()->UTF8Characters();
+        int cutLength = 255 - 1 - strlen(ext);
+        filename = String::stringWithUTF8Format("%s.%s", filename->substringToIndex(cutLength)->UTF8Characters(),
+           ext);
+    }
+    // printf("%s\n", filename->UTF8Characters());
+    return filename;
+}
+
 Data * String::dataUsingEncoding(const char * charset)
 {
     if (charset == NULL) {
