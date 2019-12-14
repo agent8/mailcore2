@@ -2336,11 +2336,16 @@ String * String::filenameFix()
             }
             else {
                 bytesLeft = FILENAME_MAX_LENGHT;
-                if (* source < 127) {
+                if (* source <= 0x7F) {
                     bytesLeft --;
-                } else {
-                    // Note: a UChar to UTF-8 will cost 1-4 bytes.
-                    // We use the max length(4 bytes) for performance.
+                }
+                else if (* source <= 0x07FF) {
+                    bytesLeft -= 2;
+                }
+                else if (* source <= 0xFFFF) {
+                    bytesLeft -= 3;
+                }
+                else {
                     bytesLeft -= 4;
                 }
                 * dest = * source;
@@ -2364,27 +2369,27 @@ String * String::filenameFix()
                 }
             }
             if (stage == 1) {
-                if (* source < 127) {
-                    if (bytesLeft > 0) {
-                        bytesLeft --;
-                        * dest = c1;
-                        source ++;
-                        dest ++;
-                    }
-                    else {
-                        stage = 2;
-                    }
-                } else {
-                    // Note: a UChar to UTF-8 will cost 1-4 bytes. Use the max length for performance.
-                    if (bytesLeft > 3) {
-                        bytesLeft -= 4;
-                        * dest = c1;
-                        source ++;
-                        dest ++;
-                    }
-                    else {
-                        stage = 2;
-                    }
+                unsigned int bytesNeeded = 0;
+                if (* source <= 0x7F) {
+                    bytesNeeded = 1;
+                }
+                else if (* source <= 0x07FF) {
+                    bytesNeeded = 2;
+                }
+                else if (* source <= 0xFFFF) {
+                    bytesNeeded = 3;
+                }
+                else {
+                    bytesNeeded = 4;
+                }
+                if (bytesLeft >= bytesNeeded) {
+                    bytesLeft -= bytesNeeded;
+                    * dest = c1;
+                    source ++;
+                    dest ++;
+                }
+                else {
+                    stage = 2;
                 }
             }
             else {
@@ -2394,7 +2399,7 @@ String * String::filenameFix()
             }
         }
         else if (stage == 2) {
-            // Note: we may append the "..."
+            // Note: There is a limited when cutting in the middle of the ext.
             UChar c1 = * source;
             if (c1 == '.') {
                 unsigned int extLength = filename->mLength - (source - filename->mUnicodeChars);
@@ -2405,7 +2410,7 @@ String * String::filenameFix()
                 dest ++;
             }
             source ++;
-            // If do not append the ext, then just break;
+            // If do not extract the extention, then just break;
             // break;
         }
     }
