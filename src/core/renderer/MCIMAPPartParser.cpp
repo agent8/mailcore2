@@ -104,7 +104,7 @@ static bool isInlinePart(AbstractPart * part, bool strict) {
     }
     else {
         // In multipart/related
-        if (part->contentID() != NULL && part->contentID() != MCSTR("")) {
+        if (part->contentID() != NULL && MCSTR("")->isEqual(part->contentID())) {
             return isImagePart(part);
         }
     }
@@ -211,7 +211,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
     // https://tools.ietf.org/html/rfc2046
     // Note: Fill the fields(charset and mimetype). We DO NOT trust inline and attachment field from RFC822.
     String * charset = part->charset();
-    if ((charset == NULL || charset == MCSTR("")) && defaultCharset != NULL) {
+    if ((charset == NULL || MCSTR("")->isEqual(charset)) && defaultCharset != NULL) {
         part->setCharset(defaultCharset);
     }
     switch (part->partType()) {
@@ -228,7 +228,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 }
             } else if (isInlinePart(part, true)) {
                 // We prefer to display an image into html body instead of attachments.
-                if (part->contentID() == NULL || part->contentID() == MCSTR("")) {
+                if (part->contentID() == NULL || MCSTR("")->isEqual(part->contentID())) {
                     if (htmlParts != NULL) {
                         htmlParts->addObject(part);
                     }
