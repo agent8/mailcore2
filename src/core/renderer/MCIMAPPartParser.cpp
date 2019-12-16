@@ -16,40 +16,6 @@ bool ALL_IMAGE_AS_INLINE = false;
 #endif
 static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 
-void fixFilename(AbstractPart * part) {
-    if (part->filename() == NULL || MCSTR("")->isEqual(part->filename())) {
-        String * mimetype = part->mimeType();
-        if (mimetype) {
-            String * ext = NULL;
-            if (mimetype->hasPrefix(MCSTR("text/"))) {
-                if (MCSTR("text/html")->isEqualCaseInsensitive(mimetype)) {
-                    ext = MCSTR("html");
-                }
-                else if (MCSTR("text/calendar")->isEqualCaseInsensitive(mimetype)) {
-                    ext = MCSTR("ics");
-                }
-                else {
-                    ext = MCSTR("txt");
-                }
-            }
-            else if (part->partType() == PartTypeMessage) {
-                ext = MCSTR("eml");
-            }
-            else {
-                ext = mimetype->lastPathComponent();
-            }
-            String * filename = String::stringWithUTF8Format("attachment.%s", ext->UTF8Characters());
-            part->setFilename(filename);
-        }
-        else {
-            part->setFilename(MCSTR("attachment.dat"));
-        }
-    } else {
-        String * filename = part->filename()->filenameFix();
-        part->setFilename(filename);
-    }
-}
-
 static bool isTextPart(AbstractPart * part)
 {
     String * mimeType = part->mimeType();
@@ -251,7 +217,6 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                         if (attachments != NULL) {
                             attachments->addObject(part);
                             part->setAttachment(true);
-                            fixFilename(part);
                         }
                     }
                 }
@@ -259,7 +224,6 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 if (attachments != NULL) {
                     attachments->addObject(part);
                     part->setAttachment(true);
-                    fixFilename(part);
                 }
             }
             break;
@@ -268,7 +232,6 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
             if (attachments != NULL) {
                 attachments->addObject(part);
                 part->setAttachment(true);
-                fixFilename(part);
             }
             break;
         }
@@ -394,6 +357,40 @@ AbstractMessage * IMAPPartParser::parseMessage(String * filepath, Array * htmlPa
     mailcore::MessageParser * parser = mailcore::MessageParser::messageParserWithContentsOfFile(filepath);
     parseMessage(parser, htmlParts, plainParts, attachments, inlineAttachments);
     return parser;
+}
+
+void IMAPPartParser::fixFilename(AbstractPart * part) {
+    if (part->filename() == NULL || MCSTR("")->isEqual(part->filename())) {
+        String * mimetype = part->mimeType();
+        if (mimetype) {
+            String * ext = NULL;
+            if (mimetype->hasPrefix(MCSTR("text/"))) {
+                if (MCSTR("text/html")->isEqualCaseInsensitive(mimetype)) {
+                    ext = MCSTR("html");
+                }
+                else if (MCSTR("text/calendar")->isEqualCaseInsensitive(mimetype)) {
+                    ext = MCSTR("ics");
+                }
+                else {
+                    ext = MCSTR("txt");
+                }
+            }
+            else if (part->partType() == PartTypeMessage) {
+                ext = MCSTR("eml");
+            }
+            else {
+                ext = mimetype->lastPathComponent();
+            }
+            String * filename = String::stringWithUTF8Format("attachment.%s", ext->UTF8Characters());
+            part->setFilename(filename);
+        }
+        else {
+            part->setFilename(MCSTR("attachment.dat"));
+        }
+    } else {
+        String * filename = part->filename()->filenameFix();
+        part->setFilename(filename);
+    }
 }
 
 String * IMAPPartParser::prettyPrint(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments) {

@@ -24,6 +24,7 @@ namespace mailcore {
         static void parseMessage(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
         static AbstractMessage * parseMessage(String * filepath, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
         static void parsePart(AbstractPart * part, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments, String * defaultCharset);
+        static void fixFilename(AbstractPart * part);
         static String * prettyPrint(AbstractMessage * message, Array * htmlParts, Array * plainParts, Array * attachments, Array * inlineAttachments);
     };
 };
