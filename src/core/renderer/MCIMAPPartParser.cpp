@@ -308,7 +308,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
         default: {
             if (!MCSTR("mailcore::Multipart")->isEqual(part->className()) &&
                 !MCSTR("mailcore::IMAPMultipart")->isEqual(part->className())) {
-                printf("Should never get here. Not supported class:%s\n",part->className()->UTF8Characters());
+                //printf("Should never get here. Not supported class:%s\n",part->className()->UTF8Characters());
                 MCAssert(false);
                 break;
             }
