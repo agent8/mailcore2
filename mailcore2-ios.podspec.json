@@ -10,17 +10,17 @@
   },
   "authors": "MailCore Authors",
   "source": {
-    "git": "http://github.com/MailCore/mailcore2.git",
-    "branch": "master"
+    "git": "http://github.com/agent8/mailcore2.git",
+    "branch": "release"
   },
   "platforms": {
-    "ios": 8.0
+    "ios": 10.0
   },
   "header_dir": "MailCore",
   "requires_arc": false,
   "public_header_files": "cocoapods-build/include/MailCore/*.h",
   "preserve_paths": "cocoapods-build/include/MailCore/*.h",
-  "vendored_libraries": "cocoapods-build/lib/libMailCore-ios.a",
+  "vendored_libraries": "cocoapods-build/lib/libEdoMailcore2.a",
   "libraries": ["xml2", "iconv", "z", "c++", "resolv"],
-  "prepare_command": "./scripts/build-mailcore2-ios-cocoapod.sh"
+  "prepare_command": "./scripts/edo-build-mailcore2-ios-cocoapod.sh"
 }
