@@ -9,7 +9,7 @@ build_git_ios()
   simarchs="x86_64"
   sdkminversion="7.0"
   sdkversion="`xcodebuild -showsdks 2>/dev/null | grep iphoneos | sed 's/.*iphoneos\(.*\)/\1/'`"
-  devicearchs="arm64 arm64e"
+  devicearchs="arm64"
 
   versions_path="$scriptpath/deps-versions.plist"
   version="`/usr/libexec/PlistBuddy -c \"print :"$name"\" "$versions_path"  2>/dev/null`"
@@ -40,30 +40,6 @@ build_git_ios()
 
   pushd . >/dev/null
   
-  #mkdir -p "$builddir/downloads"
-  #cd "$builddir/downloads"
-  #if test -d "$name" ; then
-  #  cd "$name"
-  #  git checkout master
-  #  git pull --rebase
-  #else
-  #  git clone $url "$name"
-  #  cd "$name"
-  #fi
-  #version=`echo $rev | cut -c1-10`
-
-  #popd >/dev/null
-
-  #pushd . >/dev/null
-
-  #cp -R "$builddir/downloads/$name" "$srcdir/$name"
-  #cd "$srcdir/$name"
-  #if test "x$branch" != x ; then
-  #  if ! git checkout -b "$branch" "origin/$branch" ; then
-  #    git checkout "$branch"
-  #  fi
-  #fi
-  #git checkout -q $rev
   echo building $name $version - $rev
 
   BITCODE_FLAGS="-fembed-bitcode"

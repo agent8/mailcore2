@@ -11,11 +11,11 @@
 	<key>libetpan-osx</key>
 	<string>21</string>
 	<key>mailcore2-framework-ios</key>
-	<string>1</string>
+	<string>2</string>
 	<key>mailcore2-framework-osx</key>
 	<string>9</string>
 	<key>mailcore2-ios</key>
-	<string>20</string>
+	<string>21</string>
 	<key>mailcore2-osx</key>
 	<string>12</string>
 	<key>tidy-html5-ios</key>
