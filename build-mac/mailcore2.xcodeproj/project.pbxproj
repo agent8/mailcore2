@@ -5238,7 +5238,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5254,6 +5255,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -5273,7 +5275,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5289,6 +5292,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -5477,7 +5481,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5493,6 +5498,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Privacy;
@@ -5788,7 +5794,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5804,6 +5811,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Staging;

@@ -59,7 +59,7 @@ build_git_ios()
   fi
   sdk="iphonesimulator$sdkversion"
   echo building $sdk
-  xcodebuild -project "$xcode_project" -sdk $sdk -scheme "$xcode_target" -configuration Release SYMROOT="$tmpdir/bin" OBJROOT="$tmpdir/obj" ARCHS="$simarchs" IPHONEOS_DEPLOYMENT_TARGET="$sdkminversion" OTHER_CFLAGS='$(inherited)'
+  xcodebuild -project "$xcode_project" -sdk $sdk -scheme "$xcode_target" -configuration DEBUG SYMROOT="$tmpdir/bin" OBJROOT="$tmpdir/obj" ARCHS="$simarchs" IPHONEOS_DEPLOYMENT_TARGET="$sdkminversion" OTHER_CFLAGS='$(inherited)'
   if test x$? != x0 ; then
     echo failed
     exit 1

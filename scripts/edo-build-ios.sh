@@ -7,7 +7,7 @@ popd > /dev/null
 . "$scriptpath/include.sh/edo-build-dep.sh"
 
 name="mailcore2-ios"
-xcode_target="edo Mailcore2"
+xcode_target="EdoMailcore2"
 xcode_project="mailcore2.xcodeproj"
 library="libEdoMailcore2.a"
 embedded_deps="ctemplate-ios libsasl-ios tidy-html5-ios"
