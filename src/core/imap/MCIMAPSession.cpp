@@ -1714,7 +1714,7 @@ void IMAPSession::createFolder(String * folder, ErrorCode * pError)
     }
     
     * pError = ErrorNone;
-    subscribeFolder(folder, pError);
+    // subscribeFolder(folder, pError);
 }
 
 void IMAPSession::subscribeFolder(String * folder, ErrorCode * pError)
@@ -2758,9 +2758,22 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         return NULL;
     }
     else if (hasError(r)) {
-        MCLog("error fetch");
-        * pError = ErrorFetch;
-        return NULL;
+        if ((r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
+            // For AT&T account, the response is NO, but the body struct is returned.
+            // No need to release the fetch_result. No need to do the MboxMailWorkaround.
+            MCLog("fetch list with error return code.");
+            IMAPSyncResult * result;
+            result = new IMAPSyncResult();
+            result->setModifiedOrAddedMessages(messages);
+            result->setVanishedMessages(vanishedMessages);
+            result->autorelease();
+            * pError = ErrorNone;
+            return result;
+        } else {
+            MCLog("error fetch");
+            * pError = ErrorFetch;
+            return NULL;
+        }
     }
     
     IMAPSyncResult * result;
@@ -2778,7 +2791,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
                 requestKind = (IMAPMessagesRequestKind) (requestKind & ~IMAPMessagesRequestKindHeaders);
                 requestKind = (IMAPMessagesRequestKind) (requestKind | IMAPMessagesRequestKindFullHeaders);
 
-                result = fetchMessages(folder, requestKind,partID, fetchByUID,
+                result = fetchMessages(folder, requestKind, partID, fetchByUID,
                     imapset, uidsFilter, numbersFilter,
                     modseq, NULL, progressCallback, extraHeaders, pError);
                 if (result != NULL) {
