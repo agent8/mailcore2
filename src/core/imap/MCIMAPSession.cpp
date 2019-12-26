@@ -2758,7 +2758,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         return NULL;
     }
     else if (hasError(r)) {
-        if (r == MAILIMAP_ERROR_FETCH && messages->count() > 0) {
+        if ((r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
             // For AT&T account, the response is NO, but the body struct is returned.
             // No need to release the fetch_result. No need to do the MboxMailWorkaround.
             MCLog("fetch list with error return code.");
