@@ -2298,8 +2298,7 @@
     "office365-enterprise": {
         "domain-match": [
             "astro\\.as\\.utexas\\.edu",
-            "asu\\.edu",
-            "cornell\\.edu"
+            "asu\\.edu"
         ],
         "mx-match": [
             "(.+)?(?<!protection)\\.outlook\\.com",
