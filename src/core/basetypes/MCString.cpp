@@ -2330,7 +2330,9 @@ String * String::filenameFix()
             if (* source == '.' ||
                 * source == ' ' ||
                 * source == '\t' ||
-                * source == '\r'||
+                * source == '\r' ||
+                * source == '"' ||
+                * source == '\'' ||
                 * source == PATH_SEPARATOR_CHAR) {
                 source ++;
             }
@@ -2417,9 +2419,11 @@ String * String::filenameFix()
     * dest = 0;
     filename->mLength = (unsigned int) (dest - filename->mUnicodeChars);
     if (filename->mLength > 1) {
-        while (* (dest - 1) == ' ') {
-            dest --;
+        UChar * preChar = dest - 1;
+        while (* preChar == ' ' || * preChar == '"' || * preChar == '\'') {
+            preChar --;
         }
+        dest = preChar + 1;
         * dest = 0;
         filename->mLength = (unsigned int) (dest - filename->mUnicodeChars);
     }
