@@ -299,6 +299,9 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 if (htmlParts) {
                     htmlParts->addObject(preferedCalendar);
                 }
+                if (inlineAttachments) {
+                    inlineAttachments->addObject(preferedCalendar);
+                }
             }
             
             break;
