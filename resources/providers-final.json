@@ -3762,6 +3762,7 @@
         }
     },
     "yahoo": {
+        "auto-copy-to-sent": true,
         "domain-exclude": [
             "yahoo\\.co\\.jp"
         ],
@@ -3800,6 +3801,7 @@
         }
     },
     "yahoo.co.jp": {
+        "auto-copy-to-sent": true,
         "domain-match": [
             "yahoo\\.co\\.jp"
         ],
