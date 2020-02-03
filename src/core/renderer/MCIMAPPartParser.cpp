@@ -70,7 +70,7 @@ static bool isInlinePart(AbstractPart * part, bool strict) {
     }
     else {
         // In multipart/related
-        if (part->contentID() != NULL && MCSTR("")->isEqual(part->contentID())) {
+        if (part->contentID() != NULL && !MCSTR("")->isEqual(part->contentID())) {
             return isImagePart(part);
         }
     }
