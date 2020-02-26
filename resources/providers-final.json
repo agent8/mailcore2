@@ -42,6 +42,28 @@
             ]
         }
     },
+    "126-vip": {
+        "auto-copy-to-sent": true,
+        "domain-match": [
+            "vip\\.126\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.vip.126.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.vip.126.com",
+                    "port": 465,
+                    "ssl": true
+                }
+            ]
+        }
+    },
     "163": {
         "auto-copy-to-sent": true,
         "domain-match": [
@@ -82,6 +104,28 @@
                 {
                     "hostname": "smtp.qiye.163.com",
                     "port": 994,
+                    "ssl": true
+                }
+            ]
+        }
+    },
+    "163-vip": {
+        "auto-copy-to-sent": true,
+        "domain-match": [
+            "vip\\.163\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.vip.163.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.vip.163.com",
+                    "port": 465,
                     "ssl": true
                 }
             ]
@@ -2298,8 +2342,7 @@
     "office365-enterprise": {
         "domain-match": [
             "astro\\.as\\.utexas\\.edu",
-            "asu\\.edu",
-            "cornell\\.edu"
+            "asu\\.edu"
         ],
         "mx-match": [
             "(.+)?(?<!protection)\\.outlook\\.com",
@@ -2636,7 +2679,8 @@
     },
     "qq": {
         "domain-match": [
-            "qq\\.com"
+            "qq\\.com",
+            "vip\\.qq\\.com"
         ],
         "mailboxes": {
             "allmail": "Archive",
@@ -2986,7 +3030,7 @@
             ]
         }
     },
-    "sina.com": {
+    "sina": {
         "domain-match": [
             "sina\\.com"
         ],
@@ -3007,24 +3051,46 @@
             ]
         }
     },
+    "sina-vip": {
+        "domain-match": [
+            "vip\\.sina\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.vip.sina.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.vip.sina.com",
+                    "port": 465,
+                    "ssl": true
+                }
+            ]
+        }
+    },
     "sohu": {
         "auto-copy-to-sent": true,
         "domain-match": [
-            "sohu\\.com"
+            "sohu\\.com",
+            "vip\\.sohu\\.com"
         ],
         "servers": {
             "imap": [
                 {
                     "hostname": "mail.sohu.com",
-                    "plain": true,
-                    "port": 143
+                    "port": 993,
+                    "ssl": true
                 }
             ],
             "smtp": [
                 {
                     "hostname": "mail.sohu.com",
-                    "plain": true,
-                    "port": 25
+                    "port": 465,
+                    "ssl": true
                 }
             ]
         }
@@ -3718,6 +3784,7 @@
         }
     },
     "yahoo": {
+        "auto-copy-to-sent": true,
         "domain-exclude": [
             "yahoo\\.co\\.jp"
         ],
@@ -3756,6 +3823,7 @@
         }
     },
     "yahoo.co.jp": {
+        "auto-copy-to-sent": true,
         "domain-match": [
             "yahoo\\.co\\.jp"
         ],
