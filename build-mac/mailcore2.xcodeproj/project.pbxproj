@@ -1495,6 +1495,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		12137A5D2431940C0056490E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C69AB10910546FE500F32FBD;
+			remoteInfo = "static libetpan";
+		};
 		3DF6796F1F60EAEC00D4BDC4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C64EA52E169E772200778456 /* Project object */;
@@ -4107,6 +4114,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				12137A5E2431940C0056490E /* PBXTargetDependency */,
 			);
 			name = "static mailcore2 osx";
 			productName = mailcore;
@@ -5237,6 +5245,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		12137A5E2431940C0056490E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "static libetpan";
+			targetProxy = 12137A5D2431940C0056490E /* PBXContainerItemProxy */;
+		};
 		3DF679701F60EAEC00D4BDC4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3D9C2C6E1B96637E008F57C6 /* Edo Mailcore2 */;
