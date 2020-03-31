@@ -10,9 +10,9 @@
 
 using namespace mailcore;
 #ifdef ENABLE_INLINE_ALL_IMAGE
-bool ALL_IMAGE_AS_INLINE = true;
+#define ALL_IMAGE_AS_INLINE true
 #else
-bool ALL_IMAGE_AS_INLINE = false;
+#define ALL_IMAGE_AS_INLINE false
 #endif
 static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 
