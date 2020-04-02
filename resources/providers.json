@@ -2285,13 +2285,13 @@
     "office365": {
         "auto-copy-to-sent": true,
         "domain-match": [
-            "office365\\.com",
-            "onmicrosoft\\.com"
+            "(.+\\.)?office365\\.com",
+            "(.+\\.)?onmicrosoft\\.com"
         ],
         "mailboxes": {
             "drafts": "Drafts",
             "sentmail": "Sent Items",
-            "spam": "EdoJunk",
+            "spam": "Junk Email",
             "trash": "Deleted Items"
         },
         "servers": {
@@ -2521,7 +2521,7 @@
             "allmail": "Archive",
             "drafts": "Drafts",
             "sentmail": "Sent Messages",
-            "spam": "EdoJunk",
+            "spam": "Junk Email",
             "trash": "Deleted"
         },
         "mx-match": [
