@@ -19,10 +19,9 @@ static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 static bool isTextPart(AbstractPart * part)
 {
     String * mimeType = part->mimeType();
-    if (!part->isInlineAttachment()) {
-        if (part->isAttachment() || part->filename() != NULL) {
-            return false;
-        }
+    if (part->filename() != NULL && !MCSTR("")->isEqual(part->filename())) {
+        // Do not inline text part
+        return false;
     }
     if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
         return true;
