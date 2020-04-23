@@ -19,10 +19,9 @@ static bool partContainsMimeType(AbstractPart * part, String * mimeType);
 static bool isTextPart(AbstractPart * part)
 {
     String * mimeType = part->mimeType();
-    if (!part->isInlineAttachment()) {
-        if (part->isAttachment() || part->filename() != NULL) {
-            return false;
-        }
+    if (part->filename() != NULL && !MCSTR("")->isEqual(part->filename())) {
+        // Do not inline text part
+        return false;
     }
     if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
         return true;
@@ -311,7 +310,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
         default: {
             if (!MCSTR("mailcore::Multipart")->isEqual(part->className()) &&
                 !MCSTR("mailcore::IMAPMultipart")->isEqual(part->className())) {
-                printf("Should never get here. Not supported class:%s\n",part->className()->UTF8Characters());
+                //printf("Should never get here. Not supported class:%s\n",part->className()->UTF8Characters());
                 MCAssert(false);
                 break;
             }
