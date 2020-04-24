@@ -46,9 +46,13 @@
 #if defined(_MSC_VER)
 #define PATH_SEPARATOR_CHAR '\\'
 #define PATH_SEPARATOR_STRING "\\"
+#define FILENAME_ILLEGAL_STRING "\/:*?\"<>|"
+#define FILENAME_MAX_LENGHT 255
 #else
 #define PATH_SEPARATOR_CHAR '/'
 #define PATH_SEPARATOR_STRING "/"
+#define FILENAME_ILLEGAL_STRING "/"
+#define FILENAME_MAX_LENGHT 255
 #endif
 
 using namespace mailcore;
@@ -1187,6 +1191,7 @@ String * String::stringByDecodingMIMEHeaderValueRfc2231(const char * phrase){
     if(dest != NULL) {
         result = new String(dest);
         result->autorelease();
+        free(dest); //yyb: memory leak
     }
     return result;
 }
@@ -1398,7 +1403,7 @@ void String::appendBytes(const char * bytes, unsigned int length, const char * c
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset appendBytes %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return;
     }
     
@@ -1835,7 +1840,7 @@ static void returnToLineAtBeginningOfBlock(struct parserState * state)
 static Set * blockElements(void)
 {
     static Set * elements = NULL;
-    MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
+    static MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
     
     MC_LOCK(&lock);
     if (elements == NULL) {
@@ -2307,6 +2312,127 @@ String * String::pathExtension()
     return String::stringWithCharacters(component + 1);
 }
 
+String * String::filenameFix()
+{
+    // Filter out illegal chars in filename, and check the length.
+    // In Linux/Unix ".",".." & filename with "/" are illegal.
+    // filename should less than 255 bytes，a UChar's length cost 1-4 bytes
+    String * filename = (String *)this->copy()->autorelease();
+    UChar * source = filename->mUnicodeChars;
+    UChar * dest = source;
+    // Trim leading ., replace illegal chars, trim to 255 bytes
+    unsigned int illegalLen = strlen(FILENAME_ILLEGAL_STRING);
+    unsigned int bytesLeft = FILENAME_MAX_LENGHT;
+    int stage = 0;
+    while (* source != 0) {
+        if (stage == 0) {
+            //start
+            if (* source == '.' ||
+                * source == ' ' ||
+                * source == '\t' ||
+                * source == '\r' ||
+                * source == '"' ||
+                * source == '\'' ||
+                * source == PATH_SEPARATOR_CHAR) {
+                source ++;
+            }
+            else {
+                bytesLeft = FILENAME_MAX_LENGHT;
+                if (* source <= 0x7F) {
+                    bytesLeft --;
+                }
+                else if (* source <= 0x07FF) {
+                    bytesLeft -= 2;
+                }
+                else if (* source <= 0xFFFF) {
+                    bytesLeft -= 3;
+                }
+                else {
+                    bytesLeft -= 4;
+                }
+                * dest = * source;
+                stage = 1;
+                source ++;
+                dest ++;
+            }
+        } else if (stage == 1) {
+            UChar c1 = * source;
+            for (int i = 0; i < illegalLen; i++) {
+                char c2 = FILENAME_ILLEGAL_STRING[i];
+                if ( c1 == c2) {
+                    if (c2 == PATH_SEPARATOR_CHAR) {
+                        // Encounter a PATH_SEPARATOR_CHAR, reset
+                        stage = 0;
+                    } else {
+                        // Replace the illegal to whitespace.
+                        c1 = ' ';
+                    }
+                    break;
+                }
+            }
+            if (stage == 1) {
+                unsigned int bytesNeeded = 0;
+                if (* source <= 0x7F) {
+                    bytesNeeded = 1;
+                }
+                else if (* source <= 0x07FF) {
+                    bytesNeeded = 2;
+                }
+                else if (* source <= 0xFFFF) {
+                    bytesNeeded = 3;
+                }
+                else {
+                    bytesNeeded = 4;
+                }
+                if (bytesLeft >= bytesNeeded) {
+                    bytesLeft -= bytesNeeded;
+                    * dest = c1;
+                    source ++;
+                    dest ++;
+                }
+                else {
+                    stage = 2;
+                }
+            }
+            else {
+                dest = filename->mUnicodeChars;
+                bytesLeft = FILENAME_MAX_LENGHT;
+                source ++;
+            }
+        }
+        else if (stage == 2) {
+            // Note: There is a limited when cutting in the middle of the ext.
+            UChar c1 = * source;
+            if (c1 == '.') {
+                unsigned int extLength = filename->mLength - (source - filename->mUnicodeChars);
+                dest -= extLength;
+                * dest = c1;
+                bytesLeft += extLength;
+                stage = 1;
+                dest ++;
+            }
+            source ++;
+            // If do not extract the extention, then just break;
+            // break;
+        }
+    }
+    * dest = 0;
+    filename->mLength = (unsigned int) (dest - filename->mUnicodeChars);
+    if (filename->mLength > 1) {
+        UChar * preChar = dest - 1;
+        while (* preChar == ' ' || * preChar == '"' || * preChar == '\'') {
+            preChar --;
+        }
+        dest = preChar + 1;
+        * dest = 0;
+        filename->mLength = (unsigned int) (dest - filename->mUnicodeChars);
+    }
+    else {
+        filename = MCSTR("attachment.dat");
+    }
+    return filename;
+}
+
 Data * String::dataUsingEncoding(const char * charset)
 {
     if (charset == NULL) {
@@ -2351,7 +2477,7 @@ Data * String::dataUsingEncoding(const char * charset)
     err = U_ZERO_ERROR;
     UConverter * converter = ucnv_open(charset, &err); 
     if (converter == NULL) {
-        MCLog("invalid charset dataUsingEncoding %s %i", charset, err);
+        MCLog("invalid charset %s %i", charset, err);
         return NULL;
     }
 
@@ -2546,9 +2672,7 @@ String * String::mUTF7EncodedString()
 
 String * String::mUTF7DecodedString()
 {
-    MCLog("data %s start","mUTF7DecodedString");
     Data * data = dataUsingEncoding("utf-8");
-    MCLog("data %s end","mUTF7DecodedString");
     return stringWithMUTF7Data(data);
 }
 

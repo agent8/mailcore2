@@ -314,7 +314,7 @@ IMAPAsyncConnection * IMAPAsyncSession::session()
     return session;
 }
 
-IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool urgent)
+IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, mailcore::IMAPFolderFlag flag, bool urgent)
 {
     if (folder == NULL) {
         return matchingSessionForFolder(NULL);
@@ -325,6 +325,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
         s = sessionWithMinQueue(true, folder);
         if (s != NULL && s->operationsCount() <= 0) {
             s->setLastFolder(folder);
+            s->setLastFolderFlag(flag); //added by yyb:
             return s;
         }
         if (urgent && mAllowsFolderConcurrentAccessEnabled) {
@@ -333,6 +334,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
             s = availableSession();
             if (s->operationsCount() <= 0) {
                 s->setLastFolder(folder);
+                s->setLastFolderFlag(flag);  //added by yyb:
                 return s;
             }
         }
@@ -340,6 +342,7 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionForFolder(String * folder, bool u
         // otherwise returns session with minimum size of queue among selected to the folder.
         s = matchingSessionForFolder(folder);
         s->setLastFolder(folder);
+        s->setLastFolderFlag(flag);  //added by yyb:
         return s;
     }
 }
@@ -555,7 +558,7 @@ IMAPOperation * IMAPAsyncSession::expungeOperation(String * folder)
 }
 
 IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                           IndexSet * uids)
+                                                                           IndexSet * uids, Array * extraHeaders)
 {
     IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
     op->setMainSession(this);
@@ -563,6 +566,9 @@ IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(Strin
     op->setKind(requestKind);
     op->setFetchByUidEnabled(true);
     op->setIndexes(uids);
+    if (extraHeaders) {
+        op->setExtraHeaders(extraHeaders);
+    }
     op->autorelease();
     return op;
 }
@@ -582,13 +588,16 @@ IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(Strin
     return op;
 }
 IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                              IndexSet * numbers)
+                                                                              IndexSet * numbers, Array * extraHeaders)
 {
     IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
     op->setMainSession(this);
     op->setFolder(folder);
     op->setKind(requestKind);
     op->setIndexes(numbers);
+    if (extraHeaders) {
+        op->setExtraHeaders(extraHeaders);
+    }
     op->autorelease();
     return op;
 }

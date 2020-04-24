@@ -16,6 +16,8 @@
 
 @interface MCOIMAPMessagePart : MCOAbstractMessagePart <NSCoding>
 
+/** A part identifier is of the form 1.2.1*/
+@property (nonatomic, copy) NSString * partID;
 
 @end
 

@@ -2,11 +2,7 @@
 
 #include "MCData.h"
 
-#if defined(ANDROID) || defined(__ANDROID__)
 #define USE_UCHARDET 0
-#else
-#define USE_UCHARDET 0
-#endif
 
 #include <stdlib.h>
 #include <string.h>

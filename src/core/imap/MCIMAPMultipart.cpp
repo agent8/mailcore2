@@ -25,7 +25,6 @@ Object * IMAPMultipart::copy()
 
 void IMAPMultipart::init()
 {
-
 }
 
 HashMap * IMAPMultipart::serializable()

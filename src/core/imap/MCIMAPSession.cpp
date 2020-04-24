@@ -17,6 +17,7 @@
 #include "MCIMAPNamespace.h"
 #include "MCIMAPSyncResult.h"
 #include "MCIMAPFolderStatus.h"
+#include "MCIMAPFolderReport.h"
 #include "MCConnectionLogger.h"
 #include "MCConnectionLoggerUtils.h"
 #include "MCHTMLRenderer.h"
@@ -1713,7 +1714,7 @@ void IMAPSession::createFolder(String * folder, ErrorCode * pError)
     }
     
     * pError = ErrorNone;
-    subscribeFolder(folder, pError);
+    // subscribeFolder(folder, pError);
 }
 
 void IMAPSession::subscribeFolder(String * folder, ErrorCode * pError)
@@ -2757,9 +2758,22 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         return NULL;
     }
     else if (hasError(r)) {
-        MCLog("error fetch");
-        * pError = ErrorFetch;
-        return NULL;
+        if ((r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
+            // For AT&T account, the response is NO, but the body struct is returned.
+            // No need to release the fetch_result. No need to do the MboxMailWorkaround.
+            MCLog("fetch list with error return code.");
+            IMAPSyncResult * result;
+            result = new IMAPSyncResult();
+            result->setModifiedOrAddedMessages(messages);
+            result->setVanishedMessages(vanishedMessages);
+            result->autorelease();
+            * pError = ErrorNone;
+            return result;
+        } else {
+            MCLog("error fetch");
+            * pError = ErrorFetch;
+            return NULL;
+        }
     }
     
     IMAPSyncResult * result;
@@ -2777,7 +2791,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
                 requestKind = (IMAPMessagesRequestKind) (requestKind & ~IMAPMessagesRequestKindHeaders);
                 requestKind = (IMAPMessagesRequestKind) (requestKind | IMAPMessagesRequestKindFullHeaders);
 
-                result = fetchMessages(folder, requestKind,partID, fetchByUID,
+                result = fetchMessages(folder, requestKind, partID, fetchByUID,
                     imapset, uidsFilter, numbersFilter,
                     modseq, NULL, progressCallback, extraHeaders, pError);
                 if (result != NULL) {
@@ -2802,6 +2816,14 @@ Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind
 {
     return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, NULL, pError);
 }
+
+//yyb
+Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
+                                        IndexSet * uids, IMAPProgressCallback * progressCallback, Array * extraHeaders, ErrorCode * pError)
+{
+    return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
+}
+
 //Weicheng
 Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                              String * partID,
@@ -2834,6 +2856,14 @@ Array * IMAPSession::fetchMessagesByNumber(String * folder, IMAPMessagesRequestK
                                            ErrorCode * pError)
 {
     return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, NULL, numbers, progressCallback, NULL, pError);
+}
+
+//yyb
+Array * IMAPSession::fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
+                                           IndexSet * numbers, IMAPProgressCallback * progressCallback,
+                                           Array * extraHeaders, ErrorCode * pError)
+{
+    return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, NULL, numbers, progressCallback, extraHeaders, pError);
 }
 
 //Weicheng
@@ -3162,6 +3192,7 @@ void IMAPSession::fetchMessageAttachmentToFileByChunksByUID(String * folder, uin
         }
 
         if (data == NULL) {
+            pool->release();
             break;
         }
 
@@ -3291,6 +3322,11 @@ IndexSet * IMAPSession::search(String * folder, IMAPSearchKind kind, String * se
         case IMAPSearchKindContent:
         {
             expr = IMAPSearchExpression::searchContent(searchString);
+            break;
+        }
+        case IMAPSearchKindBody:
+        {
+            expr = IMAPSearchExpression::searchBody(searchString);
             break;
         }
         case IMAPSearchKindRead:
@@ -3772,6 +3808,83 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
     }
     * pError = ErrorNone;
 }
+
+//added by Edison
+IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError)
+{
+    int r;
+    
+    // connection thread
+    selectIfNeeded(folder, pError);
+    if (* pError != ErrorNone)
+        return NULL;
+    
+    r = mailimap_idle(mImap);
+    if (r == MAILIMAP_ERROR_STREAM) {
+        mShouldDisconnect = true;
+        * pError = ErrorConnection;
+        return NULL;
+    }
+    else if (r == MAILIMAP_ERROR_PARSE) {
+        mShouldDisconnect = true;
+        * pError = ErrorParse;
+        return NULL;
+    }
+    else if (hasError(r)) {
+        * pError = ErrorIdle;
+        return NULL;
+    }
+    
+    if (!mImap->imap_selection_info->sel_has_exists && !mImap->imap_selection_info->sel_has_recent) {
+        int r;
+        r = mailstream_wait_idle(mImap->imap_stream, MAX_IDLE_DELAY);
+        switch (r) {
+            case MAILSTREAM_IDLE_ERROR:
+            case MAILSTREAM_IDLE_CANCELLED:
+            {
+                mShouldDisconnect = true;
+                * pError = ErrorConnection;
+                MCLog("error or cancelled");
+                return NULL;
+            }
+            case MAILSTREAM_IDLE_INTERRUPTED:
+                MCLog("interrupted by user");
+                break;
+            case MAILSTREAM_IDLE_HASDATA:
+                MCLog("something on the socket");
+                break;
+            case MAILSTREAM_IDLE_TIMEOUT:
+                MCLog("idle timeout");
+                break;
+        }
+    }
+    else {
+        MCLog("found info before idling");
+    }
+    
+    r = mailimap_idle_done(mImap);
+    if (r == MAILIMAP_ERROR_STREAM) {
+        mShouldDisconnect = true;
+        * pError = ErrorConnection;
+        return NULL;
+    }
+    else if (r == MAILIMAP_ERROR_PARSE) {
+        mShouldDisconnect = true;
+        * pError = ErrorParse;
+        return NULL;
+    }
+    else if (hasError(r)) {
+        * pError = ErrorIdle;
+        return NULL;
+    }
+    * pError = ErrorNone;
+    
+    IMAPFolderReport * fr = new IMAPFolderReport();
+    fr->autorelease();
+    fr->setExists(mImap->imap_selection_info->sel_exists);
+    return fr;
+}
+
 
 void IMAPSession::interruptIdle()
 {
@@ -4415,6 +4528,15 @@ void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
     }
     if (mailimap_has_extension(mImap, (char *)"XYMHIGHESTMODSEQ")) {
         capabilities->addIndex(IMAPCapabilityXYMHighestModseq);
+    }
+    if (mailimap_has_uidplus(mImap)) {
+        capabilities->addIndex(IMAPCapabilityUIDPlus);
+    }
+    if (mailimap_has_acl(mImap)) {
+        capabilities->addIndex(IMAPCapabilityACL);
+    }
+    if (mailimap_has_enable(mImap)) {
+        capabilities->addIndex(IMAPCapabilityEnable);
     }
     applyCapabilities(capabilities);
 }
