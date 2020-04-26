@@ -318,13 +318,15 @@ static struct mailmime * mime_from_attachment(MessageBuilder * builder, Attachme
     if (data == NULL) {
         data = Data::data();
     }
+    //Don't parse eml (message/rfc822), just use it as the original
+    /*
     if (att->mimeType()->lowercaseString()->isEqual(MCSTR("message/rfc822"))) {
         size_t indx = 0;
         r = mailmime_parse(data->bytes(), data->length(), &indx, &mime);
         if (r != MAILIMF_NO_ERROR)
             return NULL;
     }
-    else {
+    else { */
         clist * contentTypeParameters = content_type_parameters_from_attachment(att);
         if (att->isInlineAttachment() && att->mimeType()->lowercaseString()->isEqual(MCSTR("text/plain"))) {
             mime = get_plain_text_part(builder, MCUTF8(att->mimeType()), MCUTF8(att->charset()),
@@ -352,7 +354,7 @@ static struct mailmime * mime_from_attachment(MessageBuilder * builder, Attachme
         if (contentTypeParameters != NULL) {
             clist_free(contentTypeParameters);
         }
-    }
+    //}
     return mime;
 }
 
