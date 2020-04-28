@@ -969,6 +969,7 @@
         }
     },
     "fastmail.com": {
+        "alias-support": true,
         "domain-match": [
             "fastmail\\.com"
         ],
@@ -3757,6 +3758,7 @@
         }
     },
     "yahoo": {
+        "alias-support": true,
         "auto-copy-to-sent": true,
         "domain-exclude": [
             "yahoo\\.co\\.jp"
