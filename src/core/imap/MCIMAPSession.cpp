@@ -2751,14 +2751,14 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         * pError = ErrorConnection;
         return NULL;
     }
-    else if (r == MAILIMAP_ERROR_PARSE) {
-        MCLog("error parse");
-        mShouldDisconnect = true;
-        * pError = ErrorParse;
-        return NULL;
-    }
+//    else if (r == MAILIMAP_ERROR_PARSE) {
+//        MCLog("error parse");
+//        mShouldDisconnect = true;
+//        * pError = ErrorParse;
+//        return NULL;
+//    }
     else if (hasError(r)) {
-        if ((r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
+        if ((r == MAILIMAP_ERROR_PARSE || r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
             // For AT&T account, the response is NO, but the body struct is returned.
             // No need to release the fetch_result. No need to do the MboxMailWorkaround.
             MCLog("fetch list with error return code.");
