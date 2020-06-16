@@ -4857,3 +4857,89 @@ String * IMAPSession::gmailUserDisplayName()
 String * IMAPSession::getResponse(){
     return mLoginResponse;
 }
+
+
+//only for test
+void IMAPSession::testSetMsgAttHandler(void * imapses, IMAPMessagesRequestKind requestKind) {
+    
+    bool needsHeader;
+    bool needsBody;
+    bool needsFlags;
+    bool needsGmailLabels;
+    bool needsGmailMessageID;
+    bool needsGmailThreadID;
+    bool fetchByUID;
+    Array * messages;
+    IndexSet * vanishedMessages = nullptr;
+    IndexSet * uidsFilter = nullptr;
+    IndexSet * numbersFilter = nullptr;
+    HashMap * mapping = nullptr;
+    uint32_t mLastFetchedSequenceNumber = 0;
+    
+    mailimap * session = (mailimap *)imapses;
+    
+    messages = Array::array();
+    
+    needsHeader = false;
+    needsBody = false;
+    needsFlags = false;
+    needsGmailLabels = false;
+    needsGmailMessageID = false;
+    needsGmailThreadID = false;
+    
+    if ((requestKind & IMAPMessagesRequestKindFlags) != 0) {
+        needsFlags = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindGmailLabels) != 0) {
+        needsGmailLabels = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindGmailThreadID) != 0) {
+        needsGmailThreadID = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindGmailMessageID) != 0) {
+        needsGmailMessageID = true;
+    }
+    
+    if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
+        needsBody = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindStructure) != 0) {
+        needsBody = true;
+    }
+    
+    struct msg_att_handler_data * pMsgAttData = ( struct msg_att_handler_data *)malloc(sizeof(struct msg_att_handler_data));
+    struct msg_att_handler_data& msg_att_data = *pMsgAttData;
+    
+    memset(&msg_att_data, 0, sizeof(msg_att_data));
+    msg_att_data.uidsFilter = uidsFilter;
+    msg_att_data.numbersFilter = numbersFilter;
+    msg_att_data.fetchByUID = fetchByUID;
+    msg_att_data.result = messages;
+    msg_att_data.requestKind = requestKind;
+    msg_att_data.mLastFetchedSequenceNumber = mLastFetchedSequenceNumber;
+    msg_att_data.mapping = mapping;
+    msg_att_data.needsHeader = needsHeader;
+    msg_att_data.needsBody = needsBody;
+    msg_att_data.needsFlags = needsFlags;
+    msg_att_data.needsGmailLabels = needsGmailLabels;
+    msg_att_data.needsGmailMessageID = needsGmailMessageID;
+    msg_att_data.needsGmailThreadID = needsGmailThreadID;
+    
+    session->imap_msg_att_handler = msg_att_handler;
+    session->imap_msg_att_handler_context = pMsgAttData;
+}
+
+
+Array * IMAPSession::testGetParsedMessage(void * mailSession) {
+    
+    Array * messages;
+
+    mailimap * session = (mailimap *)mailSession;
+    
+    if ( session->imap_msg_att_handler_context) {
+        struct msg_att_handler_data* msg_att_data = (struct msg_att_handler_data*)session->imap_msg_att_handler_context;
+        messages = msg_att_data->result;
+    }
+
+    return messages;
+}
