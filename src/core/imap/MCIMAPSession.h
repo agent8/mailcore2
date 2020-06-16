@@ -261,6 +261,9 @@ namespace mailcore {
         virtual void unlockConnectionLogger();
         virtual ConnectionLogger * connectionLoggerNoLock();
 
+        static void testSetMsgAttHandler(void * session, IMAPMessagesRequestKind requestKind);
+        static Array * testGetParsedMessage(void * mailSession);
+
     private:
         String * mHostname;
         unsigned int mPort;
