@@ -236,7 +236,11 @@ IMAPMultipart * IMAPPart::attachmentWithIMAPBodyMultipart(struct mailimap_body_t
     }
     attachment->setMimeType(String::stringWithUTF8Format("multipart/%s", body_mpart->bd_media_subtype));
     attachment->setParts(attachments);
-
+    
+    attachment->importIMAPFields(body_mpart);
+    if (attachment->isAttachment() || attachment->isInlineAttachment()) {
+        attachment->setPartType(PartTypeSingle);
+    }
     attachments->release();
 
     return (IMAPMultipart *) attachment->autorelease();
