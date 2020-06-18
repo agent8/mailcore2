@@ -331,6 +331,70 @@ void AbstractPart::importIMAPFields(struct mailimap_body_fields * fields,
     }
 }
 
+void AbstractPart::importIMAPFields(struct mailimap_body_type_mpart * mpart) {
+    struct mailimap_body_ext_mpart * bd_ext_mpart = mpart->bd_ext_mpart;
+    if (bd_ext_mpart == NULL) {
+        return;
+    }
+    mailimap_body_fld_param * parameters = bd_ext_mpart->bd_parameter;
+    if (bd_ext_mpart->bd_disposition != NULL) {
+        if (strcasecmp(bd_ext_mpart->bd_disposition->dsp_type, "inline") == 0) {
+            setInlineAttachment(true);
+        }
+        else if (strcasecmp(bd_ext_mpart->bd_disposition->dsp_type, "attachment") == 0) {
+            setAttachment(true);
+        }
+        mailimap_body_fld_param * bd_parameter = bd_ext_mpart->bd_disposition->dsp_attributes;
+        if (bd_parameter != NULL) {
+           clistiter * cur;
+           for(cur = clist_begin(bd_parameter->pa_list) ; cur != NULL ;
+               cur = clist_next(cur)) {
+               struct mailimap_single_body_fld_param * imap_param;
+               
+               imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
+               if (strcasecmp(imap_param->pa_name, "name") == 0) {
+                   if (filename() == NULL) {
+                       setFilename(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+                   }
+               } else if (strncasecmp(imap_param->pa_name, "name*", 5) == 0) {
+                   if (filename() == NULL) {
+                       setFilename(String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value));
+                   }
+               } else if (strcasecmp(imap_param->pa_name, "charset") == 0) {
+                   setCharset(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+               } else {
+                   setContentTypeParameter(String::stringWithUTF8Characters(imap_param->pa_name),
+                                           String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+               }
+           }
+        }
+    }
+    
+    if (bd_ext_mpart->bd_parameter != NULL) {
+        clistiter * cur;
+        for(cur = clist_begin(bd_ext_mpart->bd_parameter->pa_list) ; cur != NULL ;
+            cur = clist_next(cur)) {
+            struct mailimap_single_body_fld_param * imap_param;
+
+            imap_param = (struct mailimap_single_body_fld_param *) clist_content(cur);
+            if (strcasecmp(imap_param->pa_name, "name") == 0) {
+               if (filename() == NULL) {
+                   setFilename(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+               }
+            } else if (strncasecmp(imap_param->pa_name, "name*", 5) == 0) {
+               if (filename() == NULL) {
+                   setFilename(String::stringByDecodingMIMEHeaderValueRfc2231(imap_param->pa_value));
+               }
+            } else if (strcasecmp(imap_param->pa_name, "charset") == 0) {
+               setCharset(String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+            } else {
+               setContentTypeParameter(String::stringWithUTF8Characters(imap_param->pa_name),
+                                       String::stringByDecodingMIMEHeaderValue(imap_param->pa_value));
+            }
+        }
+    }
+}
+
 AbstractPart * AbstractPart::partForContentID(String * contentID)
 {
     if (contentID->isEqual(mContentID)) {
