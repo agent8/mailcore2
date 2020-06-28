@@ -20,7 +20,7 @@ static bool isTextPart(AbstractPart * part)
 {
     String * mimeType = part->mimeType();
     if (part->filename() != NULL && !MCSTR("")->isEqual(part->filename())) {
-        // Do not inline text part
+        // Do not inline attachment part
         return false;
     }
     if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
@@ -53,7 +53,7 @@ static bool isImagePart(AbstractPart * part) {
             // ICO,SVG,TIFF,APNG,WebP
             // https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support
             // We need to support two web browsers: chrome(Desktop,Android) & Safari(iOS).
-            // I only add the image formats that supported both of the two browsers.
+            // I only add the image formats that support both of the two browsers.
             // We can add more formats if need to support special platform only.
             return true;
         }
@@ -181,6 +181,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
     }
     switch (part->partType()) {
         case PartTypeSingle: {
+            // MCAssert(part->partID() != NULL && part->partID()->length() > 0);
             if (part->mimeType() == NULL) {
                 part->setMimeType(MCSTR("application/octet-stream"));
             }

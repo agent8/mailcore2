@@ -43,6 +43,10 @@ AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)
     partID = NULL;
     if (body->bd_type == MAILIMAP_BODY_1PART) {
         partID = MCSTR("1");
+    } else if (body->bd_type == MAILIMAP_BODY_MPART) {
+        partID = MCSTR("1");
+    } else {
+        partID = MCSTR("");
     }
     result = attachmentWithIMAPBodyInternal(body, partID);
     result->applyUniquePartID();
@@ -111,6 +115,8 @@ IMAPMessagePart * IMAPPart::attachmentWithIMAPBody1PartMessage(struct mailimap_b
     else if (message->bd_body->bd_type == MAILIMAP_BODY_MPART) {
         // mpart
         nextPartID = partID;
+    } else {
+        nextPartID = MCSTR("");
     }
     
     attachment = new IMAPMessagePart();
@@ -213,7 +219,7 @@ IMAPMultipart * IMAPPart::attachmentWithIMAPBodyMultipart(struct mailimap_body_t
         AbstractPart * subResult;
         String * nextPartID;
 
-        if (partID == NULL) {
+        if (partID == NULL || partID->length() == 0) {
             nextPartID = String::stringWithUTF8Format("%u", count);
         }
         else {
@@ -238,7 +244,7 @@ IMAPMultipart * IMAPPart::attachmentWithIMAPBodyMultipart(struct mailimap_body_t
     attachment->setParts(attachments);
     
     attachment->importIMAPFields(body_mpart);
-    if (attachment->isAttachment() || attachment->isInlineAttachment()) {
+    if (attachment->filename() != NULL && !MCSTR("")->isEqual(attachment->filename())) {
         attachment->setPartType(PartTypeSingle);
     }
     attachments->release();
