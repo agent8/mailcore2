@@ -43,8 +43,6 @@ AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)
     partID = NULL;
     if (body->bd_type == MAILIMAP_BODY_1PART) {
         partID = MCSTR("1");
-    } else if (body->bd_type == MAILIMAP_BODY_MPART) {
-        partID = MCSTR("1");
     } else {
         partID = MCSTR("");
     }
