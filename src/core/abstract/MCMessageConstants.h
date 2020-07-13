@@ -136,6 +136,7 @@ namespace mailcore {
         IMAPCapabilityXOAuth2,
         IMAPCapabilityXYMHighestModseq,
         IMAPCapabilityGmail,
+        IMAPCapabilityBlockSender,
     };
     
     enum POPCapability {

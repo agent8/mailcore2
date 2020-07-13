@@ -291,6 +291,7 @@ namespace mailcore {
         bool mNamespaceEnabled;
         bool mCompressionEnabled;
         bool mIsGmail;
+        bool mBlockSenderEnabled;
         bool mAllowsNewPermanentFlags;
         String * mWelcomeString;
         bool mNeedsMboxMailWorkaround;

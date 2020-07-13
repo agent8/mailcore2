@@ -383,6 +383,7 @@ void IMAPSession::init()
     mNamespaceEnabled = false;
     mCompressionEnabled = false;
     mIsGmail = false;
+    mBlockSenderEnabled = false;
     mAllowsNewPermanentFlags = false;
     mWelcomeString = NULL;
     mNeedsMboxMailWorkaround = false;
@@ -1194,8 +1195,19 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
     int r;
     MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
 
-    r = mailimap_select(mImap, MCUTF8(folder));
-    MCLog("select %s. error: %i\n", folder != NULL?MCUTF8(folder):"NULL", r);
+    if (mBlockSenderEnabled) {
+        char buffer[folder->length() + 22];
+        strcpy(buffer, "SELECT ");
+        strcat(buffer, MCUTF8(folder));
+        strcat(buffer, " (BLOCKSENDER)");
+        r = mailimap_custom_command(mImap, buffer);
+        if (r == MAILIMAP_ERROR_PROTOCOL) {
+            r = mailimap_select(mImap, MCUTF8(folder));
+        }
+    } else {
+        r = mailimap_select(mImap, MCUTF8(folder));
+    }
+    MCLog("select %s. error: %i\n", folder != NULL ? MCUTF8(folder): "NULL", r);
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
@@ -4538,6 +4550,9 @@ void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
     if (mailimap_has_enable(mImap)) {
         capabilities->addIndex(IMAPCapabilityEnable);
     }
+    if (mailimap_has_extension(mImap, (char *)"BLOCKSENDER")) {
+        capabilities->addIndex(IMAPCapabilityBlockSender);
+    }
     applyCapabilities(capabilities);
 }
 
@@ -4592,6 +4607,9 @@ void IMAPSession::applyCapabilities(IndexSet * capabilities)
     }
     if (capabilities->containsIndex(IMAPCapabilityCompressDeflate)) {
         mCompressionEnabled = true;
+    }
+    if (capabilities->containsIndex(IMAPCapabilityBlockSender)) {
+        mBlockSenderEnabled = true;
     }
 }
 
