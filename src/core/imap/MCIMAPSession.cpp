@@ -1290,7 +1290,9 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
     if (mCondstoreEnabled || mXYMHighestModseqEnabled) {
         mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_HIGHESTMODSEQ);
     }
-    
+    if (mBlockSenderEnabled) {
+        mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_BLOCKSENDER);
+    }
     r = mailimap_status(mImap, MCUTF8(folder), status_att_list, &status);
     
     IMAPFolderStatus * fs;
