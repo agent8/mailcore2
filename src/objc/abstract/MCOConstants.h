@@ -325,7 +325,9 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     MCOIMAPCapabilityXOAuth2,
     MCOIMAPCapabilityXYMHighestModseq,//35
     /** X-GM-EXT-1 Capability.*/
-    MCOIMAPCapabilityGmail
+    MCOIMAPCapabilityGmail,
+    /** BLOCKSENDER Capability.*/
+    MCOIMAPCapabilityBlockSender
 };
 
 /** Error domain for mailcore.*/
