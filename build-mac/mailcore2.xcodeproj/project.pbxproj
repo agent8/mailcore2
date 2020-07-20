@@ -484,7 +484,7 @@
 		3D9C2E351B96637E008F57C6 /* MCOIMAPQuotaOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */; };
 		3D9C2E361B96637E008F57C6 /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
 		3DE0D1F31C1B5C4B005CFA6D /* MCOIMAPCheckAccountOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
-		3DF679991F60FB3C00D4BDC4 /* libEdo Mailcore2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9C2E3C1B96637E008F57C6 /* libEdo Mailcore2.a */; };
+		3DF679991F60FB3C00D4BDC4 /* libEdoMailcore2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9C2E3C1B96637E008F57C6 /* libEdoMailcore2.a */; };
 		3DF6799B1F60FB8F00D4BDC4 /* libetpan-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D35B5F1C8A832700D3EC11 /* libetpan-ios.a */; };
 		4B3C1BDE17ABF309008BBF4C /* MCOIMAPQuotaOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */; };
 		4B3C1BE117ABF4BC008BBF4C /* MCIMAPQuotaOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */; };
@@ -2319,7 +2319,7 @@
 		27780C3C19CF9D9800C77E44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		27780D3419CFA19500C77E44 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/usr/lib/libstdc++.dylib"; sourceTree = DEVELOPER_DIR; };
 		3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		3D9C2E3C1B96637E008F57C6 /* libEdo Mailcore2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libEdo Mailcore2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D9C2E3C1B96637E008F57C6 /* libEdoMailcore2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEdoMailcore2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B3C1BDC17ABF306008BBF4C /* MCOIMAPQuotaOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPQuotaOperation.h; sourceTree = "<group>"; };
 		4B3C1BDD17ABF307008BBF4C /* MCOIMAPQuotaOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPQuotaOperation.mm; sourceTree = "<group>"; };
 		4B3C1BDF17ABF4BB008BBF4C /* MCIMAPQuotaOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPQuotaOperation.cpp; sourceTree = "<group>"; };
@@ -2955,7 +2955,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3DF679991F60FB3C00D4BDC4 /* libEdo Mailcore2.a in Frameworks */,
+				3DF679991F60FB3C00D4BDC4 /* libEdoMailcore2.a in Frameworks */,
 				27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */,
 				27780C3219CF9CD100C77E44 /* Security.framework in Frameworks */,
 			);
@@ -3366,7 +3366,7 @@
 				27780C3A19CF9CD100C77E44 /* MailCore.framework */,
 				C6B5AE0219F630B3001352A6 /* unittest.xctest */,
 				C600B6141A242C3F000728F1 /* unittestcpp */,
-				3D9C2E3C1B96637E008F57C6 /* libEdo Mailcore2.a */,
+				3D9C2E3C1B96637E008F57C6 /* libEdoMailcore2.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4056,9 +4056,9 @@
 			productReference = 27780C3A19CF9CD100C77E44 /* MailCore.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		3D9C2C6E1B96637E008F57C6 /* Edo Mailcore2 */ = {
+		3D9C2C6E1B96637E008F57C6 /* EdoMailcore2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3D9C2E391B96637E008F57C6 /* Build configuration list for PBXNativeTarget "Edo Mailcore2" */;
+			buildConfigurationList = 3D9C2E391B96637E008F57C6 /* Build configuration list for PBXNativeTarget "EdoMailcore2" */;
 			buildPhases = (
 				3D9C2C711B96637E008F57C6 /* Run Script */,
 				3D9C2C721B96637E008F57C6 /* Copy Files (244 items) */,
@@ -4071,9 +4071,9 @@
 			dependencies = (
 				3DF6798B1F60F40600D4BDC4 /* PBXTargetDependency */,
 			);
-			name = "Edo Mailcore2";
+			name = EdoMailcore2;
 			productName = mailcore;
-			productReference = 3D9C2E3C1B96637E008F57C6 /* libEdo Mailcore2.a */;
+			productReference = 3D9C2E3C1B96637E008F57C6 /* libEdoMailcore2.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		C600B6131A242C3F000728F1 /* unittestcpp */ = {
@@ -4250,7 +4250,7 @@
 				27780C2A19CF9CD100C77E44 /* mailcore ios */,
 				C6B5AE0119F630B3001352A6 /* unittest */,
 				C600B6131A242C3F000728F1 /* unittestcpp */,
-				3D9C2C6E1B96637E008F57C6 /* Edo Mailcore2 */,
+				3D9C2C6E1B96637E008F57C6 /* EdoMailcore2 */,
 			);
 		};
 /* End PBXProject section */
@@ -5239,7 +5239,7 @@
 /* Begin PBXTargetDependency section */
 		3DF679701F60EAEC00D4BDC4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3D9C2C6E1B96637E008F57C6 /* Edo Mailcore2 */;
+			target = 3D9C2C6E1B96637E008F57C6 /* EdoMailcore2 */;
 			targetProxy = 3DF6796F1F60EAEC00D4BDC4 /* PBXContainerItemProxy */;
 		};
 		3DF6798B1F60F40600D4BDC4 /* PBXTargetDependency */ = {
@@ -5290,7 +5290,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5306,6 +5307,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -5325,7 +5327,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5341,6 +5344,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -5529,7 +5533,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5545,6 +5550,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Privacy;
@@ -5840,7 +5846,8 @@
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5856,6 +5863,7 @@
 				PRODUCT_NAME = MailCore;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Staging;
@@ -6522,7 +6530,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3D9C2E391B96637E008F57C6 /* Build configuration list for PBXNativeTarget "Edo Mailcore2" */ = {
+		3D9C2E391B96637E008F57C6 /* Build configuration list for PBXNativeTarget "EdoMailcore2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3D9C2E3A1B96637E008F57C6 /* Debug */,

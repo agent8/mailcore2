@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3D9C2C6E1B96637E008F57C6"
-               BuildableName = "libEdo Mailcore2.a"
-               BlueprintName = "Edo Mailcore2"
+               BuildableName = "libEdoMailcore2.a"
+               BlueprintName = "EdoMailcore2"
                ReferencedContainer = "container:mailcore2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -46,13 +44,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3D9C2C6E1B96637E008F57C6"
-            BuildableName = "libEdo Mailcore2.a"
-            BlueprintName = "Edo Mailcore2"
+            BuildableName = "libEdoMailcore2.a"
+            BlueprintName = "EdoMailcore2"
             ReferencedContainer = "container:mailcore2.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -64,8 +60,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3D9C2C6E1B96637E008F57C6"
-            BuildableName = "libEdo Mailcore2.a"
-            BlueprintName = "Edo Mailcore2"
+            BuildableName = "libEdoMailcore2.a"
+            BlueprintName = "EdoMailcore2"
             ReferencedContainer = "container:mailcore2.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
