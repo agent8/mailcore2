@@ -1041,6 +1041,16 @@ void IMAPSession::login(ErrorCode * pError)
     enableFeatures();
 
     if (isAutomaticConfigurationEnabled()) {
+        if (isIdentityEnabled()) {
+            IMAPIdentity * serverIdentity = identity(clientIdentity(), pError);
+            if (* pError != ErrorNone) {
+                // Ignore identity errors
+                MCLog("fetch identity failed");
+            }
+            else {
+                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
+            }
+        }
         bool hasDefaultNamespace = false;
         if (isNamespaceEnabled()) {
             HashMap * result = fetchNamespace(pError);
@@ -1087,17 +1097,6 @@ void IMAPSession::login(ErrorCode * pError)
             mDelimiter = folder->delimiter();
             IMAPNamespace * defaultNamespace = IMAPNamespace::namespaceWithPrefix(MCSTR(""), folder->delimiter());
             setDefaultNamespace(defaultNamespace);
-        }
-        
-        if (isIdentityEnabled()) {
-            IMAPIdentity * serverIdentity = identity(clientIdentity(), pError);
-            if (* pError != ErrorNone) {
-                // Ignore identity errors
-                MCLog("fetch identity failed");
-            }
-            else {
-                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
-            }
         }
     }
     else {
