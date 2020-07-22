@@ -6,6 +6,10 @@
 #include "MCDefines.h"
 #include "MCLog.h"
 
+namespace std { class type_info; }
+
+#include <typeinfo>
+
 using namespace mailcore;
 
 static chash * cppClassHash = NULL;

@@ -7,6 +7,7 @@
 #include "MCIMAPMultipart.h"
 #include "MCHTMLRenderer.h"
 #include "MCHTMLRendererCallback.h"
+#include "MCIMAPPartParser.h"
 
 using namespace mailcore;
 
@@ -28,6 +29,11 @@ void IMAPMessage::init()
     mGmailMessageID = 0;
     mPartData = NULL;
     mSize = 0;
+
+    mHtmlParts = NULL;
+    mPlainParts = NULL;
+    mAttachments = NULL;
+    mInlineAttachments = NULL;
 }
 
 IMAPMessage::IMAPMessage()
@@ -52,6 +58,11 @@ IMAPMessage::IMAPMessage(IMAPMessage * other) : AbstractMessage(other)
     setGmailLabels(other->gmailLabels());
     setGmailThreadID(other->gmailThreadID());
     setGmailMessageID(other->gmailMessageID());
+
+    setHtmlParts(other->htmlParts());
+    setPlainParts(other->plainParts());
+    setAttachments(other->attachments());
+    setInlineAttachments(other->inlineAttachments());
 }
 
 IMAPMessage::~IMAPMessage()
@@ -60,6 +71,11 @@ IMAPMessage::~IMAPMessage()
     MC_SAFE_RELEASE(mGmailLabels);
     MC_SAFE_RELEASE(mCustomFlags);
     MC_SAFE_RELEASE(mPartData);
+
+    MC_SAFE_RELEASE(mHtmlParts);
+    MC_SAFE_RELEASE(mPlainParts);
+    MC_SAFE_RELEASE(mAttachments);
+    MC_SAFE_RELEASE(mInlineAttachments);
 }
 
 Object * IMAPMessage::copy()
@@ -132,7 +148,7 @@ MessageFlag IMAPMessage::originalFlags()
 
 void IMAPMessage::setCustomFlags(Array * customFlags)
 {
-   MC_SAFE_REPLACE_COPY(Array, mCustomFlags, customFlags);
+    MC_SAFE_REPLACE_COPY(Array, mCustomFlags, customFlags);
 }
 
 Array * IMAPMessage::customFlags()
@@ -263,7 +279,56 @@ String * IMAPMessage::htmlRendering(String * folder,
     return HTMLRenderer::htmlForIMAPMessage(folder, this, dataCallback, htmlCallback);
 }
 
-HashMap * IMAPMessage::serializable()
+void IMAPMessage::parseParts()
+{
+    setHtmlParts(Array::array());
+    setPlainParts(Array::array());
+    setAttachments( Array::array());
+    setInlineAttachments(Array::array());
+    IMAPPartParser::parseMessage(this, mHtmlParts, mPlainParts, mAttachments, mInlineAttachments);
+}
+
+void IMAPMessage::setHtmlParts(mailcore::Array *htmlParts)
+{
+    MC_SAFE_REPLACE_COPY(Array, mHtmlParts, htmlParts);
+}
+
+Array *IMAPMessage::htmlParts()
+{
+    return mHtmlParts;
+}
+
+void IMAPMessage::setPlainParts(mailcore::Array *plainParts)
+{
+    MC_SAFE_REPLACE_COPY(Array, mPlainParts, plainParts);
+}
+
+Array *IMAPMessage::plainParts()
+{
+    return mPlainParts;
+}
+
+void IMAPMessage::setAttachments(mailcore::Array *attachments)
+{
+    MC_SAFE_REPLACE_COPY(Array, mAttachments, attachments);
+}
+
+Array *IMAPMessage::attachments()
+{
+    return mAttachments;
+}
+
+void IMAPMessage::setInlineAttachments(mailcore::Array *inlineAttachments)
+{
+    MC_SAFE_REPLACE_COPY(Array, mInlineAttachments, inlineAttachments);
+}
+
+Array *IMAPMessage::inlineAttachments()
+{
+    return mInlineAttachments;
+}
+
+HashMap *IMAPMessage::serializable()
 {
     // sequenceNumber is not serialized.
     HashMap * result = AbstractMessage::serializable();

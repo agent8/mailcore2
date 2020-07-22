@@ -24,6 +24,19 @@ MC_JAVA_SYNTHESIZE(Array, setGmailLabels, gmailLabels);
 MC_JAVA_SYNTHESIZE_SCALAR(jlong, uint64_t, setGmailMessageID, gmailMessageID);
 MC_JAVA_SYNTHESIZE_SCALAR(jlong, uint64_t, setGmailThreadID, gmailThreadID);
 
+MC_JAVA_SYNTHESIZE(Array, setHtmlParts, htmlParts);
+MC_JAVA_SYNTHESIZE(Array, setPlainParts, plainParts);
+MC_JAVA_SYNTHESIZE(Array, setAttachments, attachments);
+MC_JAVA_SYNTHESIZE(Array, setInlineAttachments, inlineAttachments);
+
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_parseParts
+  (JNIEnv * env, jobject obj)
+{
+    MC_POOL_BEGIN;
+    MC_JAVA_NATIVE_INSTANCE->parseParts();
+    MC_POOL_END;
+}
+
 JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_partForPartID
   (JNIEnv * env, jobject obj, jstring partID)
 {

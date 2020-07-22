@@ -4870,10 +4870,10 @@ void IMAPSession::testSetMsgAttHandler(void * imapses, IMAPMessagesRequestKind r
     bool needsGmailThreadID;
     bool fetchByUID;
     Array * messages;
-    IndexSet * vanishedMessages = nullptr;
-    IndexSet * uidsFilter = nullptr;
-    IndexSet * numbersFilter = nullptr;
-    HashMap * mapping = nullptr;
+    IndexSet * vanishedMessages = NULL;
+    IndexSet * uidsFilter = NULL;
+    IndexSet * numbersFilter = NULL;
+    HashMap * mapping = NULL;
     uint32_t mLastFetchedSequenceNumber = 0;
     
     mailimap * session = (mailimap *)imapses;

@@ -17,7 +17,7 @@ extern "C" {
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_sequenceNumber
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -25,7 +25,7 @@ JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_sequenceNumber
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setSequenceNumber
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setSequenceNumber
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_uid
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -41,7 +41,7 @@ JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_uid
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setUid
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -49,7 +49,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setUid
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_size
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -57,7 +57,7 @@ JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_size
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setSize
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -65,7 +65,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setSize
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setFlags
-  (JNIEnv *, jobject, jint);
+        (JNIEnv *, jobject, jint);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -73,7 +73,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setFlags
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPMessage_flags
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -81,7 +81,7 @@ JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPMessage_flags
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setOriginalFlags
-  (JNIEnv *, jobject, jint);
+        (JNIEnv *, jobject, jint);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -89,7 +89,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setOriginalFlags
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPMessage_originalFlags
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -97,7 +97,7 @@ JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPMessage_originalFlags
  * Signature: (Ljava/util/List;)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setCustomFlags
-  (JNIEnv *, jobject, jobject);
+        (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -105,7 +105,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setCustomFlags
  * Signature: ()Ljava/util/List;
  */
 JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_customFlags
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -113,7 +113,7 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_customFlags
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_modSeqValue
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -121,7 +121,7 @@ JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_modSeqValue
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setModSeqValue
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -129,7 +129,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setModSeqValue
  * Signature: (Lcom/libmailcore/AbstractPart;)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setMainPart
-  (JNIEnv *, jobject, jobject);
+        (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -137,7 +137,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setMainPart
  * Signature: ()Lcom/libmailcore/AbstractPart;
  */
 JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_mainPart
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -145,7 +145,7 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_mainPart
  * Signature: (Ljava/util/List;)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setGmailLabels
-  (JNIEnv *, jobject, jobject);
+        (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -153,7 +153,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setGmailLabels
  * Signature: ()Ljava/util/List;
  */
 JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_gmailLabels
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -161,7 +161,7 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_gmailLabels
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setGmailMessageID
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -169,7 +169,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setGmailMessageID
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_gmailMessageID
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -177,7 +177,7 @@ JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_gmailMessageID
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setGmailThreadID
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -185,7 +185,7 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setGmailThreadID
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_gmailThreadID
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -193,7 +193,7 @@ JNIEXPORT jlong JNICALL Java_com_libmailcore_IMAPMessage_gmailThreadID
  * Signature: (Ljava/lang/String;)Lcom/libmailcore/AbstractPart;
  */
 JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_partForPartID
-  (JNIEnv *, jobject, jstring);
+        (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -201,7 +201,34 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_partForPartID
  * Signature: (Ljava/lang/String;Lcom/libmailcore/HTMLRendererIMAPCallback;Lcom/libmailcore/HTMLRendererTemplateCallback;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_libmailcore_IMAPMessage_htmlRendering
-  (JNIEnv *, jobject, jstring, jobject, jobject);
+        (JNIEnv *, jobject, jstring, jobject, jobject);
+
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_parseParts
+        (JNIEnv *, jobject);
+
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setHtmlParts
+        (JNIEnv *, jobject, jobject);
+
+JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_htmlParts
+        (JNIEnv *, jobject);
+
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setPlainParts
+        (JNIEnv *, jobject, jobject);
+
+JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_plainParts
+        (JNIEnv *, jobject);
+
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setAttachments
+        (JNIEnv *, jobject, jobject);
+
+JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_attachments
+        (JNIEnv *, jobject);
+
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setInlineAttachments
+        (JNIEnv *, jobject, jobject);
+
+JNIEXPORT jobject JNICALL Java_com_libmailcore_IMAPMessage_inlineAttachments
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_libmailcore_IMAPMessage
@@ -209,7 +236,7 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_IMAPMessage_htmlRendering
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_libmailcore_IMAPMessage_setupNative
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }
