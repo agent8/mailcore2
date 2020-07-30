@@ -122,6 +122,7 @@ build_git_ios()
   popd >/dev/null
 
   echo cleaning
+
   rm -rf "$tempbuilddir"
 
   if test x$build_for_external != x1 ; then
@@ -171,12 +172,12 @@ build_git_osx()
   mkdir -p "$builddir/downloads"
   cd "$builddir/downloads"
   if test -d "$name" ; then
-  	cd "$name"
+    cd "$name"
     git checkout master
-  	git pull --rebase
+    git pull --rebase
   else
-  	git clone $url "$name"
-  	cd "$name"
+    git clone $url "$name"
+    cd "$name"
   fi
   #version=`echo $rev | cut -c1-10`
 
@@ -299,25 +300,33 @@ get_prebuilt_dep()
   tempbuilddir="$scriptpath/../Externals/workdir/$BUILD_TIMESTAMP"
   
   if test "$name" = "libetpan-osx" ; then
-  	echo "Skip Downloading $name"
-  	mkdir -p "$scriptpath/../Externals/$name/include/libetpan/"
-  	echo "cp -f  $scriptpath/../../libetpan/include/libetpan/*  $scriptpath/../Externals/$name/include/libetpan/"
-  	cp -f  "$scriptpath"/../../libetpan/include/libetpan/* "$scriptpath"/../Externals/"$name"/include/libetpan/
+    echo "Skip Downloading $name"
+    mkdir -p "$scriptpath/../Externals/$name/include/libetpan/"
+    echo "cp -f  $scriptpath/../../libetpan/include/libetpan/*  $scriptpath/../Externals/$name/include/libetpan/"
+    cp -f  "$scriptpath"/../../libetpan/include/libetpan/* "$scriptpath"/../Externals/"$name"/include/libetpan/
   else
-  	mkdir -p "$tempbuilddir"
-  	cd "$tempbuilddir"
-  	echo "Downloading $url/$name/$name-$version.zip"
-  	curl -O "$url/$name/$name-$version.zip"
-  	unzip -q "$name-$version.zip"
-  	rm -rf "$scriptpath/../Externals/$name"
-  	cd "$name-$version"
-  	for folder in * ; do
+    mkdir -p "$tempbuilddir"
+    cd "$tempbuilddir"
+    if [ -f "$scriptpath/../resources/$name-$version.zip" ];then
+      echo "Use cached file $name-$version.zip from $scriptpath/../resources"
+      cp $scriptpath/../resources/$name-$version.zip .
+    else
+      ls -l $scriptpath/../resources/
+      echo "Downloading $url/$name/$name-$version.zip"
+      curl -O "$url/$name/$name-$version.zip"
+      # backup the file
+      cp $name-$version.zip $scriptpath/../resources/
+    fi
+    unzip -q "$name-$version.zip"
+    rm -rf "$scriptpath/../Externals/$name"
+    cd "$name-$version"
+    for folder in * ; do
       rm -rf "$scriptpath/../Externals/$folder"
       mv "$folder" "$scriptpath/../Externals"
-  	done
-  	cd ..
-  	rm -f "$scriptpath/../Externals/git-rev"
-  	rm -rf "$tempbuilddir"
+    done
+    cd ..
+    rm -f "$scriptpath/../Externals/git-rev"
+    rm -rf "$tempbuilddir"
   fi
   
   if test -d "$scriptpath/../Externals/$name" ; then
