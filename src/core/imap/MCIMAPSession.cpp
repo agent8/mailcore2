@@ -1195,11 +1195,7 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
     MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
 
     if (mBlockSenderEnabled) {
-        char buffer[folder->length() + 22];
-        strcpy(buffer, "SELECT ");
-        strcat(buffer, MCUTF8(folder));
-        strcat(buffer, " (BLOCKSENDER)");
-        r = mailimap_custom_command(mImap, buffer);
+        r = mailimap_select_with_blocksender(mImap, MCUTF8(folder));
         if (r == MAILIMAP_ERROR_PROTOCOL) {
             r = mailimap_select(mImap, MCUTF8(folder));
         }
