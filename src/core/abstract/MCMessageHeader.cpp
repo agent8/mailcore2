@@ -335,6 +335,7 @@ void MessageHeader::setExtraHeader(String * name, String * object)
     if (mExtraHeaders == NULL) {
         mExtraHeaders = new HashMap();
     }
+    //TODO: SHOULD store these object in order
     removeExtraHeader(name);
     if (object == NULL) {
         return;
@@ -359,10 +360,16 @@ String * MessageHeader::extraHeaderValueForName(String * name)
     String * result = NULL;
     mc_foreachhashmapKey(String, key, mExtraHeaders) {
         if (key->isEqualCaseInsensitive(name)) {
+            //TODO: string or array, if this is an array, return the latest one
             result = (String *) mExtraHeaders->objectForKey(key);
         }
     }
     return result;
+}
+
+Array * MessageHeader::extraHeaderValuesForName(String *name) {
+    //TODO: string or array, if this is string, add it into an array and return.
+    return NULL;
 }
 
 String * MessageHeader::extractedSubject()
@@ -542,9 +549,9 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
             
             fieldValue = field->fld_data.fld_optional_field->fld_value;
             fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
-	    if (fieldValueStr != NULL) {
+            if (fieldValueStr != NULL) {
                 setExtraHeader(fieldNameStr, fieldValueStr);
-	    }
+            }
         }
     }
 }
