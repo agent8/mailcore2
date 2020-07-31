@@ -2561,37 +2561,15 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         needsGmailMessageID = true;
     }
     if ((requestKind & IMAPMessagesRequestKindFullHeaders) != 0) {
-        char * header;
-        
         MCLog("request envelope");
-        
-        // most important header
-        header = strdup("Date");
-        clist_append(hdrlist, header);
-        header = strdup("Subject");
-        clist_append(hdrlist, header);
-        header = strdup("From");
-        clist_append(hdrlist, header);
-        header = strdup("Sender");
-        clist_append(hdrlist, header);
-        header = strdup("Reply-To");
-        clist_append(hdrlist, header);
-        header = strdup("To");
-        clist_append(hdrlist, header);
-        header = strdup("Cc");
-        clist_append(hdrlist, header);
-        header = strdup("Message-ID");
-        clist_append(hdrlist, header);
-        header = strdup("References");
-        clist_append(hdrlist, header);
-        header = strdup("In-Reply-To");
-        clist_append(hdrlist, header);
-        header = strdup("List-Unsubscribe");
-        clist_append(hdrlist, header);
-        header = strdup("List-ID");
-        clist_append(hdrlist, header);
-        header = strdup("Precedence");
-        clist_append(hdrlist, header);
+        char * headers[] = {
+            "Date", "Subject", "From", "Sender", "Reply-To", "To", "Cc",
+            "Message-ID", "References", "In-Reply-To", "List-Unsubscribe", "List-ID", "Precedence",
+            "Authentication-Results", "DKIM-Signature", "Return-Path", "Received", "ARC-Authentication-Results", "ARC-Message-Signature", "ARC-Seal" // For Anti-Phishing
+        };
+        for (int i = sizeof(headers)/sizeof(headers[0]) - 1; i >= 0; i--) {
+            clist_append(hdrlist, strdup(headers[i]));
+        }
     }
     //Bcc header
     if ((requestKind & IMAPMessagesRequestKindHeaderBcc) != 0) {
@@ -2663,12 +2641,10 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     }
     if ((requestKind & IMAPMessagesRequestKindExtraHeaders) != 0) {
         // custom header request
-        char * header;
-        
         if (extraHeaders && extraHeaders->count() > 0) {
             for (unsigned int i = 0; i < extraHeaders->count(); i++) {
                 String * headerString = (String *)extraHeaders->objectAtIndex(i);
-                header = strdup(headerString->UTF8Characters());
+                char * header = strdup(headerString->UTF8Characters());
                 clist_append(hdrlist, header);
             }
         }

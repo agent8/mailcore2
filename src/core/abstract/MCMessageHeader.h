@@ -63,6 +63,7 @@ namespace mailcore {
         virtual void setDefaultCharset(String * charset);
         
         virtual String * extraHeaderValueForName(String *name);
+        virtual Array * extraHeaderValuesForName(String *name);
         virtual Array * allExtraHeadersNames();
         
         String * extractedSubject();
