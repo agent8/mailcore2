@@ -335,12 +335,23 @@ void MessageHeader::setExtraHeader(String * name, String * object)
     if (mExtraHeaders == NULL) {
         mExtraHeaders = new HashMap();
     }
-    //TODO: SHOULD store these object in order
-    removeExtraHeader(name);
-    if (object == NULL) {
-        return;
+    //SHOULD store these object in order
+    if (name->isEqualCaseInsensitive(MCSTR("Received"))) {
+        Array * received = (Array *) mExtraHeaders->objectForKey(name);
+        if (received == NULL) {
+            received = new Array();
+        }
+        received->addObject(object);
+        removeExtraHeader(name);
+        mExtraHeaders->setObjectForKey(name, received);
+        received->autorelease();
+    } else {
+        removeExtraHeader(name);
+        if (object == NULL) {
+            return;
+        }
+        mExtraHeaders->setObjectForKey(name, object);
     }
-    mExtraHeaders->setObjectForKey(name, object);
 }
 
 void MessageHeader::removeExtraHeader(String * name)
@@ -360,16 +371,28 @@ String * MessageHeader::extraHeaderValueForName(String * name)
     String * result = NULL;
     mc_foreachhashmapKey(String, key, mExtraHeaders) {
         if (key->isEqualCaseInsensitive(name)) {
-            //TODO: string or array, if this is an array, return the latest one
-            result = (String *) mExtraHeaders->objectForKey(key);
+            //string or array, if this is an array, return the first one
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) mExtraHeaders->objectForKey(key);
+                result = (String *)arr->objectAtIndex(0);
+            } else {
+                result = (String *) mExtraHeaders->objectForKey(key);
+            }
         }
     }
     return result;
 }
 
 Array * MessageHeader::extraHeaderValuesForName(String *name) {
-    //TODO: string or array, if this is string, add it into an array and return.
-    return NULL;
+    //array, if this is string, add it into an array and return.
+    Array * result = NULL;
+    mc_foreachhashmapKey(String, key, mExtraHeaders) {
+        if (key->isEqualCaseInsensitive(name)) {
+            result = (Array *) mExtraHeaders->objectForKey(key);
+        }
+    }
+    return result;
 }
 
 String * MessageHeader::extractedSubject()
