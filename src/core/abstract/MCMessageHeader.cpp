@@ -336,17 +336,31 @@ void MessageHeader::setExtraHeader(String * name, String * object)
         mExtraHeaders = new HashMap();
     }
     //SHOULD store these object in order
-    if (name->isEqualCaseInsensitive(MCSTR("Received"))) {
-        Array * received = (Array *) mExtraHeaders->objectForKey(name);
-        if (received == NULL) {
-            received = new Array();
+    bool find = false;
+    mc_foreachhashmapKey(String, key, mExtraHeaders) {
+        if (key->isEqualCaseInsensitive(name)) {
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                removeExtraHeader(name);
+                break;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                arr->addObject(object);
+            } else {
+                String * str = (String *) obj->copy();
+                Array * arr = new Array();
+                arr->addObject(str);
+                arr->addObject(object);
+                removeExtraHeader(name);
+                mExtraHeaders->setObjectForKey(name, arr);
+            }
+            find = true;
+            break;
         }
-        received->addObject(object);
-        removeExtraHeader(name);
-        mExtraHeaders->setObjectForKey(name, received);
-        received->autorelease();
-    } else {
-        removeExtraHeader(name);
+    }
+    
+    if (!find) {
         if (object == NULL) {
             return;
         }
@@ -373,12 +387,19 @@ String * MessageHeader::extraHeaderValueForName(String * name)
         if (key->isEqualCaseInsensitive(name)) {
             //string or array, if this is an array, return the first one
             Object * obj = mExtraHeaders->objectForKey(key);
-            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
-                Array * arr = (Array *) mExtraHeaders->objectForKey(key);
-                result = (String *)arr->objectAtIndex(0);
-            } else {
-                result = (String *) mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                return result;
             }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                if (arr == NULL) {
+                    return result;
+                }
+                result = (String *) arr->objectAtIndex(0);
+            } else {
+                result = (String *) obj;
+            }
+            break;
         }
     }
     return result;
@@ -389,7 +410,23 @@ Array * MessageHeader::extraHeaderValuesForName(String *name) {
     Array * result = NULL;
     mc_foreachhashmapKey(String, key, mExtraHeaders) {
         if (key->isEqualCaseInsensitive(name)) {
-            result = (Array *) mExtraHeaders->objectForKey(key);
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                return result;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                if (arr == NULL) {
+                    return result;
+                }
+                result = (Array *) obj;
+            } else if (obj->className()->isEqual(MCSTR("mailcore::String"))) {
+                Array * arr = new Array();
+                arr->addObject(obj);
+                result = arr;
+                arr->autorelease();
+            }
+            break;
         }
     }
     return result;
