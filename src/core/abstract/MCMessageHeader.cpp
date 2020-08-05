@@ -392,10 +392,9 @@ String * MessageHeader::extraHeaderValueForName(String * name)
             }
             if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
                 Array * arr = (Array *) obj;
-                if (arr == NULL) {
-                    return result;
+                if (arr->count() > 0) {
+                    result = (String *) arr->objectAtIndex(0);
                 }
-                result = (String *) arr->objectAtIndex(0);
             } else {
                 result = (String *) obj;
             }
@@ -415,16 +414,11 @@ Array * MessageHeader::extraHeaderValuesForName(String *name) {
                 return result;
             }
             if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
-                Array * arr = (Array *) obj;
-                if (arr == NULL) {
-                    return result;
-                }
                 result = (Array *) obj;
             } else if (obj->className()->isEqual(MCSTR("mailcore::String"))) {
-                Array * arr = new Array();
-                arr->addObject(obj);
-                result = arr;
-                arr->autorelease();
+                result = new Array();
+                result->addObject(obj);
+                result->autorelease();
             }
             break;
         }
