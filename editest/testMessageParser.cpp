@@ -13,7 +13,8 @@
 #include <string>
 #include <sstream>
 
-#include "testEdiMessage.h"
+#include "testMessageParser.h"
+
 using namespace mailcore;
 
 
@@ -97,7 +98,7 @@ static testEdiContact convertAddress(mailcore::Address * address) {
     
     return ediCon;
 }
-void parseMessageHeader(mailcore::MessageHeader* header, testEdiMessage * message){
+void testMessageParser::parseMessageHeader(mailcore::MessageHeader* header, testEdiMessage * message){
     mailcore::String * subject = header->subject();
     if (subject) {
         message->subject = subject->UTF8Characters();
@@ -310,6 +311,91 @@ static void addSinglePart(testEdiMessage* message, int index, mailcore::Abstract
     message->attachmentList.push_back(attachptr);
 }
 
+testEdiMessage * testMessageParser::parseIMAPMessage(mailcore::IMAPMessage * imapMessage) {
+    
+    uint32_t uid = imapMessage->uid();
+    uint64_t gmailMessageId = imapMessage->gmailMessageID();
+
+    testEdiMessage * message = new testEdiMessage();
+    
+//    message->folderId = folder->pId;
+//    message->folderPath = folder->path;
+
+    uint64_t gmailThreadId = imapMessage->gmailThreadID();
+    if (gmailThreadId > 0) {
+        //message->threadId = EdiStringUtils::toHexString(gmailThreadId);
+    }
+
+    mailcore::MessageHeader* header = (mailcore::MessageHeader*)imapMessage->header();
+    if (header) {
+        testMessageParser::parseMessageHeader(header, message);
+    }
+
+//    //set message flag
+    message->setFlags(imapMessage->flags());
+//
+//    //parse gmail label
+//    parseGmailLabel(account, folder, imapMessage, message);
+
+    message->size = imapMessage->size();
+    
+//    setSentFlag(account, folder, message);
+//    setDraftFlag(account, folder, message);
+    
+    message->inAllMail = true;
+    
+    message->version = 1;
+    if (imapMessage->mainPart()) {
+        mailcore::Array * htmlParts = mailcore::Array::array();
+        mailcore::Array * plainParts = mailcore::Array::array();
+        //Note: we can using ONLY one array, indetify them by attachment->isInline & attachment->isAttachment.
+        mailcore::Array * attachmentParts = mailcore::Array::array();
+        mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
+        mailcore::IMAPPartParser::parseMessage(imapMessage, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
+        int index = 0;
+        for (int i = 0; i  < htmlParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)htmlParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 2, 0);
+        }
+        for (int i = 0; i  < plainParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 1, 0);
+        }
+        for (int i = 0; i  < attachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)attachmentParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 0, 2);
+        }
+        for (int i = 0; i  < inlineAttachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)inlineAttachmentParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 0, 1);
+        }
+        // The following lines are just for testing.
+//        std::cout<<"=====>"<<message->subject<<std::endl;
+//        mailcore::Array * bentchmark1 = mailcore::HTMLRenderer::attachmentsForMessage(imapMessage);
+//        mailcore::Array * bentchmark2 = mailcore::HTMLRenderer::htmlInlineAttachmentsForMessage(imapMessage);
+//        mailcore::Array * bentchmark3 =mailcore::HTMLRenderer::requiredPartsForRendering(imapMessage);
+//        std::cout<<"attachment:"<<bentchmark1->count()<<";inline:"<<bentchmark2->count()<<";required:"<<bentchmark3->count()<<std::endl;
+//        std::cout<<"attachment:"<<attachmentParts->count()<<";inline:"<<inlineAttachmentParts->count()<<";required:"<<htmlParts->count()<<std::endl;
+//        std::cout<<"========="<<std::endl;
+    }
+    
+//    EdiMessageUtils::checkPrimary(account, folder, message);
+//#if JIRA_CATEGORY_SUPPORTED
+//    EdiMessageUtils::checkJIRA(account, folder, message);
+//#endif
+//
+//#if ZENDESK_CATEGORY_SUPPORTED
+//    EdiMessageUtils::checkZendesk(account, folder, message);
+//#endif
+    
+    return message;
+}
+
+
 static bool testMessageParser() {
     bool ret = true;
     char * messagePath = "editest/data";
@@ -336,7 +422,7 @@ static bool testMessageParser() {
         mailcore::MessageHeader* header = (mailcore::MessageHeader*)parser->header();
         EXPECT_FALSE(header == NULL);
         if (header) {
-            parseMessageHeader(header, message);
+            testMessageParser::parseMessageHeader(header, message);
         }
         if (parser->mainPart()) {
             mailcore::Array * htmlParts = mailcore::Array::array();

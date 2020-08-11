@@ -44,6 +44,16 @@ public:
 
 class testEdiMessage {
 public:
+    void setFlags(unsigned int flags) {
+        this->flags = flags;
+        this->isUnread = ((flags & mailcore::MessageFlagSeen) == 0);
+        this->isFlagged = ((flags & mailcore::MessageFlagFlagged) > 0);
+        this->isAnswered = ((flags & mailcore::MessageFlagAnswered) > 0);
+        this->isForwarded = ((flags & mailcore::MessageFlagForwarded) > 0);
+        this->isDraft = ((flags & mailcore::MessageFlagDraft) > 0);
+        this->isDelete = ((flags & mailcore::MessageFlagDeleted) > 0);
+    }
+    
     std::string pId;
     std::string accountId;
     std::string folderId;

@@ -31,6 +31,8 @@
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
 		27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
 		3B422B6224E270ED00ABF293 /* testMailcoreBaseFuncs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B422B6124E270ED00ABF293 /* testMailcoreBaseFuncs.cpp */; };
+		3B748A4624E29BE700731EB1 /* testFetchMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B748A4524E29BE700731EB1 /* testFetchMessage.cpp */; };
+		3B748A4D24E29E9300731EB1 /* testMailcoreUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B748A4B24E29E9300731EB1 /* testMailcoreUtils.cpp */; };
 		3B8447C524DBE20D00B59347 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B8447C424DBE20D00B59347 /* main.cpp */; };
 		3B8447D424DBE5D700B59347 /* libMailCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore.a */; };
 		3B8447D724DBE63A00B59347 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C600B6221A244CC3000728F1 /* CFNetwork.framework */; };
@@ -2343,8 +2345,13 @@
 		27780C3C19CF9D9800C77E44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		27780D3419CFA19500C77E44 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/usr/lib/libstdc++.dylib"; sourceTree = DEVELOPER_DIR; };
 		3B422B6124E270ED00ABF293 /* testMailcoreBaseFuncs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMailcoreBaseFuncs.cpp; sourceTree = "<group>"; };
+		3B748A4524E29BE700731EB1 /* testFetchMessage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testFetchMessage.cpp; sourceTree = "<group>"; };
+		3B748A4B24E29E9300731EB1 /* testMailcoreUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMailcoreUtils.cpp; sourceTree = "<group>"; };
+		3B748A4C24E29E9300731EB1 /* testMailcoreUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = testMailcoreUtils.hpp; sourceTree = "<group>"; };
+		3B748A4E24E2A35300731EB1 /* testEdiAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testEdiAccount.h; sourceTree = "<group>"; };
+		3B748A4F24E2A69E00731EB1 /* testMessageParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testMessageParser.h; sourceTree = "<group>"; };
 		3B8447C224DBE20D00B59347 /* editest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = editest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B8447C424DBE20D00B59347 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = data/main.cpp; sourceTree = "<group>"; };
+		3B8447C424DBE20D00B59347 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3B8447DA24DC0C3700B59347 /* testMessageHeader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMessageHeader.cpp; sourceTree = "<group>"; };
 		3B8447DC24DC0D1A00B59347 /* ediunittest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ediunittest.h; sourceTree = "<group>"; };
 		3B8447DD24DCED0A00B59347 /* testMessageParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMessageParser.cpp; sourceTree = "<group>"; };
@@ -3087,10 +3094,15 @@
 				3B8447DF24DCF68500B59347 /* data */,
 				3B8447C424DBE20D00B59347 /* main.cpp */,
 				3B8447DC24DC0D1A00B59347 /* ediunittest.h */,
-				3B8447DA24DC0C3700B59347 /* testMessageHeader.cpp */,
 				3B8447E024DD3D6200B59347 /* testEdiMessage.h */,
+				3B8447DA24DC0C3700B59347 /* testMessageHeader.cpp */,
+				3B748A4F24E2A69E00731EB1 /* testMessageParser.h */,
 				3B8447DD24DCED0A00B59347 /* testMessageParser.cpp */,
 				3B422B6124E270ED00ABF293 /* testMailcoreBaseFuncs.cpp */,
+				3B748A4524E29BE700731EB1 /* testFetchMessage.cpp */,
+				3B748A4B24E29E9300731EB1 /* testMailcoreUtils.cpp */,
+				3B748A4C24E29E9300731EB1 /* testMailcoreUtils.hpp */,
+				3B748A4E24E2A35300731EB1 /* testEdiAccount.h */,
 			);
 			name = editest;
 			path = ../editest;
@@ -4510,8 +4522,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B422B6224E270ED00ABF293 /* testMailcoreBaseFuncs.cpp in Sources */,
+				3B748A4D24E29E9300731EB1 /* testMailcoreUtils.cpp in Sources */,
 				3B8447DE24DCED0A00B59347 /* testMessageParser.cpp in Sources */,
 				3B8447DB24DC0C3700B59347 /* testMessageHeader.cpp in Sources */,
+				3B748A4624E29BE700731EB1 /* testFetchMessage.cpp in Sources */,
 				3B8447C524DBE20D00B59347 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
