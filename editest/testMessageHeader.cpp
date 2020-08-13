@@ -9,7 +9,7 @@
 #include "ediunittest.h"
 
 
-void test_mailcore_messagheader() {
+void testMailcoreMessageHeader() {
     mailcore::MessageHeader* header = new mailcore::MessageHeader();
     mailcore::String * hkeyListId = mailcore::String::uniquedStringWithUTF8Characters("List-ID");
     mailcore::String * listId = header->extraHeaderValueForName(hkeyListId);
@@ -61,5 +61,5 @@ void test_mailcore_messagheader() {
 
 TEST(testMessageHeader, test0)
 {
-    test_mailcore_messagheader();
+    testMailcoreMessageHeader();
 }

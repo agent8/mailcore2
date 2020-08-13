@@ -10,7 +10,9 @@
 #define testMailcoreUtils_hpp
 #include <MailCore/MailCore.h>
 #include <iostream>
+#include "testEdiAccount.h"
 
-mailcore::IMAPSession * test_imap_sync_session(const std::string & email, const std::string & passwd, const std::string & host, bool outlog=true);
+mailcore::IMAPSession * testImapSession(const testEdiAccount * account, bool outlog=true);
+testEdiAccount * testReadAccountFromFile(const char * acctFilename);
 
 #endif /* testMailcoreUtils_hpp */

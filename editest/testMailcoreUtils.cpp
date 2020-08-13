@@ -7,19 +7,24 @@
 //
 
 #include "testMailcoreUtils.hpp"
+#include "nlohmann/json.hpp"
+#include <iosfwd>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
-mailcore::IMAPSession * test_imap_sync_session(const std::string & email, const std::string & passwd, const std::string & host, bool outlog) {
+mailcore::IMAPSession * testImapSession(const testEdiAccount * account, bool outlog) {
     mailcore::IMAPSession * imapSession = new mailcore::IMAPSession();
-    imapSession->setHostname(mailcore::String::uniquedStringWithUTF8Characters(host.c_str()));
+    imapSession->setHostname(mailcore::String::uniquedStringWithUTF8Characters(account->host.c_str()));
     imapSession->setPort(993);
-    imapSession->setUsername(mailcore::String::uniquedStringWithUTF8Characters(email.c_str()));
+    imapSession->setUsername(mailcore::String::uniquedStringWithUTF8Characters(account->email.c_str()));
     
-    if (!passwd.empty()) {
-        imapSession->setPassword(mailcore::String::uniquedStringWithUTF8Characters(passwd.c_str()));
-    }/* else if (!account->accessToken.empty()) {
+    if (!account->passwd.empty()) {
+        imapSession->setPassword(mailcore::String::uniquedStringWithUTF8Characters(account->passwd.c_str()));
+    } else if (!account->accessToken.empty()) {
         imapSession->setOAuth2Token(mailcore::String::uniquedStringWithUTF8Characters(account->accessToken.c_str()));
         imapSession->setAuthType(mailcore::AuthTypeXOAuth2);
-    }*/
+    }
     imapSession->setVoIPEnabled(false);
     //unsigned int connType = EmailProviderManager::getImapConnType(account->connType);
     int connType = 2;
@@ -46,4 +51,89 @@ mailcore::IMAPSession * test_imap_sync_session(const std::string & email, const 
     clientIdentity->release();
     
     return imapSession;
+}
+
+const char * getAccountDataByPath(const char * filename) {
+    
+    char * testAccountData = nullptr;
+    std::string filepath(filename);
+    try {
+        std::ifstream inputStream;
+        
+        inputStream.open(filepath, std::ios::in | std::ios::binary);
+        
+        if (inputStream.is_open()) {
+            
+            inputStream.seekg (0, std::ios::end);
+            long length = inputStream.tellg();
+            inputStream.seekg (0, std::ios::beg);
+            
+            testAccountData = new char [length+1];
+            
+            inputStream.read (testAccountData, length);
+            testAccountData[length] = 0;
+            
+            inputStream.close();
+        } else {
+            std::cout << "failed to open the file: " << filepath << std::endl;
+        }
+        
+    } catch (std::exception e) {
+        std::cout << "failed to parse test input for " << e.what() << std::endl;
+    } catch (...) {
+        std::cout << "failed to parse test input for other" << std::endl;
+    }
+    
+    return testAccountData;
+}
+
+testEdiAccount * testReadAccountFromFile(const char * acctFilename) {
+    testEdiAccount * account = nullptr;
+    try {
+        const char * acctData = getAccountDataByPath(acctFilename);
+        if (acctData) {
+            nlohmann::json jdata = nlohmann::json::parse(acctData);
+            if (jdata.find("__cls") != jdata.end()) {
+                if (jdata.at("__cls").get<std::string>() == "Account") {
+                    account = new testEdiAccount();
+                    
+                    if (jdata.find("emailAddress") != jdata.end()) {
+                        account->email = jdata["emailAddress"];
+                    }
+                    if (jdata.find("provider") != jdata.end()) {
+                        std::string strProvider = jdata["provider"];
+                        if (strProvider.compare("gmail") == 0) {
+                            account->isGmail = true;
+                        } else {
+                            account->isGmail = false;
+                        }
+                    }
+                    if (jdata.find("settings") != jdata.end()) {
+                        auto jsetting = jdata["settings"];
+                        if (jsetting.find("access_token") != jsetting.end()) {
+                            account->accessToken = jsetting["access_token"];
+                        }
+                        if (jsetting.find("imap_host") != jsetting.end()) {
+                            account->host = jsetting["imap_host"];
+                        }
+                        if (jsetting.find("refresh_token") != jsetting.end()) {
+                            account->refreshToken = jsetting["refresh_token"];
+                        }
+                        if (jsetting.find("imap_password") != jsetting.end()) {
+                            account->passwd = jsetting["imap_password"];
+                        }
+                        if (jsetting.find("imap_port") != jsetting.end()) {
+                            account->port = jsetting["imap_port"];
+                        }
+                    }
+                    
+                }
+            }
+        } else {
+            std::cout << "Failed to get account data." << std::endl;
+        }
+    } catch (std::exception e) {
+        std::cout << __FILE__ << "(" << __LINE__ << ") " << "Failed parse json:" << e.what() << std::endl;
+    }
+    return account;
 }

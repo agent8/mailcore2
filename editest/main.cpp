@@ -30,7 +30,7 @@
 
 int main(int argc, const char * argv[]) {
     
-//    testing::GTEST_FLAG(output) = "xml:"; //generate a xml file
+ //   testing::GTEST_FLAG(output) = "xml:"; //generate a xml file
     char * argument[10];
     argument[0] = "editest";
     //if just test one case, add "--gtest_filter=testCase.*" to command line argument
@@ -39,7 +39,5 @@ int main(int argc, const char * argv[]) {
     argc = 3;
     
     testing::InitGoogleTest(&argc, (char **)argument);
-    int ret = RUN_ALL_TESTS();
-
-    return ret;
+    return RUN_ALL_TESTS();
 }
