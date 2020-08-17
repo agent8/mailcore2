@@ -314,16 +314,18 @@ static void addSinglePart(testEdiMessage* message, int index, mailcore::Abstract
 testEdiMessage * testMessageParser::parseIMAPMessage(mailcore::IMAPMessage * imapMessage) {
     
     uint32_t uid = imapMessage->uid();
-    uint64_t gmailMessageId = imapMessage->gmailMessageID();
 
     testEdiMessage * message = new testEdiMessage();
-    
+    uint64_t gmailMessageId = imapMessage->gmailMessageID();
 //    message->folderId = folder->pId;
 //    message->folderPath = folder->path;
 
+    if (gmailMessageId > 0) {
+        message->messageId = std::to_string(gmailMessageId);
+    }
     uint64_t gmailThreadId = imapMessage->gmailThreadID();
     if (gmailThreadId > 0) {
-        //message->threadId = EdiStringUtils::toHexString(gmailThreadId);
+        message->threadId = std::to_string(gmailThreadId);
     }
 
     mailcore::MessageHeader* header = (mailcore::MessageHeader*)imapMessage->header();

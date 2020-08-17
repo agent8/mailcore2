@@ -12,11 +12,11 @@
 #include "testEdiAccount.h"
 #include "testMessageParser.h"
 
-static void test_fetch_message_headers_by_uid(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
+static void testFetchMessageHeadersByUid(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
     
     mailcore::ErrorCode errorCode = mailcore::ErrorNone;
 
-    mailcore::IMAPSession * session = test_imap_sync_session(account->email, account->passwd, account->host);
+    mailcore::IMAPSession * session = testImapSession(account);
     ASSERT_FALSE(session == NULL);
     
     mailcore::String * folderPath = mailcore::String::stringWithUTF8Characters(fpath);
@@ -26,7 +26,7 @@ static void test_fetch_message_headers_by_uid(const testEdiAccount * account, co
     for (int i = 0; i < count; i++) {
         muids->addIndex(uids[i]);
     }
-    std::cout << "Message UID:" << muids->description()->UTF8Characters() << std::endl;
+    //std::cout << "Message UID:" << muids->description()->UTF8Characters() << std::endl;
     
     mailcore::IMAPMessagesRequestKind requestKind = (mailcore::IMAPMessagesRequestKind)
     (mailcore::IMAPMessagesRequestKindUid | mailcore::IMAPMessagesRequestKindFlags | mailcore::IMAPMessagesRequestKindStructure |
@@ -37,7 +37,7 @@ static void test_fetch_message_headers_by_uid(const testEdiAccount * account, co
     }
     
     mailcore::Array * messages = session->fetchMessagesByUID(folderPath, requestKind, muids, NULL, &errorCode);
-    
+    EXPECT_FALSE(messages == NULL);
     std::vector<testEdiMessage*> messageList;
     
     if (messages != NULL) {
@@ -47,6 +47,7 @@ static void test_fetch_message_headers_by_uid(const testEdiAccount * account, co
             messageList.emplace_back(edimsg);
         }
     }
+    EXPECT_EQ(messages->count(), messageList.size());
 //
 //    for (const EdiMessage * message : messageList) {
 //        test_output_message(message);
@@ -68,27 +69,22 @@ static void adjustIndex(int64_t & start, int64_t & size, uint32_t totalSize) {
     size = fixedSize;
 }
 
-static void test_fetch_message_headers_by_num(const testEdiAccount * account, const char * fpath, long long start, long long size) {
+static void testFetchMessageHeadersByNum(const testEdiAccount * account, const char * fpath, long long start, long long size) {
     
     mailcore::ErrorCode errorCode = mailcore::ErrorNone;
     
-    mailcore::IMAPSession * session = test_imap_sync_session(account->email, account->passwd, account->host);
+    mailcore::IMAPSession * session = testImapSession(account);
     ASSERT_FALSE(session == NULL);
     
     mailcore::String * folderPath = mailcore::String::stringWithUTF8Characters(fpath);
     ASSERT_FALSE(folderPath == NULL);
     
     session->loginIfNeeded(&errorCode);
-    if (errorCode != mailcore::ErrorNone) {
-        std::cout << "Login failed. error=" << errorCode << std::endl;
-        return;
-    }
+    ASSERT_TRUE(errorCode == mailcore::ErrorNone);
    
     session->select(folderPath, &errorCode);
-    if (errorCode != mailcore::ErrorNone) {
-        std::cout << "Select failed. error=" << errorCode << std::endl;
-        return;
-    }
+    ASSERT_TRUE(errorCode == mailcore::ErrorNone);
+
     uint32_t total = session->lastFolderMessageCount();
     adjustIndex(start, size, total);
 
@@ -96,7 +92,7 @@ static void test_fetch_message_headers_by_num(const testEdiAccount * account, co
     mailcore::Range range;
     range.location = start;
     range.length = size;
-    std::cout << " Fetch message start. total=" << total << " start=" << start << " size=" << size << std::endl;
+    //std::cout << " Fetch message start. total=" << total << " start=" << start << " size=" << size << std::endl;
     
     uids->addRange(range);
     
@@ -115,12 +111,13 @@ static void test_fetch_message_headers_by_num(const testEdiAccount * account, co
     }
     
     mailcore::Array * messages = session->fetchMessagesByNumber(folderPath, requestKind, uids, NULL, &errorCode);
-
+    ASSERT_TRUE(messages != NULL);
     unsigned int messageCount = 0;
     if (messages) {
         messageCount = messages->count();
     }
-
+    EXPECT_EQ(messageCount, size + 1);
+    
     std::vector<testEdiMessage*> messageList;
     
     if (messages != NULL) {
@@ -130,8 +127,8 @@ static void test_fetch_message_headers_by_num(const testEdiAccount * account, co
             messageList.emplace_back(edimsg);
         }
     }
+    EXPECT_EQ(messageCount, messageList.size());
 }
-
 
 TEST(testFetchMessage, fetchMessageHeaderByUid) {
     testEdiAccount * account = new testEdiAccount();
@@ -139,20 +136,48 @@ TEST(testFetchMessage, fetchMessageHeaderByUid) {
     account->passwd = "A1234567";
     account->host = "imap.126.com";
     account->isGmail = false;
-    std::string fpath = "inbox";
+    
+    std::string fpath = "INBOX";
     uint32_t test_uids[] = {1433921373};
     int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
-    test_fetch_message_headers_by_uid(account, "INBOX", test_uids, count);
+    testFetchMessageHeadersByUid(account, fpath.c_str(), test_uids, count);
     delete account;
 }
 
 TEST(testFetchMessage, fetchMessageHeaderByNum) {
     testEdiAccount * account = new testEdiAccount();
-    account->email = "edotest1@126.com";
-    account->passwd = "A1234567";
-    account->host = "imap.126.com";
-    account->isGmail = false;
-    std::string fpath = "inbox";
-    test_fetch_message_headers_by_num(account, "INBOX", 1, 100);
+    account->email = "edotest13@gmail.com";
+    account->passwd = "";
+    account->accessToken = "ya29.a0AfH6SMAr1QbT6UNe8eTc20qphnAIo9eHdvSWEgJMBnhRJL-ClAXC1NfTjrWy6bGwCvOi3STm736gehOO4RS4Z5XnW_lz2Pgpe_1T7WJWsYTXT0_oiA98c1Wrz9ICqE6rgsD1XKZJjFybRLRlpKqIgFTXJJkZGD1ofvo";
+    account->host = "imap.gmail.com";
+    account->isGmail = true;
+    std::string fpath = "INBOX";
+    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
     delete account;
+}
+
+class FetchMessageHeaderTest : public testing::Test {
+protected:
+    virtual void SetUp() override {
+        account = new testEdiAccount();
+        account->email = "edotest1@126.com";
+        account->passwd = "A1234567";
+        account->host = "imap.126.com";
+        account->isGmail = false;
+    }
+    virtual void TearDown() override {
+        delete account;
+    }
+    testEdiAccount * account;
+    std::string fpath = "INBOX";
+};
+
+TEST_F(FetchMessageHeaderTest, fetchMessageHeaderByUid) {
+    uint32_t test_uids[] = {1433921373};
+    int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
+ //   testFetchMessageHeadersByUid(account, fpath.c_str(), test_uids, count);
+}
+
+TEST_F(FetchMessageHeaderTest, testFetchMessageHeadersByNum) {
+//    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
 }
