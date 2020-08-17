@@ -596,16 +596,10 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
             continue;
         }
 
-        // Set only if this optional-field is not set
-        if (extraHeaderValueForName(fieldNameStr) == NULL) {
-            char * fieldValue;
-            String * fieldValueStr;
-            
-            fieldValue = field->fld_data.fld_optional_field->fld_value;
-            fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
-            if (fieldValueStr != NULL) {
-                setExtraHeader(fieldNameStr, fieldValueStr);
-            }
+        char * fieldValue = field->fld_data.fld_optional_field->fld_value;
+        String * fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
+        if (fieldValueStr != NULL) {
+            setExtraHeader(fieldNameStr, fieldValueStr);
         }
     }
 }
