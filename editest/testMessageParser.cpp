@@ -377,9 +377,9 @@ testEdiMessage * testMessageParser::parseIMAPMessage(mailcore::IMAPMessage * ima
         }
         // The following lines are just for testing.
 //        std::cout<<"=====>"<<message->subject<<std::endl;
-//        mailcore::Array * bentchmark1 = mailcore::HTMLRenderer::attachmentsForMessage(imapMessage);
-//        mailcore::Array * bentchmark2 = mailcore::HTMLRenderer::htmlInlineAttachmentsForMessage(imapMessage);
-//        mailcore::Array * bentchmark3 =mailcore::HTMLRenderer::requiredPartsForRendering(imapMessage);
+        mailcore::Array * bentchmark1 = mailcore::HTMLRenderer::attachmentsForMessage(imapMessage);
+        mailcore::Array * bentchmark2 = mailcore::HTMLRenderer::htmlInlineAttachmentsForMessage(imapMessage);
+        mailcore::Array * bentchmark3 =mailcore::HTMLRenderer::requiredPartsForRendering(imapMessage);
 //        std::cout<<"attachment:"<<bentchmark1->count()<<";inline:"<<bentchmark2->count()<<";required:"<<bentchmark3->count()<<std::endl;
 //        std::cout<<"attachment:"<<attachmentParts->count()<<";inline:"<<inlineAttachmentParts->count()<<";required:"<<htmlParts->count()<<std::endl;
 //        std::cout<<"========="<<std::endl;
@@ -397,27 +397,24 @@ testEdiMessage * testMessageParser::parseIMAPMessage(mailcore::IMAPMessage * ima
     return message;
 }
 
-
-static bool testMessageParser() {
-    bool ret = true;
-    char * messagePath = "editest/data";
-    String * path = String::stringWithUTF8Characters(messagePath);
-    String * parserPath = path->stringByAppendingPathComponent(MCSTR("parser"));
-    String * inputPath = parserPath->stringByAppendingPathComponent(MCSTR("input"));
-    String * outputPath = parserPath->stringByAppendingPathComponent(MCSTR("output"));
+std::vector<std::shared_ptr<testEdiMessage>> testMessageParser::parseMessageFromFile(mailcore::String * inputPath, mailcore::String * output) {
+    
+    std::vector<std::shared_ptr<testEdiMessage>> messageList;
     Array * list = pathsInDirectory(inputPath);
     EXPECT_GT(list->count(), 0);
     if (list->count() <= 0) {
-        return false;
+        return messageList;
     }
     int failure = 0;
     int success = 0;
+    
+    
     mc_foreacharray(String, filename, list) {
         MessageParser * parser = MessageParser::messageParserWithContentsOfFile(filename);
         EXPECT_FALSE(parser == NULL) << MCUTF8(filename);
         if (parser == NULL) {
             fprintf(stderr, "testMessageParser: failed for %s\n", MCUTF8(filename));
-            return false;
+            return messageList;
         }
         
         testEdiMessage * message = new testEdiMessage();
@@ -454,13 +451,55 @@ static bool testMessageParser() {
                 addSinglePart(message, index, part, 0, 1);
             }
         }
-        ret = true;
-        
+        messageList.emplace_back(message);
     }
-    return ret;
+    EXPECT_EQ(messageList.size(), list->count());
+    return messageList;
 }
 
-TEST(testMessageParser, case0)
+static void testMessageBuilder(String * path)
 {
-    EXPECT_TRUE(testMessageParser());
+    printf("testMessageBuilder3\n");
+    MessageBuilder * builder = new MessageBuilder();
+    builder->header()->setFrom(Address::addressWithRFC822String(MCSTR("Hoà <dinh.viet.hoa@gmail.com>")));
+    Array * to = Array::array();
+    to->addObject(Address::addressWithRFC822String(MCSTR("Foo Bar <dinh.viet.hoa@gmail.com>")));
+    to->addObject(Address::addressWithRFC822String(MCSTR("Other Recipient <another-foobar@to-recipient.org>")));
+    builder->header()->setTo(to);
+    Array * cc = Array::array();
+    cc->addObject(Address::addressWithRFC822String(MCSTR("Carbon Copy <dinh.viet.hoa@gmail.com>")));
+    cc->addObject(Address::addressWithRFC822String(MCSTR("Other Recipient <another-foobar@to-recipient.org>")));
+    builder->header()->setCc(cc);
+    builder->header()->setSubject(MCSTR("testMessageBuilder3"));
+    builder->header()->setDate(referenceDate());
+    builder->header()->setMessageID(MCSTR("MyMessageID123@mail.gmail.com"));
+    builder->setHTMLBody(MCSTR("<html><body><div>This is a HTML content</div><div><img src=\"cid:123\"></div></body></html>"));
+    String * attachmentPath = path->stringByAppendingPathComponent(MCSTR("input/photo.jpg"));
+    builder->addAttachment(Attachment::attachmentWithContentsOfFile(attachmentPath));
+    attachmentPath = path->stringByAppendingPathComponent(MCSTR("input/photo2.jpg"));
+    Attachment * attachment = Attachment::attachmentWithContentsOfFile(attachmentPath);
+    attachment->setContentID(MCSTR("123"));
+    builder->addRelatedAttachment(attachment);
+    Array * boundaries = Array::array();
+    boundaries->addObject(MCSTR("1"));
+    boundaries->addObject(MCSTR("2"));
+    boundaries->addObject(MCSTR("3"));
+    boundaries->addObject(MCSTR("4"));
+    boundaries->addObject(MCSTR("5"));
+    builder->setBoundaries(boundaries);
+    String * outputPath = path->stringByAppendingPathComponent(MCSTR("builder3.eml"));
+    builder->writeToFile(outputPath);
+    Data * expectedData = Data::dataWithContentsOfFile(outputPath);
+    if (!builder->data()->isEqual(expectedData)) {
+        printf("testMessageBuilder3 failed\n");
+        fprintf(stderr, "current:\n%s\n", MCUTF8(builder->data()->stringWithCharset("utf-8")));
+        fprintf(stderr, "expected:\n%s\n", MCUTF8(expectedData->stringWithCharset("utf-8")));
+        return;
+    }
+    printf("testMessageBuilder3 ok\n");
+}
+
+void WriteDataToFile(mailcore::Data * data, const std::string & filename) {
+    mailcore::String * mStr = new mailcore::String(filename.c_str());
+    data->writeToFile(mStr);
 }

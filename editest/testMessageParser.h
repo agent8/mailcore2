@@ -16,6 +16,7 @@ class testMessageParser {
 public:
     static void parseMessageHeader(mailcore::MessageHeader* header, testEdiMessage * message);
     static testEdiMessage * parseIMAPMessage(mailcore::IMAPMessage * imapMessage);
+    static std::vector<std::shared_ptr<testEdiMessage>> parseMessageFromFile(mailcore::String * input, mailcore::String * output);
 };
 
 #endif /* testMessageParser_h */

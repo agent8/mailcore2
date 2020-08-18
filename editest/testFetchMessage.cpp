@@ -54,6 +54,55 @@ static void testFetchMessageHeadersByUid(const testEdiAccount * account, const c
 //    }
 
 }
+
+static void testFetchMessageByUid(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
+    
+    mailcore::ErrorCode errorCode = mailcore::ErrorNone;
+
+    mailcore::IMAPSession * session = testImapSession(account);
+    ASSERT_FALSE(session == NULL);
+    
+    mailcore::String * folderPath = mailcore::String::stringWithUTF8Characters(fpath);
+    ASSERT_FALSE(folderPath == NULL);
+
+    mailcore::IndexSet * muids = new mailcore::IndexSet();
+    for (int i = 0; i < count; i++) {
+        muids->addIndex(uids[i]);
+    }
+
+    mailcore::IMAPMessagesRequestKind requestKind = (mailcore::IMAPMessagesRequestKind)
+    (mailcore::IMAPMessagesRequestKindUid
+     | mailcore::IMAPMessagesRequestKindFlags
+     | mailcore::IMAPMessagesRequestKindStructure
+     | mailcore::IMAPMessagesRequestKindInternalDate
+     | mailcore::IMAPMessagesRequestKindFullHeaders
+     | mailcore::IMAPMessagesRequestKindSize
+     | mailcore::IMAPMessagesRequestKindHeaderBcc
+     | mailcore::IMAPMessagesRequestKindPlainBody
+     );
+
+    if (account->isGmail) {
+        requestKind = (mailcore::IMAPMessagesRequestKind) (requestKind | mailcore::IMAPMessagesRequestKindGmailLabels | mailcore::IMAPMessagesRequestKindGmailMessageID | mailcore::IMAPMessagesRequestKindGmailThreadID);
+    }
+    
+    mailcore::Array * messages = session->fetchMessagesByUID(folderPath, requestKind, muids, NULL, &errorCode);
+    EXPECT_FALSE(messages == NULL);
+    std::vector<testEdiMessage*> messageList;
+    
+    if (messages != NULL) {
+        for (int i = 0; i  < messages->count(); i++) {
+            mailcore::IMAPMessage* message =  (mailcore::IMAPMessage*)messages->objectAtIndex(i);
+            testEdiMessage * edimsg = testMessageParser::parseIMAPMessage(message);
+            messageList.emplace_back(edimsg);
+        }
+    }
+    EXPECT_EQ(messages->count(), messageList.size());
+//
+//    for (const EdiMessage * message : messageList) {
+//        test_output_message(message);
+//    }
+
+}
 static void adjustIndex(int64_t & start, int64_t & size, uint32_t totalSize) {
     int64_t fixedStart = totalSize - start - size + 1;
     int64_t fixedSize = size - 1;
@@ -140,7 +189,7 @@ TEST(testFetchMessage, fetchMessageHeaderByUid) {
     std::string fpath = "INBOX";
     uint32_t test_uids[] = {1433921373};
     int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
-    testFetchMessageHeadersByUid(account, fpath.c_str(), test_uids, count);
+    testFetchMessageByUid(account, fpath.c_str(), test_uids, count);
     delete account;
 }
 
@@ -152,7 +201,7 @@ TEST(testFetchMessage, fetchMessageHeaderByNum) {
     account->host = "imap.gmail.com";
     account->isGmail = true;
     std::string fpath = "INBOX";
-    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
+//    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
     delete account;
 }
 
@@ -180,4 +229,16 @@ TEST_F(FetchMessageHeaderTest, fetchMessageHeaderByUid) {
 
 TEST_F(FetchMessageHeaderTest, testFetchMessageHeadersByNum) {
 //    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
+}
+
+TEST(testFetchMessage, fetchMessageHeaderFromFile) {
+    bool ret = true;
+    char * messagePath = "editest/data";
+    mailcore::String * path = mailcore::String::stringWithUTF8Characters(messagePath);
+    mailcore::String * parserPath = path->stringByAppendingPathComponent(MCSTR("parser"));
+    mailcore::String * inputPath = parserPath->stringByAppendingPathComponent(MCSTR("input"));
+    mailcore::String * outputPath = parserPath->stringByAppendingPathComponent(MCSTR("output"));
+
+    std::vector<std::shared_ptr<testEdiMessage>> messageList = testMessageParser::parseMessageFromFile(inputPath, outputPath);
+    EXPECT_TRUE(messageList.size() > 0);
 }

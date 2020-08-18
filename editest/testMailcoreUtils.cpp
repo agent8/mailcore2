@@ -7,7 +7,6 @@
 //
 
 #include "testMailcoreUtils.hpp"
-#include "nlohmann/json.hpp"
 #include <iosfwd>
 #include <fstream>
 #include <iostream>
@@ -87,53 +86,3 @@ const char * getAccountDataByPath(const char * filename) {
     return testAccountData;
 }
 
-testEdiAccount * testReadAccountFromFile(const char * acctFilename) {
-    testEdiAccount * account = nullptr;
-    try {
-        const char * acctData = getAccountDataByPath(acctFilename);
-        if (acctData) {
-            nlohmann::json jdata = nlohmann::json::parse(acctData);
-            if (jdata.find("__cls") != jdata.end()) {
-                if (jdata.at("__cls").get<std::string>() == "Account") {
-                    account = new testEdiAccount();
-                    
-                    if (jdata.find("emailAddress") != jdata.end()) {
-                        account->email = jdata["emailAddress"];
-                    }
-                    if (jdata.find("provider") != jdata.end()) {
-                        std::string strProvider = jdata["provider"];
-                        if (strProvider.compare("gmail") == 0) {
-                            account->isGmail = true;
-                        } else {
-                            account->isGmail = false;
-                        }
-                    }
-                    if (jdata.find("settings") != jdata.end()) {
-                        auto jsetting = jdata["settings"];
-                        if (jsetting.find("access_token") != jsetting.end()) {
-                            account->accessToken = jsetting["access_token"];
-                        }
-                        if (jsetting.find("imap_host") != jsetting.end()) {
-                            account->host = jsetting["imap_host"];
-                        }
-                        if (jsetting.find("refresh_token") != jsetting.end()) {
-                            account->refreshToken = jsetting["refresh_token"];
-                        }
-                        if (jsetting.find("imap_password") != jsetting.end()) {
-                            account->passwd = jsetting["imap_password"];
-                        }
-                        if (jsetting.find("imap_port") != jsetting.end()) {
-                            account->port = jsetting["imap_port"];
-                        }
-                    }
-                    
-                }
-            }
-        } else {
-            std::cout << "Failed to get account data." << std::endl;
-        }
-    } catch (std::exception e) {
-        std::cout << __FILE__ << "(" << __LINE__ << ") " << "Failed parse json:" << e.what() << std::endl;
-    }
-    return account;
-}
