@@ -55,7 +55,7 @@ static void testFetchMessageHeadersByUid(const testEdiAccount * account, const c
 
 }
 
-static void testFetchMessageByUid(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
+static void testFetchMessageHeadersByUidToFile(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
     
     mailcore::ErrorCode errorCode = mailcore::ErrorNone;
 
@@ -78,7 +78,6 @@ static void testFetchMessageByUid(const testEdiAccount * account, const char * f
      | mailcore::IMAPMessagesRequestKindFullHeaders
      | mailcore::IMAPMessagesRequestKindSize
      | mailcore::IMAPMessagesRequestKindHeaderBcc
-     | mailcore::IMAPMessagesRequestKindPlainBody
      );
 
     if (account->isGmail) {
@@ -102,6 +101,30 @@ static void testFetchMessageByUid(const testEdiAccount * account, const char * f
 //        test_output_message(message);
 //    }
 
+}
+
+static void testFetchMessageContentByUidToEMLFile(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
+    
+    mailcore::ErrorCode errorCode = mailcore::ErrorNone;
+
+    mailcore::IMAPSession * session = testImapSession(account);
+    ASSERT_FALSE(session == NULL);
+
+    mailcore::String * folderPath = mailcore::String::stringWithUTF8Characters(fpath);
+    ASSERT_FALSE(folderPath == NULL);
+
+    mailcore::IndexSet * muids = new mailcore::IndexSet();
+
+    for (int i = 0; i < count; i++) {
+        uint32_t uid = uids[i];
+        mailcore::Data * data = session->fetchMessageByUID(folderPath, uid, NULL, &errorCode);
+        if (data) {
+            const std::string emailBasePath("editest/data/parser/eml/output/");
+            std::string filepath = emailBasePath + account->email + "-" + std::to_string(uid) + ".eml";
+            mailcore::String * mfp = mailcore::String::stringWithUTF8Characters(filepath.c_str());
+            data->writeToFile(mfp);
+        }
+    }
 }
 static void adjustIndex(int64_t & start, int64_t & size, uint32_t totalSize) {
     int64_t fixedStart = totalSize - start - size + 1;
@@ -179,18 +202,27 @@ static void testFetchMessageHeadersByNum(const testEdiAccount * account, const c
     EXPECT_EQ(messageCount, messageList.size());
 }
 
-TEST(testFetchMessage, fetchMessageHeaderByUid) {
-    testEdiAccount * account = new testEdiAccount();
-    account->email = "edotest1@126.com";
-    account->passwd = "A1234567";
-    account->host = "imap.126.com";
-    account->isGmail = false;
+static void testFetchMessageContentByNumberToFile(const testEdiAccount * account, const char * fpath, uint32_t number, int count) {
     
-    std::string fpath = "INBOX";
-    uint32_t test_uids[] = {1433921373};
-    int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
-    testFetchMessageByUid(account, fpath.c_str(), test_uids, count);
-    delete account;
+    mailcore::ErrorCode errorCode = mailcore::ErrorNone;
+
+    mailcore::IMAPSession * session = testImapSession(account);
+    ASSERT_FALSE(session == NULL);
+
+    mailcore::String * folderPath = mailcore::String::stringWithUTF8Characters(fpath);
+    ASSERT_FALSE(folderPath == NULL);
+
+    mailcore::IndexSet * muids = new mailcore::IndexSet();
+
+    for (int i = 0; i < count; i++) {
+        mailcore::Data * data = session->fetchMessageByNumber(folderPath, number, NULL, &errorCode);
+        if (data) {
+            const std::string emailBasePath("editest/data/parser/eml/output/");
+            std::string filepath = emailBasePath + account->email + "-" + std::to_string(number) + ".eml";
+            mailcore::String * mfp = mailcore::String::stringWithUTF8Characters(filepath.c_str());
+            data->writeToFile(mfp);
+        }
+    }
 }
 
 TEST(testFetchMessage, fetchMessageHeaderByNum) {
@@ -224,21 +256,33 @@ protected:
 TEST_F(FetchMessageHeaderTest, fetchMessageHeaderByUid) {
     uint32_t test_uids[] = {1433921373};
     int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
- //   testFetchMessageHeadersByUid(account, fpath.c_str(), test_uids, count);
+    testFetchMessageHeadersByUid(account, fpath.c_str(), test_uids, count);
 }
 
 TEST_F(FetchMessageHeaderTest, testFetchMessageHeadersByNum) {
-//    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
+    testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
 }
 
-TEST(testFetchMessage, fetchMessageHeaderFromFile) {
-    bool ret = true;
-    char * messagePath = "editest/data";
-    mailcore::String * path = mailcore::String::stringWithUTF8Characters(messagePath);
-    mailcore::String * parserPath = path->stringByAppendingPathComponent(MCSTR("parser"));
-    mailcore::String * inputPath = parserPath->stringByAppendingPathComponent(MCSTR("input"));
-    mailcore::String * outputPath = parserPath->stringByAppendingPathComponent(MCSTR("output"));
+TEST_F(FetchMessageHeaderTest, testFetchMessageContentByUidToFile) {
+    uint32_t test_uids[] = {1433921373, 1433921416};
+    int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
+//    testFetchMessageContentByUidToEMLFile(account, fpath.c_str(), test_uids, count);
+}
 
-    std::vector<std::shared_ptr<testEdiMessage>> messageList = testMessageParser::parseMessageFromFile(inputPath, outputPath);
-    EXPECT_TRUE(messageList.size() > 0);
+TEST_F(FetchMessageHeaderTest, testFetchMessageHeadersByUidToFile) {
+    uint32_t test_uids[] = {1433921373};
+    int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
+    testFetchMessageHeadersByUidToFile(account, fpath.c_str(), test_uids, count);
+}
+
+TEST(testFetchMessage, parseMessageFromLocalPath) {
+    char * messagePath = "editest/data/parser/eml/input";
+    mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(messagePath);
+    testMessageParser::parseMessageFromLocalPath(inputPath);
+}
+
+TEST(testFetchMessage, parseMessageFromLocalFile) {
+    char * messagePath = "editest/data/parser/eml/input/rfc2060.txt";
+    mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(messagePath);
+    testMessageParser::parseMessageFromLocalFile(inputPath);
 }

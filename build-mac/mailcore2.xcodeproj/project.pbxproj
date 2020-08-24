@@ -30,6 +30,8 @@
 		27780C3619CF9CD100C77E44 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = 84AF9E7D172DBAF600E60AA3 /* providers.json */; };
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
 		27E91D601A80D3F4005A3244 /* MCMXRecordResolverOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2744B1691A7A4637009E9E67 /* MCMXRecordResolverOperation.h */; };
+		3B1088B724EE1FF800E64A7E /* testMessageParserLibetpan.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B1088B624EE1FF800E64A7E /* testMessageParserLibetpan.cpp */; };
+		3B1088BE24EE523400E64A7E /* EditestFileUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B1088BC24EE523400E64A7E /* EditestFileUtils.cpp */; };
 		3B422B6224E270ED00ABF293 /* testMailcoreBaseFuncs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B422B6124E270ED00ABF293 /* testMailcoreBaseFuncs.cpp */; };
 		3B748A4624E29BE700731EB1 /* testFetchMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B748A4524E29BE700731EB1 /* testFetchMessage.cpp */; };
 		3B748A4D24E29E9300731EB1 /* testMailcoreUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B748A4B24E29E9300731EB1 /* testMailcoreUtils.cpp */; };
@@ -2345,6 +2347,9 @@
 		27780C3A19CF9CD100C77E44 /* MailCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MailCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27780C3C19CF9D9800C77E44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		27780D3419CFA19500C77E44 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/usr/lib/libstdc++.dylib"; sourceTree = DEVELOPER_DIR; };
+		3B1088B624EE1FF800E64A7E /* testMessageParserLibetpan.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMessageParserLibetpan.cpp; sourceTree = "<group>"; };
+		3B1088BC24EE523400E64A7E /* EditestFileUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EditestFileUtils.cpp; sourceTree = "<group>"; };
+		3B1088BD24EE523400E64A7E /* EditestFileUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditestFileUtils.hpp; sourceTree = "<group>"; };
 		3B422B6124E270ED00ABF293 /* testMailcoreBaseFuncs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMailcoreBaseFuncs.cpp; sourceTree = "<group>"; };
 		3B748A4524E29BE700731EB1 /* testFetchMessage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testFetchMessage.cpp; sourceTree = "<group>"; };
 		3B748A4B24E29E9300731EB1 /* testMailcoreUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMailcoreUtils.cpp; sourceTree = "<group>"; };
@@ -3106,6 +3111,9 @@
 				3B748A4C24E29E9300731EB1 /* testMailcoreUtils.hpp */,
 				3B748A4E24E2A35300731EB1 /* testEdiAccount.h */,
 				3BF441B924EA75E50080774A /* testString.cpp */,
+				3B1088B624EE1FF800E64A7E /* testMessageParserLibetpan.cpp */,
+				3B1088BC24EE523400E64A7E /* EditestFileUtils.cpp */,
+				3B1088BD24EE523400E64A7E /* EditestFileUtils.hpp */,
 			);
 			name = editest;
 			path = ../editest;
@@ -4525,12 +4533,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B422B6224E270ED00ABF293 /* testMailcoreBaseFuncs.cpp in Sources */,
+				3B1088BE24EE523400E64A7E /* EditestFileUtils.cpp in Sources */,
 				3B748A4D24E29E9300731EB1 /* testMailcoreUtils.cpp in Sources */,
 				3B8447DE24DCED0A00B59347 /* testMessageParser.cpp in Sources */,
 				3B8447DB24DC0C3700B59347 /* testMessageHeader.cpp in Sources */,
 				3B748A4624E29BE700731EB1 /* testFetchMessage.cpp in Sources */,
 				3BF441BA24EA75E50080774A /* testString.cpp in Sources */,
 				3B8447C524DBE20D00B59347 /* main.cpp in Sources */,
+				3B1088B724EE1FF800E64A7E /* testMessageParserLibetpan.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

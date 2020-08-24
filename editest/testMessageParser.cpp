@@ -397,64 +397,94 @@ testEdiMessage * testMessageParser::parseIMAPMessage(mailcore::IMAPMessage * ima
     return message;
 }
 
-std::vector<std::shared_ptr<testEdiMessage>> testMessageParser::parseMessageFromFile(mailcore::String * inputPath, mailcore::String * output) {
+void testMessageParser::parseMessageFromLocalPath(mailcore::String * inputPath) {
     
-    std::vector<std::shared_ptr<testEdiMessage>> messageList;
     Array * list = pathsInDirectory(inputPath);
     EXPECT_GT(list->count(), 0);
-    if (list->count() <= 0) {
-        return messageList;
-    }
-    int failure = 0;
-    int success = 0;
-    
     
     mc_foreacharray(String, filename, list) {
-        MessageParser * parser = MessageParser::messageParserWithContentsOfFile(filename);
-        EXPECT_FALSE(parser == NULL) << MCUTF8(filename);
-        if (parser == NULL) {
-            fprintf(stderr, "testMessageParser: failed for %s\n", MCUTF8(filename));
-            return messageList;
-        }
-        
-        testEdiMessage * message = new testEdiMessage();
-        mailcore::MessageHeader* header = (mailcore::MessageHeader*)parser->header();
-        EXPECT_FALSE(header == NULL);
-        if (header) {
-            testMessageParser::parseMessageHeader(header, message);
-        }
-        if (parser->mainPart()) {
-            mailcore::Array * htmlParts = mailcore::Array::array();
-            mailcore::Array * plainParts = mailcore::Array::array();
-            mailcore::Array * attachmentParts = mailcore::Array::array();
-            mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
-            mailcore::IMAPPartParser::parseMessage(parser, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
-            int index = 0;
-            for (int i = 0; i  < htmlParts->count(); i++) {
-                mailcore::AbstractPart * part = (mailcore::AbstractPart*)htmlParts->objectAtIndex(i);
-                index++;
-                addSinglePart(message, index, part, 2, 0);
-            }
-            for (int i = 0; i  < plainParts->count(); i++) {
-                mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);
-                index++;
-                addSinglePart(message, index, part, 1, 0);
-            }
-            for (int i = 0; i  < attachmentParts->count(); i++) {
-                mailcore::AbstractPart * part = (mailcore::AbstractPart*)attachmentParts->objectAtIndex(i);
-                index++;
-                addSinglePart(message, index, part, 0, 2);
-            }
-            for (int i = 0; i  < inlineAttachmentParts->count(); i++) {
-                mailcore::AbstractPart * part = (mailcore::AbstractPart*)inlineAttachmentParts->objectAtIndex(i);
-                index++;
-                addSinglePart(message, index, part, 0, 1);
-            }
-        }
-        messageList.emplace_back(message);
+        testMessageParser::parseMessageFromLocalFile(filename);
     }
-    EXPECT_EQ(messageList.size(), list->count());
-    return messageList;
+}
+
+void testMessageParser::parseMessageFromLocalFile(mailcore::String * filename) {
+    
+    EXPECT_FALSE(filename == NULL);
+    
+    MessageParser * parser = MessageParser::messageParserWithContentsOfFile(filename);
+    EXPECT_FALSE(parser == NULL) << MCUTF8(filename);
+    if (parser == NULL) {
+        printf("testMessageParser: failed for %s\n", MCUTF8(filename));
+    }
+    mailcore::MessageHeader* header = (mailcore::MessageHeader*)parser->header();
+    EXPECT_FALSE(header == NULL);
+    
+    if (parser->mainPart()) {
+        mailcore::Array * htmlParts = mailcore::Array::array();
+        mailcore::Array * plainParts = mailcore::Array::array();
+        mailcore::Array * attachmentParts = mailcore::Array::array();
+        mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
+        mailcore::IMAPPartParser::parseMessage(parser, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
+        int index = 0;
+        for (int i = 0; i  < htmlParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)htmlParts->objectAtIndex(i);
+            //std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+        for (int i = 0; i  < plainParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);
+            //std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+        for (int i = 0; i  < attachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)attachmentParts->objectAtIndex(i);
+            //std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+        for (int i = 0; i  < inlineAttachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)inlineAttachmentParts->objectAtIndex(i);
+            //std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+    }
+}
+
+testEdiMessage * testMessageParser::parserMessageParserToEdiMessage(MessageParser * parser) {
+    EXPECT_FALSE(parser == NULL);
+        
+    testEdiMessage * message = new testEdiMessage();
+    mailcore::MessageHeader* header = (mailcore::MessageHeader*)parser->header();
+    EXPECT_FALSE(header == NULL);
+    if (header) {
+        testMessageParser::parseMessageHeader(header, message);
+    } else {
+        return NULL;
+    }
+    if (parser->mainPart()) {
+        mailcore::Array * htmlParts = mailcore::Array::array();
+        mailcore::Array * plainParts = mailcore::Array::array();
+        mailcore::Array * attachmentParts = mailcore::Array::array();
+        mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
+        mailcore::IMAPPartParser::parseMessage(parser, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
+        int index = 0;
+        for (int i = 0; i  < htmlParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)htmlParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 2, 0);
+        }
+        for (int i = 0; i  < plainParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 1, 0);
+        }
+        for (int i = 0; i  < attachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)attachmentParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 0, 2);
+        }
+        for (int i = 0; i  < inlineAttachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)inlineAttachmentParts->objectAtIndex(i);
+            index++;
+            addSinglePart(message, index, part, 0, 1);
+        }
+    }
+    return message;
 }
 
 static void testMessageBuilder(String * path)
