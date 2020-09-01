@@ -1330,7 +1330,6 @@
         "alias-help-page": "https://support.apple.com/kb/PH2622",
         "alias-support": true,
         "domain-match": [
-            "apple\\.com",
             "icloud\\.com",
             "mac\\.com",
             "me\\.com"
@@ -2365,6 +2364,9 @@
         "domain-match": [
             "onmail\\.com"
         ],
+        "mx-match": [
+            "mx\\.onmail\\.com"
+        ],
         "servers": {
             "imap": [
                 {
@@ -2385,6 +2387,9 @@
     "onmail-eng": {
         "domain-match": [
             "engineering\\.onmail\\.com"
+        ],
+        "mx-match": [
+            "mx\\.engineering\\.onmail\\.com"
         ],
         "servers": {
             "imap": [
@@ -3989,56 +3994,6 @@
                     "ssl": true
                 }
             ]
-        }
-    },
-    "hostinger": {
-        "servers": {
-            "imap": [
-                     {
-                     "port": 993,
-                     "hostname": "imap.hostinger.com",
-                     "ssl": true
-                     },
-                     {
-                     "port": 143,
-                     "hostname": "imap.hostinger.com",
-                     "starttls": true
-                     }
-                     ],
-            "pop": [
-                    {
-                    "port": 995,
-                    "hostname": "pop.hostinger.com",
-                    "ssl": true
-                    },
-                    {
-                    "port": 110,
-                    "hostname": "pop.hostinger.com",
-                    "starttls": true
-                    }
-                    ],
-            "smtp": [
-                     {
-                     "port": 465,
-                     "hostname": "smtp.hostinger.com",
-                     "ssl": true
-                     },
-                     {
-                     "port": 587,
-                     "hostname": "smtp.hostinger.com",
-                     "starttls": true
-                     }
-                     ]
-        },
-        "mx-match": [
-                         "mx[0-9]*\\.hostinger\\.*"
-                         ],
-        "mailboxes": {
-            "allmail": "Archive",
-            "drafts": "Drafts",
-            "spam": "Junk Email",
-            "sentmail": "Sent Items",
-            "trash": "Deleted Items"
         }
     }
 }
