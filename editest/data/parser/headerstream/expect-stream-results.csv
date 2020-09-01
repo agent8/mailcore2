@@ -1,0 +1,4 @@
+filename,uid,subject,from,to,cc,bcc,htmlparts,plainparts,attachmentparts,inlineattachmentparts
+msg_header_qq_resp.txt,344,12341234123412341234123412341234213412341234,weixinteam@tencent.com,1,0,0,1,1,1,0
+msg_header_qq_resp.txt,345,你有1张电子发票,weixinteam@tencent.com,1,0,0,1,1,1,0
+msg_header_qq_resp.txt,346,12341234123412341234123412341234213412341235,weixinteam@tencent.com,1,0,0,1,1,1,0

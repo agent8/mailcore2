@@ -14,6 +14,7 @@
 class EditestFileUtils {
 public:
     static std::string getStringFromLocalFile(const char * filepath);
+    static std::string getFileNameFromPath(const std::string &filepath);
 };
 
 #endif /* EditestFileUtils_hpp */

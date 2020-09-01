@@ -310,6 +310,55 @@ static void addSinglePart(testEdiMessage* message, int index, mailcore::Abstract
     std::shared_ptr<testEdiAttachment> attachptr(attachment);
     message->attachmentList.push_back(attachptr);
 }
+void testMessageParser::parseIMAPMessageFromServer(mailcore::IMAPMessage * imapMessage) {
+    
+    uint32_t uid = imapMessage->uid();
+
+    uint64_t gmailMessageId = imapMessage->gmailMessageID();
+
+    if (gmailMessageId > 0) {
+        std::string messageId = std::to_string(gmailMessageId);
+    }
+    uint64_t gmailThreadId = imapMessage->gmailThreadID();
+    if (gmailThreadId > 0) {
+        std::string threadId = std::to_string(gmailThreadId);
+    }
+
+    mailcore::MessageHeader* header = (mailcore::MessageHeader*)imapMessage->header();
+    EXPECT_FALSE(header == NULL);
+
+    if (imapMessage->mainPart()) {
+        mailcore::Array * htmlParts = mailcore::Array::array();
+        mailcore::Array * plainParts = mailcore::Array::array();
+        //Note: we can using ONLY one array, indetify them by attachment->isInline & attachment->isAttachment.
+        mailcore::Array * attachmentParts = mailcore::Array::array();
+        mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
+        mailcore::IMAPPartParser::parseMessage(imapMessage, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
+        int index = 0;
+        for (int i = 0; i  < htmlParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)htmlParts->objectAtIndex(i);
+
+        }
+        for (int i = 0; i  < plainParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);
+
+        }
+        for (int i = 0; i  < attachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)attachmentParts->objectAtIndex(i);
+
+        }
+        for (int i = 0; i  < inlineAttachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)inlineAttachmentParts->objectAtIndex(i);
+
+        }
+        // The following lines are just for testing.
+        mailcore::Array * bentchmark1 = mailcore::HTMLRenderer::attachmentsForMessage(imapMessage);
+        mailcore::Array * bentchmark2 = mailcore::HTMLRenderer::htmlInlineAttachmentsForMessage(imapMessage);
+        mailcore::Array * bentchmark3 =mailcore::HTMLRenderer::requiredPartsForRendering(imapMessage);
+
+    }
+    return;
+}
 
 testEdiMessage * testMessageParser::parseIMAPMessage(mailcore::IMAPMessage * imapMessage) {
     
@@ -407,10 +456,10 @@ void testMessageParser::parseMessageFromLocalPath(mailcore::String * inputPath) 
     }
 }
 
-void testMessageParser::parseMessageFromLocalFile(mailcore::String * filename) {
+EdiTestCheckResult testMessageParser::parseMessageFromLocalFile(mailcore::String * filename) {
     
     EXPECT_FALSE(filename == NULL);
-    
+    EdiTestCheckResult result;
     MessageParser * parser = MessageParser::messageParserWithContentsOfFile(filename);
     EXPECT_FALSE(parser == NULL) << MCUTF8(filename);
     if (parser == NULL) {
@@ -418,6 +467,34 @@ void testMessageParser::parseMessageFromLocalFile(mailcore::String * filename) {
     }
     mailcore::MessageHeader* header = (mailcore::MessageHeader*)parser->header();
     EXPECT_FALSE(header == NULL);
+    if (header) {
+        mailcore::String * subject = header->subject();
+        if (subject) {
+            result.subject = subject->UTF8Characters();
+        }
+        
+        result.recvDate = header->receivedDate();
+
+        mailcore::Address * from = header->from();
+        if (from) {
+            result.from = from->mailbox()->UTF8Characters();
+        }
+
+        mailcore::Array * to = header->to();
+        if (to) {
+            result.toCount = to->count();
+        }
+
+        mailcore::Array * cc = header->cc();
+        if (cc) {
+            result.ccCount = cc->count();
+        }
+
+        mailcore::Array * bcc = header->bcc();
+        if (bcc) {
+            result.bccCount = bcc->count();
+        }
+    }
     
     if (parser->mainPart()) {
         mailcore::Array * htmlParts = mailcore::Array::array();
@@ -426,6 +503,11 @@ void testMessageParser::parseMessageFromLocalFile(mailcore::String * filename) {
         mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
         mailcore::IMAPPartParser::parseMessage(parser, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
         int index = 0;
+        result.htmlParts = htmlParts->count();
+        result.plainParts = plainParts->count();
+        result.attachmentParts = attachmentParts->count();
+        result.inlineAttachmentParts = inlineAttachmentParts->count();
+        
         for (int i = 0; i  < htmlParts->count(); i++) {
             mailcore::AbstractPart * part = (mailcore::AbstractPart*)htmlParts->objectAtIndex(i);
             //std::cout << part->partID()->UTF8Characters() << std::endl;
@@ -443,6 +525,7 @@ void testMessageParser::parseMessageFromLocalFile(mailcore::String * filename) {
             //std::cout << part->partID()->UTF8Characters() << std::endl;
         }
     }
+    return result;
 }
 
 testEdiMessage * testMessageParser::parserMessageParserToEdiMessage(MessageParser * parser) {

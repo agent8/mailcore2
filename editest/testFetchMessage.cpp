@@ -11,6 +11,9 @@
 #include "testEdiMessage.h"
 #include "testEdiAccount.h"
 #include "testMessageParser.h"
+#include "EdiTestCheckResult.hpp"
+
+static const std::string parserEmlPath = "editest/data/parser/eml/";
 
 static void testFetchMessageHeadersByUid(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
     
@@ -31,54 +34,6 @@ static void testFetchMessageHeadersByUid(const testEdiAccount * account, const c
     mailcore::IMAPMessagesRequestKind requestKind = (mailcore::IMAPMessagesRequestKind)
     (mailcore::IMAPMessagesRequestKindUid | mailcore::IMAPMessagesRequestKindFlags | mailcore::IMAPMessagesRequestKindStructure |
      mailcore::IMAPMessagesRequestKindInternalDate | mailcore::IMAPMessagesRequestKindFullHeaders | mailcore::IMAPMessagesRequestKindSize | mailcore::IMAPMessagesRequestKindHeaderBcc);
-
-    if (account->isGmail) {
-        requestKind = (mailcore::IMAPMessagesRequestKind) (requestKind | mailcore::IMAPMessagesRequestKindGmailLabels | mailcore::IMAPMessagesRequestKindGmailMessageID | mailcore::IMAPMessagesRequestKindGmailThreadID);
-    }
-    
-    mailcore::Array * messages = session->fetchMessagesByUID(folderPath, requestKind, muids, NULL, &errorCode);
-    EXPECT_FALSE(messages == NULL);
-    std::vector<testEdiMessage*> messageList;
-    
-    if (messages != NULL) {
-        for (int i = 0; i  < messages->count(); i++) {
-            mailcore::IMAPMessage* message =  (mailcore::IMAPMessage*)messages->objectAtIndex(i);
-            testEdiMessage * edimsg = testMessageParser::parseIMAPMessage(message);
-            messageList.emplace_back(edimsg);
-        }
-    }
-    EXPECT_EQ(messages->count(), messageList.size());
-//
-//    for (const EdiMessage * message : messageList) {
-//        test_output_message(message);
-//    }
-
-}
-
-static void testFetchMessageHeadersByUidToFile(const testEdiAccount * account, const char * fpath, uint32_t uids[], int count) {
-    
-    mailcore::ErrorCode errorCode = mailcore::ErrorNone;
-
-    mailcore::IMAPSession * session = testImapSession(account);
-    ASSERT_FALSE(session == NULL);
-    
-    mailcore::String * folderPath = mailcore::String::stringWithUTF8Characters(fpath);
-    ASSERT_FALSE(folderPath == NULL);
-
-    mailcore::IndexSet * muids = new mailcore::IndexSet();
-    for (int i = 0; i < count; i++) {
-        muids->addIndex(uids[i]);
-    }
-
-    mailcore::IMAPMessagesRequestKind requestKind = (mailcore::IMAPMessagesRequestKind)
-    (mailcore::IMAPMessagesRequestKindUid
-     | mailcore::IMAPMessagesRequestKindFlags
-     | mailcore::IMAPMessagesRequestKindStructure
-     | mailcore::IMAPMessagesRequestKindInternalDate
-     | mailcore::IMAPMessagesRequestKindFullHeaders
-     | mailcore::IMAPMessagesRequestKindSize
-     | mailcore::IMAPMessagesRequestKindHeaderBcc
-     );
 
     if (account->isGmail) {
         requestKind = (mailcore::IMAPMessagesRequestKind) (requestKind | mailcore::IMAPMessagesRequestKindGmailLabels | mailcore::IMAPMessagesRequestKindGmailMessageID | mailcore::IMAPMessagesRequestKindGmailThreadID);
@@ -263,26 +218,52 @@ TEST_F(FetchMessageHeaderTest, testFetchMessageHeadersByNum) {
     testFetchMessageHeadersByNum(account, fpath.c_str(), 1, 100);
 }
 
-TEST_F(FetchMessageHeaderTest, testFetchMessageContentByUidToFile) {
+TEST_F(FetchMessageHeaderTest, testFetchMessageContentByUidToEMLFile) {
     uint32_t test_uids[] = {1433921373, 1433921416};
     int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
 //    testFetchMessageContentByUidToEMLFile(account, fpath.c_str(), test_uids, count);
 }
 
-TEST_F(FetchMessageHeaderTest, testFetchMessageHeadersByUidToFile) {
-    uint32_t test_uids[] = {1433921373};
-    int count = (int)sizeof(test_uids)/sizeof(test_uids[0]);
-    testFetchMessageHeadersByUidToFile(account, fpath.c_str(), test_uids, count);
-}
 
 TEST(testFetchMessage, parseMessageFromLocalPath) {
-    char * messagePath = "editest/data/parser/eml/input";
-    mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(messagePath);
-    testMessageParser::parseMessageFromLocalPath(inputPath);
+    const std::string root = parserEmlPath + "input/";
+    std::vector<std::string> files = EdiTestCheckResult::getAllFiles(root, "eml");
+    std::map<std::string, EdiTestCheckResult> expectedResults = EdiTestCheckResult::parseExpectedResult(parserEmlPath + "input/expect-results.csv", 1);
+    int total = 0;
+    int pass = 0;
+    for (std::string & file : files) {
+        total++;
+        std::string filepath = root + file;
+        mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(filepath.c_str());
+        EdiTestCheckResult fileResult = testMessageParser::parseMessageFromLocalFile(inputPath);
+
+        std::map<std::string, EdiTestCheckResult>::iterator it = expectedResults.find(file);
+        
+        if (it == expectedResults.end()) {
+            EXPECT_FALSE(true) << "file expectResult does not exist:" << file.c_str();
+        } else {
+            EdiTestCheckResult::checkEmlResult(file, fileResult, it->second);
+            pass++;
+        }
+    }
+    EXPECT_EQ(pass, total);
 }
 
 TEST(testFetchMessage, parseMessageFromLocalFile) {
-    char * messagePath = "editest/data/parser/eml/input/rfc2060.txt";
-    mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(messagePath);
-    testMessageParser::parseMessageFromLocalFile(inputPath);
+    std::string rootpath = parserEmlPath + "input/";
+    std::string filename = "rfc2060.eml";
+    std::string filepath = rootpath + filename;
+    mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(filepath.c_str());
+    EdiTestCheckResult fileResult = testMessageParser::parseMessageFromLocalFile(inputPath);
+    
+    std::map<std::string, EdiTestCheckResult> expectedResults = EdiTestCheckResult::parseExpectedResult(parserEmlPath + "input/expect-results.csv", 1);
+    
+    std::map<std::string, EdiTestCheckResult>::iterator it = expectedResults.find(filename);
+    
+    if (it == expectedResults.end()) {
+        EXPECT_FALSE(true) << "file expectResult does not exist:" << filename.c_str();
+    } else {
+        EdiTestCheckResult::checkEmlResult(filename, fileResult, it->second);
+    }
+    
 }

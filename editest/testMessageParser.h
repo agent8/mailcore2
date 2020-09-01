@@ -11,6 +11,7 @@
 
 #include <MailCore/MailCore.h>
 #include "testEdiMessage.h"
+#include "EdiTestCheckResult.hpp"
 
 class testMessageParser {
 public:
@@ -19,7 +20,8 @@ public:
     static void parseMessageFromFile(mailcore::String * input, mailcore::String * output);
     static testEdiMessage * parserMessageParserToEdiMessage(mailcore::MessageParser * parser);
     static void parseMessageFromLocalPath(mailcore::String * inputPath);
-    static void parseMessageFromLocalFile(mailcore::String * inputPath);
+    static EdiTestCheckResult parseMessageFromLocalFile(mailcore::String * inputPath);
+    static void parseIMAPMessageFromServer(mailcore::IMAPMessage * imapMessage);
 };
 
 #endif /* testMessageParser_h */

@@ -42,6 +42,7 @@
 		3B8447D924DBE66800B59347 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6ED6D1917A1919500A4A14C /* Security.framework */; };
 		3B8447DB24DC0C3700B59347 /* testMessageHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B8447DA24DC0C3700B59347 /* testMessageHeader.cpp */; };
 		3B8447DE24DCED0A00B59347 /* testMessageParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B8447DD24DCED0A00B59347 /* testMessageParser.cpp */; };
+		3BC591CE24F66861006D47AA /* EdiTestCheckResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BC591CC24F66861006D47AA /* EdiTestCheckResult.cpp */; };
 		3BF441BA24EA75E50080774A /* testString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3BF441B924EA75E50080774A /* testString.cpp */; };
 		3D09FB251C2497CE0046685A /* MCIMAPCheckAccountOperation.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		3D71AC481F8BDDB0008241FA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */; };
@@ -2362,6 +2363,8 @@
 		3B8447DC24DC0D1A00B59347 /* ediunittest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ediunittest.h; sourceTree = "<group>"; };
 		3B8447DD24DCED0A00B59347 /* testMessageParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMessageParser.cpp; sourceTree = "<group>"; };
 		3B8447E024DD3D6200B59347 /* testEdiMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testEdiMessage.h; sourceTree = "<group>"; };
+		3BC591CC24F66861006D47AA /* EdiTestCheckResult.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EdiTestCheckResult.cpp; sourceTree = "<group>"; };
+		3BC591CD24F66861006D47AA /* EdiTestCheckResult.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EdiTestCheckResult.hpp; sourceTree = "<group>"; };
 		3BF441B924EA75E50080774A /* testString.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testString.cpp; sourceTree = "<group>"; };
 		3D71AC431F8BDDB0008241FA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		3D9C2E3C1B96637E008F57C6 /* libEdoMailcore2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEdoMailcore2.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3114,6 +3117,8 @@
 				3B1088B624EE1FF800E64A7E /* testMessageParserLibetpan.cpp */,
 				3B1088BC24EE523400E64A7E /* EditestFileUtils.cpp */,
 				3B1088BD24EE523400E64A7E /* EditestFileUtils.hpp */,
+				3BC591CC24F66861006D47AA /* EdiTestCheckResult.cpp */,
+				3BC591CD24F66861006D47AA /* EdiTestCheckResult.hpp */,
 			);
 			name = editest;
 			path = ../editest;
@@ -4540,6 +4545,7 @@
 				3B748A4624E29BE700731EB1 /* testFetchMessage.cpp in Sources */,
 				3BF441BA24EA75E50080774A /* testString.cpp in Sources */,
 				3B8447C524DBE20D00B59347 /* main.cpp in Sources */,
+				3BC591CE24F66861006D47AA /* EdiTestCheckResult.cpp in Sources */,
 				3B1088B724EE1FF800E64A7E /* testMessageParserLibetpan.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

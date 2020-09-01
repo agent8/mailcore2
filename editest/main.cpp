@@ -34,7 +34,7 @@ int main(int argc, const char * argv[]) {
     char * argument[10];
     argument[0] = "editest";
     //if just test one case, add "--gtest_filter=testCase.*" to command line argument
-    argument[1] = "--gtest_filter=*.*";
+    argument[1] = "--gtest_filter=testMessageParserLibetpan.*";
     argument[2] = "–-gtest_output=xml";
     argc = 3;
     

@@ -43,3 +43,10 @@ std::string EditestFileUtils::getStringFromLocalFile(const char * filepath) {
     
     return result;
 }
+
+std::string EditestFileUtils::getFileNameFromPath(const std::string &filepath) {
+    std::size_t found = filepath.find_last_of("/\\");
+    std::string path = filepath.substr(0, found);
+    std::string filename = filepath.substr(found + 1);
+    return filename;
+}
