@@ -108,7 +108,7 @@ INITIALIZE(IMAPSEssion)
     pool->release();
 }
 
-#define MAX_IDLE_DELAY (28 * 60)
+#define MAX_IDLE_DELAY (5 * 60)
 
 #define LOCK() pthread_mutex_lock(&mIdleLock)
 #define UNLOCK() pthread_mutex_unlock(&mIdleLock)
