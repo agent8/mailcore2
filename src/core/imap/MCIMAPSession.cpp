@@ -108,7 +108,6 @@ INITIALIZE(IMAPSEssion)
     pool->release();
 }
 
-#define MAX_IDLE_DELAY (5 * 60)
 
 #define LOCK() pthread_mutex_lock(&mIdleLock)
 #define UNLOCK() pthread_mutex_unlock(&mIdleLock)
@@ -3795,7 +3794,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
 }
 
 //added by Edison
-IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError)
+IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError, int maxIdleDelay)
 {
     int r;
     
@@ -3822,7 +3821,7 @@ IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError)
     
     if (!mImap->imap_selection_info->sel_has_exists && !mImap->imap_selection_info->sel_has_recent) {
         int r;
-        r = mailstream_wait_idle(mImap->imap_stream, MAX_IDLE_DELAY);
+        r = mailstream_wait_idle(mImap->imap_stream, maxIdleDelay);
         switch (r) {
             case MAILSTREAM_IDLE_ERROR:
             case MAILSTREAM_IDLE_CANCELLED:
