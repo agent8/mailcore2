@@ -267,3 +267,17 @@ TEST(testFetchMessage, parseMessageFromLocalFile) {
     }
     
 }
+
+TEST(testFetchMessage, parseEmlHtmlBodyToFile) {
+    const std::string root = parserEmlPath + "input/";
+    std::vector<std::string> files = EdiTestCheckResult::getAllFiles(root, "eml");
+    
+    int total = 0;
+    int pass = 0;
+    for (std::string & file : files) {
+        total++;
+        std::string filepath = root + file;
+        mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(filepath.c_str());
+        testMessageParser::parseEmlHtmlBodyToFile(inputPath);
+    }
+}

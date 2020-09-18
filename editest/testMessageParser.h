@@ -22,6 +22,8 @@ public:
     static void parseMessageFromLocalPath(mailcore::String * inputPath);
     static EdiTestCheckResult parseMessageFromLocalFile(mailcore::String * inputPath);
     static void parseIMAPMessageFromServer(mailcore::IMAPMessage * imapMessage);
+    static void WriteDataToFile(mailcore::Data * data, const std::string & filename);
+    static void parseEmlHtmlBodyToFile(mailcore::String * filename);
 };
 
 #endif /* testMessageParser_h */

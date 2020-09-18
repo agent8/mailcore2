@@ -612,7 +612,45 @@ static void testMessageBuilder(String * path)
     printf("testMessageBuilder3 ok\n");
 }
 
-void WriteDataToFile(mailcore::Data * data, const std::string & filename) {
+void testMessageParser::WriteDataToFile(mailcore::Data * data, const std::string & filename) {
     mailcore::String * mStr = new mailcore::String(filename.c_str());
     data->writeToFile(mStr);
+}
+
+void testMessageParser::parseEmlHtmlBodyToFile(mailcore::String * filename) {
+    
+    EXPECT_FALSE(filename == NULL);
+    MessageParser * parser = MessageParser::messageParserWithContentsOfFile(filename);
+    EXPECT_FALSE(parser == NULL) << MCUTF8(filename);
+    if (parser == NULL) {
+        printf("testMessageParser: failed for %s\n", MCUTF8(filename));
+    }
+    if (parser->mainPart()) {
+        mailcore::Array * htmlParts = mailcore::Array::array();
+        mailcore::Array * plainParts = mailcore::Array::array();
+        mailcore::Array * attachmentParts = mailcore::Array::array();
+        mailcore::Array * inlineAttachmentParts = mailcore::Array::array();
+        mailcore::IMAPPartParser::parseMessage(parser, htmlParts, plainParts, attachmentParts, inlineAttachmentParts);
+        int index = 0;
+        
+        for (int i = 0; i  < htmlParts->count(); i++) {
+            mailcore::Attachment * part = (mailcore::Attachment*)htmlParts->objectAtIndex(i);
+            std::cout << part->partID()->UTF8Characters() << std::endl;
+            std::cout << part->description()->UTF8Characters() << std::endl;
+            mailcore::String * content2 = part->decodedString();
+            std::cout << content2->UTF8Characters() << std::endl;
+        }
+        for (int i = 0; i  < plainParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);
+            std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+        for (int i = 0; i  < attachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)attachmentParts->objectAtIndex(i);
+            std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+        for (int i = 0; i  < inlineAttachmentParts->count(); i++) {
+            mailcore::AbstractPart * part = (mailcore::AbstractPart*)inlineAttachmentParts->objectAtIndex(i);
+            std::cout << part->partID()->UTF8Characters() << std::endl;
+        }
+    }
 }
