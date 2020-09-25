@@ -185,7 +185,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
     // https://tools.ietf.org/html/rfc2046
     // Note: Fill the fields(charset and mimetype). We DO NOT trust inline and attachment field from RFC822.
     String * charset = part->charset();
-    if ((charset == NULL || MCSTR("")->isEqual(charset)) && defaultCharset != NULL) {
+    if ((charset == NULL || MCSTR("")->isEqual(charset)) && defaultCharset != NULL && charset != defaultCharset) {
         part->setCharset(defaultCharset);
     }
     switch (part->partType()) {
