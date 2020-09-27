@@ -335,12 +335,37 @@ void MessageHeader::setExtraHeader(String * name, String * object)
     if (mExtraHeaders == NULL) {
         mExtraHeaders = new HashMap();
     }
-    //TODO: SHOULD store these object in order
-    removeExtraHeader(name);
-    if (object == NULL) {
-        return;
+    //SHOULD store these object in order
+    bool find = false;
+    mc_foreachhashmapKey(String, key, mExtraHeaders) {
+        if (key->isEqualCaseInsensitive(name)) {
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                removeExtraHeader(name);
+                break;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                arr->addObject(object);
+            } else {
+                String * str = (String *) obj->copy();
+                Array * arr = new Array();
+                arr->addObject(str);
+                arr->addObject(object);
+                removeExtraHeader(name);
+                mExtraHeaders->setObjectForKey(name, arr);
+            }
+            find = true;
+            break;
+        }
     }
-    mExtraHeaders->setObjectForKey(name, object);
+    
+    if (!find) {
+        if (object == NULL) {
+            return;
+        }
+        mExtraHeaders->setObjectForKey(name, object);
+    }
 }
 
 void MessageHeader::removeExtraHeader(String * name)
@@ -360,16 +385,45 @@ String * MessageHeader::extraHeaderValueForName(String * name)
     String * result = NULL;
     mc_foreachhashmapKey(String, key, mExtraHeaders) {
         if (key->isEqualCaseInsensitive(name)) {
-            //TODO: string or array, if this is an array, return the latest one
-            result = (String *) mExtraHeaders->objectForKey(key);
+            //string or array, if this is an array, return the first one
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                return result;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                if (arr->count() > 0) {
+                    result = (String *) arr->objectAtIndex(0);
+                }
+            } else {
+                result = (String *) obj;
+            }
+            break;
         }
     }
     return result;
 }
 
 Array * MessageHeader::extraHeaderValuesForName(String *name) {
-    //TODO: string or array, if this is string, add it into an array and return.
-    return NULL;
+    //array, if this is string, add it into an array and return.
+    Array * result = NULL;
+    mc_foreachhashmapKey(String, key, mExtraHeaders) {
+        if (key->isEqualCaseInsensitive(name)) {
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                return result;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                result = (Array *) obj;
+            } else if (obj->className()->isEqual(MCSTR("mailcore::String"))) {
+                result = new Array();
+                result->addObject(obj);
+                result->autorelease();
+            }
+            break;
+        }
+    }
+    return result;
 }
 
 String * MessageHeader::extractedSubject()
@@ -542,16 +596,10 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
             continue;
         }
 
-        // Set only if this optional-field is not set
-        if (extraHeaderValueForName(fieldNameStr) == NULL) {
-            char * fieldValue;
-            String * fieldValueStr;
-            
-            fieldValue = field->fld_data.fld_optional_field->fld_value;
-            fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
-            if (fieldValueStr != NULL) {
-                setExtraHeader(fieldNameStr, fieldValueStr);
-            }
+        char * fieldValue = field->fld_data.fld_optional_field->fld_value;
+        String * fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
+        if (fieldValueStr != NULL) {
+            setExtraHeader(fieldNameStr, fieldValueStr);
         }
     }
 }
