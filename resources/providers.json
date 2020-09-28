@@ -2408,6 +2408,30 @@
             ]
         }
     },
+    "onmail-stag": {
+        "domain-match": [
+            "staging\\.onmail\\.com"
+        ],
+        "mx-match": [
+            "mx\\.staging\\.onmail\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.staging.onmail.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.staging.onmail.com",
+                    "port": 465,
+                    "ssl": true
+                }
+            ]
+        }
+    },
     "optimum.net": {
         "domain-match": [
             "optimum\\.net"
