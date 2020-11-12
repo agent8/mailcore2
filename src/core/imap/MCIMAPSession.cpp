@@ -2423,7 +2423,9 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                         hasBody = true;
                     } else {
                         String * charset = discoverCharset((AbstractPart*)msg->mainPart());
-                        msg->header()->setDefaultCharset(charset);
+                        if (charset != NULL && charset->caseInsensitiveCompare(MCSTR("utf-7")) != 0) {
+                            msg->header()->setDefaultCharset(charset);
+                        }
                         msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
                         hasHeader = true;
                     }
