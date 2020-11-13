@@ -637,8 +637,6 @@ void testMessageParser::parseEmlHtmlBodyToFile(mailcore::String * filename) {
             mailcore::Attachment * part = (mailcore::Attachment*)htmlParts->objectAtIndex(i);
             std::cout << part->partID()->UTF8Characters() << std::endl;
             std::cout << part->description()->UTF8Characters() << std::endl;
-            mailcore::String * content2 = part->decodedString();
-            std::cout << content2->UTF8Characters() << std::endl;
         }
         for (int i = 0; i  < plainParts->count(); i++) {
             mailcore::AbstractPart * part = (mailcore::AbstractPart*)plainParts->objectAtIndex(i);

@@ -278,6 +278,6 @@ TEST(testFetchMessage, parseEmlHtmlBodyToFile) {
         total++;
         std::string filepath = root + file;
         mailcore::String * inputPath = mailcore::String::stringWithUTF8Characters(filepath.c_str());
-        testMessageParser::parseEmlHtmlBodyToFile(inputPath);
+        //testMessageParser::parseEmlHtmlBodyToFile(inputPath);
     }
 }

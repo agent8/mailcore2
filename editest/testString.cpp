@@ -109,3 +109,16 @@ TEST_F(testMailcoreString, replaceOccurrencesOfString) {
     dataStr->replaceOccurrencesOfString(MCSTR(" A "), MCSTR(" a "));
     EXPECT_STREQ("THIS IS a TEST String!", dataStr->UTF8Characters());
 }
+
+TEST_F(testMailcoreString, testUtf7Decode) {
+    const char * input = "<mailto:googlegroups-manage+267564903559+unsubscribe@googlegroups.com>, <https://groups.google.com/a/americancng.com/group/office/subscribe>";
+    mailcore::String * defaultCharset1 = mailcore::String::stringWithUTF8Characters("utf-7");
+    String *s1 = String::stringByDecodingMIMEHeaderValue2(input, defaultCharset1);
+    // use utf-7 to decode '+' will generate error codes
+    EXPECT_STRNE(input, s1->UTF8Characters());
+    //std::cout << "mailcore::String:" << s1->UTF8Characters() << std::endl;
+
+    mailcore::String * defaultCharset2 = mailcore::String::stringWithUTF8Characters("utf-8");
+    String *s2 = String::stringByDecodingMIMEHeaderValue2(input, defaultCharset2);
+    EXPECT_STREQ(input, s2->UTF8Characters());
+}
