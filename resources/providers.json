@@ -792,27 +792,6 @@
             ]
         }
     },
-    "edisonmail": {
-        "domain-match": [
-            "onmail\\.com"
-        ],
-        "servers": {
-            "imap": [
-                {
-                    "hostname": "imap.onmail.com",
-                    "port": 993,
-                    "ssl": true
-                }
-            ],
-            "smtp": [
-                {
-                    "hostname": "smtp.onmail.com",
-                    "port": 465,
-                    "ssl": true
-                }
-            ]
-        }
-    },
     "email-ssl.com.br": {
         "domain-match": [
             "email-ssl\\.com\\.br"
@@ -1351,7 +1330,6 @@
         "alias-help-page": "https://support.apple.com/kb/PH2622",
         "alias-support": true,
         "domain-match": [
-            "apple\\.com",
             "icloud\\.com",
             "mac\\.com",
             "me\\.com"
@@ -2376,6 +2354,78 @@
             "smtp": [
                 {
                     "hostname": "smtp.online.no",
+                    "port": 465,
+                    "ssl": true
+                }
+            ]
+        }
+    },
+    "onmail": {
+        "domain-match": [
+            "onmail\\.com"
+        ],
+        "mx-match": [
+            "mx\\.onmail\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.onmail.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.onmail.com",
+                    "port": 465,
+                    "ssl": true
+                }
+            ]
+        }
+    },
+    "onmail-eng": {
+        "domain-match": [
+            "engineering\\.onmail\\.com"
+        ],
+        "mx-match": [
+            "mx\\.engineering\\.onmail\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.engineering.onmail.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.engineering.onmail.com",
+                    "port": 465,
+                    "ssl": true
+                }
+            ]
+        }
+    },
+    "onmail-stag": {
+        "domain-match": [
+            "staging\\.onmail\\.com"
+        ],
+        "mx-match": [
+            "mx\\.staging\\.onmail\\.com"
+        ],
+        "servers": {
+            "imap": [
+                {
+                    "hostname": "imap.staging.onmail.com",
+                    "port": 993,
+                    "ssl": true
+                }
+            ],
+            "smtp": [
+                {
+                    "hostname": "smtp.staging.onmail.com",
                     "port": 465,
                     "ssl": true
                 }
