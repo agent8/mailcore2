@@ -163,9 +163,14 @@ String * MessageHeader::description()
         result->appendUTF8Format("Default Charset %s\n", mDefaultCharset->UTF8Characters());
     }
     if (mExtraHeaders != NULL) {
-        mc_foreachhashmapKeyAndValue(String, header, String, value, mExtraHeaders) {
-            result->appendUTF8Format("%s: %s\n", header->UTF8Characters(), value->UTF8Characters());
+        mc_foreachhashmapKeyAndValue(String, key, Object, value, mExtraHeaders) {
+            if (value->className()->isEqual(MCSTR("mailcore::Array"))) {
+                result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), ((Array *)value)->description()->UTF8Characters());
+            } else if (value->className()->isEqual(MCSTR("mailcore::String"))) {
+                result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), ((String *)value)->UTF8Characters());
+            }
         }
+
     }
     result->appendUTF8Format(">");
     
@@ -817,11 +822,16 @@ struct mailimf_fields * MessageHeader::createIMFFieldsAndFilterBcc(bool filterBc
         imfSubject);
     
     if (mExtraHeaders != NULL) {
-        mc_foreachhashmapKeyAndValue(String, header, String, value, mExtraHeaders) {
+        mc_foreachhashmapKeyAndValue(String, header, Object, value, mExtraHeaders) {
             struct mailimf_field * field;
             
-            field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(value->UTF8Characters()));
-            mailimf_fields_add(fields, field);
+            if (value->className()->isEqual(MCSTR("mailcore::Array"))) {
+                field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(((Array *)value)->description()->UTF8Characters()));
+                mailimf_fields_add(fields, field);
+            } else if (value->className()->isEqual(MCSTR("mailcore::String"))) {
+                field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(((String *)value)->UTF8Characters()));
+                mailimf_fields_add(fields, field);
+            }
         }
     }
     
