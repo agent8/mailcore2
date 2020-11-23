@@ -165,7 +165,10 @@ String * MessageHeader::description()
     if (mExtraHeaders != NULL) {
         mc_foreachhashmapKeyAndValue(String, key, Object, value, mExtraHeaders) {
             if (value->className()->isEqual(MCSTR("mailcore::Array"))) {
-                result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), ((Array *)value)->description()->UTF8Characters());
+                Array * vlist = (Array *)value;
+                mc_foreacharray(String, val, vlist) {
+                    result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), val->UTF8Characters());
+                }
             } else if (value->className()->isEqual(MCSTR("mailcore::String"))) {
                 result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), ((String *)value)->UTF8Characters());
             }
@@ -826,8 +829,11 @@ struct mailimf_fields * MessageHeader::createIMFFieldsAndFilterBcc(bool filterBc
             struct mailimf_field * field;
             
             if (value->className()->isEqual(MCSTR("mailcore::Array"))) {
-                field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(((Array *)value)->description()->UTF8Characters()));
-                mailimf_fields_add(fields, field);
+                Array * vlist = (Array *)value;
+                mc_foreacharray(String, val, vlist) {
+                    field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(val->UTF8Characters()));
+                    mailimf_fields_add(fields, field);
+                }
             } else if (value->className()->isEqual(MCSTR("mailcore::String"))) {
                 field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(((String *)value)->UTF8Characters()));
                 mailimf_fields_add(fields, field);
