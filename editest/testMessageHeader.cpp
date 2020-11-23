@@ -58,8 +58,37 @@ void testMailcoreMessageHeader() {
     delete [] fieldValue;
 }
 
+void testMailcoreMessageHeaderDescription() {
+    mailcore::MessageHeader* header = new mailcore::MessageHeader();
+    mailcore::String * keyListId = MCSTR("List-ID");
+    mailcore::String * valueListId = MCSTR("Vaule of listID");
+    header->setExtraHeader(keyListId, valueListId);
+    
+    mailcore::String * testStr = MCSTR("TESTSTR");
+    mailcore::String * testValue = MCSTR("TESTVALUE");
+    header->setExtraHeader(testStr, testValue);
+
+    mailcore::String * fieldNameStr = MCSTR("Received");
+    header->setExtraHeader(fieldNameStr, MCSTR("value r1"));
+    header->setExtraHeader(fieldNameStr, MCSTR("value r2"));
+    header->setExtraHeader(fieldNameStr, MCSTR("value r3"));
+    
+    mailcore::String * result = header->description();
+    std::cout << result->UTF8Characters() << std::endl;
+
+    mailcore::String * testValueResult = header->extraHeaderValueForName(testStr);
+    EXPECT_STREQ(testValueResult->UTF8Characters(), "TESTVALUE");
+    
+    mailimf_fields * f = header->createIMFFieldsAndFilterBcc(false);
+    
+}
 
 TEST(testMessageHeader, test0)
 {
     testMailcoreMessageHeader();
+}
+
+TEST(testMessageHeader, description)
+{
+    testMailcoreMessageHeaderDescription();
 }
