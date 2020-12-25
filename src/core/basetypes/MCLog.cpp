@@ -114,7 +114,9 @@ static void logInternalv(FILE * file,
 #endif
 }
 
-static LogHandler g_logger;
+void defaultLogger(const char * filename, unsigned int line, const char * format, va_list args) {}
+
+static LogHandler g_logger = defaultLogger;
 static std::mutex logger_lock;
 static bool logger_isInitialized = false;
 
@@ -123,6 +125,15 @@ void MCRegisterLogger(LogHandler handler) {
     if (!logger_isInitialized) {
         g_logger = handler;
         logger_isInitialized = true;
+    }
+    logger_lock.unlock();
+}
+
+void MCUnregisterLogger() {
+    logger_lock.lock();
+    if (logger_isInitialized) {
+        g_logger = defaultLogger;
+        logger_isInitialized = false;
     }
     logger_lock.unlock();
 }

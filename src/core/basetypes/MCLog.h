@@ -32,6 +32,9 @@ extern "C" {
     void MCRegisterLogger(LogHandler handler);
 
     MAILCORE_EXPORT
+    void MCUnregisterLogger();
+
+    MAILCORE_EXPORT
     void MCHandleLog(const char * filename, unsigned int line, const char * format, ...);
 
 #ifdef __cplusplus
