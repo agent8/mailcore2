@@ -20,6 +20,8 @@
 #include <android/log.h>
 #endif
 
+#include <mutex>
+
 static pid_t sPid = -1;
 int MCLogEnabled = 0;
 
@@ -110,4 +112,37 @@ static void logInternalv(FILE * file,
         // TODO: other platforms implemented needed.
     }
 #endif
+}
+
+void defaultLogger(const char * filename, unsigned int line, const char * format, va_list args) {}
+
+static LogHandler g_logger = defaultLogger;
+static std::mutex logger_lock;
+static bool logger_isInitialized = false;
+
+void MCRegisterLogger(LogHandler handler) {
+    logger_lock.lock();
+    if (!logger_isInitialized) {
+        g_logger = handler;
+        logger_isInitialized = true;
+    }
+    logger_lock.unlock();
+}
+
+void MCUnregisterLogger() {
+    logger_lock.lock();
+    if (logger_isInitialized) {
+        g_logger = defaultLogger;
+        logger_isInitialized = false;
+    }
+    logger_lock.unlock();
+}
+
+void MCHandleLog(const char * filename, unsigned int line, const char * format, ...) {
+    if (logger_isInitialized) {
+        va_list args;
+        va_start(args, format);
+        g_logger(filename, line, format, args);
+        va_end(args);
+    }
 }
