@@ -128,6 +128,12 @@ MCO_OBJC_SYNTHESIZE_STRING(setUserAgent, userAgent)
 {
     return MCO_TO_OBJC(_nativeHeader->extraHeaderValueForName((MCO_FROM_OBJC(mailcore::String, name))));
 }
+
+- (NSArray *) extraHeaderValuesForName:(NSString *)name
+{
+    return MCO_TO_OBJC(_nativeHeader->extraHeaderValuesForName((MCO_FROM_OBJC(mailcore::String, name))));
+}
+
 - (void) removeExtraHeaderForName:(NSString *)name
 {
     _nativeHeader->removeExtraHeader(MCO_FROM_OBJC(mailcore::String, name));

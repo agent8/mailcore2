@@ -75,6 +75,9 @@
 /** Returns the value of a given custom header.*/
 - (NSString *) extraHeaderValueForName:(NSString *)name;
 
+/** Returns the values of a given custom header.*/
+- (NSArray *) extraHeaderValuesForName:(NSString *)name;
+
 /** Returns an array with the names of all custom headers.*/
 - (NSArray * /* NSString */) allExtraHeadersNames;
 

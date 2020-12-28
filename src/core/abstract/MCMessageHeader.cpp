@@ -163,9 +163,17 @@ String * MessageHeader::description()
         result->appendUTF8Format("Default Charset %s\n", mDefaultCharset->UTF8Characters());
     }
     if (mExtraHeaders != NULL) {
-        mc_foreachhashmapKeyAndValue(String, header, String, value, mExtraHeaders) {
-            result->appendUTF8Format("%s: %s\n", header->UTF8Characters(), value->UTF8Characters());
+        mc_foreachhashmapKeyAndValue(String, key, Object, value, mExtraHeaders) {
+            if (value->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * vlist = (Array *)value;
+                mc_foreacharray(String, val, vlist) {
+                    result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), val->UTF8Characters());
+                }
+            } else if (value->className()->isEqual(MCSTR("mailcore::String"))) {
+                result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), ((String *)value)->UTF8Characters());
+            }
         }
+
     }
     result->appendUTF8Format(">");
     
@@ -335,11 +343,37 @@ void MessageHeader::setExtraHeader(String * name, String * object)
     if (mExtraHeaders == NULL) {
         mExtraHeaders = new HashMap();
     }
-    removeExtraHeader(name);
-    if (object == NULL) {
-        return;
+    //SHOULD store these object in order
+    bool find = false;
+    mc_foreachhashmapKey(String, key, mExtraHeaders) {
+        if (key->isEqualCaseInsensitive(name)) {
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                removeExtraHeader(name);
+                break;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                arr->addObject(object);
+            } else {
+                String * str = (String *) obj->copy();
+                Array * arr = new Array();
+                arr->addObject(str);
+                arr->addObject(object);
+                removeExtraHeader(name);
+                mExtraHeaders->setObjectForKey(name, arr);
+            }
+            find = true;
+            break;
+        }
     }
-    mExtraHeaders->setObjectForKey(name, object);
+    
+    if (!find) {
+        if (object == NULL) {
+            return;
+        }
+        mExtraHeaders->setObjectForKey(name, object);
+    }
 }
 
 void MessageHeader::removeExtraHeader(String * name)
@@ -359,7 +393,42 @@ String * MessageHeader::extraHeaderValueForName(String * name)
     String * result = NULL;
     mc_foreachhashmapKey(String, key, mExtraHeaders) {
         if (key->isEqualCaseInsensitive(name)) {
-            result = (String *) mExtraHeaders->objectForKey(key);
+            //string or array, if this is an array, return the first one
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                return result;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * arr = (Array *) obj;
+                if (arr->count() > 0) {
+                    result = (String *) arr->objectAtIndex(0);
+                }
+            } else {
+                result = (String *) obj;
+            }
+            break;
+        }
+    }
+    return result;
+}
+
+Array * MessageHeader::extraHeaderValuesForName(String *name) {
+    //array, if this is string, add it into an array and return.
+    Array * result = NULL;
+    mc_foreachhashmapKey(String, key, mExtraHeaders) {
+        if (key->isEqualCaseInsensitive(name)) {
+            Object * obj = mExtraHeaders->objectForKey(key);
+            if (obj == NULL) {
+                return result;
+            }
+            if (obj->className()->isEqual(MCSTR("mailcore::Array"))) {
+                result = (Array *) obj;
+            } else if (obj->className()->isEqual(MCSTR("mailcore::String"))) {
+                result = new Array();
+                result->addObject(obj);
+                result->autorelease();
+            }
+            break;
         }
     }
     return result;
@@ -535,16 +604,10 @@ void MessageHeader::importIMFFields(struct mailimf_fields * fields)
             continue;
         }
 
-        // Set only if this optional-field is not set
-        if (extraHeaderValueForName(fieldNameStr) == NULL) {
-            char * fieldValue;
-            String * fieldValueStr;
-            
-            fieldValue = field->fld_data.fld_optional_field->fld_value;
-            fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
-	    if (fieldValueStr != NULL) {
-                setExtraHeader(fieldNameStr, fieldValueStr);
-	    }
+        char * fieldValue = field->fld_data.fld_optional_field->fld_value;
+        String * fieldValueStr = String::stringByDecodingMIMEHeaderValue2(fieldValue, mDefaultCharset);
+        if (fieldValueStr != NULL) {
+            setExtraHeader(fieldNameStr, fieldValueStr);
         }
     }
 }
@@ -762,11 +825,19 @@ struct mailimf_fields * MessageHeader::createIMFFieldsAndFilterBcc(bool filterBc
         imfSubject);
     
     if (mExtraHeaders != NULL) {
-        mc_foreachhashmapKeyAndValue(String, header, String, value, mExtraHeaders) {
+        mc_foreachhashmapKeyAndValue(String, header, Object, value, mExtraHeaders) {
             struct mailimf_field * field;
             
-            field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(value->UTF8Characters()));
-            mailimf_fields_add(fields, field);
+            if (value->className()->isEqual(MCSTR("mailcore::Array"))) {
+                Array * vlist = (Array *)value;
+                mc_foreacharray(String, val, vlist) {
+                    field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(val->UTF8Characters()));
+                    mailimf_fields_add(fields, field);
+                }
+            } else if (value->className()->isEqual(MCSTR("mailcore::String"))) {
+                field = mailimf_field_new_custom(strdup(header->UTF8Characters()), strdup(((String *)value)->UTF8Characters()));
+                mailimf_fields_add(fields, field);
+            }
         }
     }
     

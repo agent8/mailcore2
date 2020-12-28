@@ -20,7 +20,16 @@ static bool isTextPart(AbstractPart * part)
 {
     String * mimeType = part->mimeType();
     if (part->filename() != NULL && !MCSTR("")->isEqual(part->filename())) {
-        // Do not inline text part
+        // Do not inline attachment part
+        // Inline the inline attachment with filename and mimetype is text
+        if (part->isInlineAttachment()) {
+            if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
+                return true;
+            }
+            else if (MCSTR("text/html")->isEqualCaseInsensitive(mimeType)) {
+                return true;
+            }
+        }
         return false;
     }
     if (MCSTR("text/plain")->isEqualCaseInsensitive(mimeType)) {
@@ -53,7 +62,7 @@ static bool isImagePart(AbstractPart * part) {
             // ICO,SVG,TIFF,APNG,WebP
             // https://en.wikipedia.org/wiki/Comparison_of_web_browsers#Image_format_support
             // We need to support two web browsers: chrome(Desktop,Android) & Safari(iOS).
-            // I only add the image formats that supported both of the two browsers.
+            // I only add the image formats that support both of the two browsers.
             // We can add more formats if need to support special platform only.
             return true;
         }
@@ -176,11 +185,12 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
     // https://tools.ietf.org/html/rfc2046
     // Note: Fill the fields(charset and mimetype). We DO NOT trust inline and attachment field from RFC822.
     String * charset = part->charset();
-    if ((charset == NULL || MCSTR("")->isEqual(charset)) && defaultCharset != NULL) {
+    if ((charset == NULL || MCSTR("")->isEqual(charset)) && defaultCharset != NULL && charset != defaultCharset) {
         part->setCharset(defaultCharset);
     }
     switch (part->partType()) {
         case PartTypeSingle: {
+            // MCAssert(part->partID() != NULL && part->partID()->length() > 0);
             if (part->mimeType() == NULL) {
                 part->setMimeType(MCSTR("application/octet-stream"));
             }

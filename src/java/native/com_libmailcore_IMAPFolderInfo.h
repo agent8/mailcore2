@@ -59,6 +59,22 @@ JNIEXPORT void JNICALL Java_com_libmailcore_IMAPFolderInfo_setModSequenceValue
 
 /*
  * Class:     com_libmailcore_IMAPFolderInfo
+ * Method:    unseenCount
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_libmailcore_IMAPFolderInfo_unSeenMessageCount
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_libmailcore_IMAPFolderInfo
+ * Method:    setUnseenCount
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_libmailcore_IMAPFolderInfo_setUnSeenMessageCount
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_libmailcore_IMAPFolderInfo
  * Method:    messageCount
  * Signature: ()I
  */

@@ -13,6 +13,7 @@ using namespace mailcore;
 MC_JAVA_SYNTHESIZE_SCALAR(jlong, uint32_t, setUidNext, uidNext)
 MC_JAVA_SYNTHESIZE_SCALAR(jlong, uint32_t, setUidValidity, uidValidity)
 MC_JAVA_SYNTHESIZE_SCALAR(jlong, uint64_t, setModSequenceValue, modSequenceValue)
+MC_JAVA_SYNTHESIZE_SCALAR(jint, int, setUnSeenMessageCount, unSeenMessageCount)
 MC_JAVA_SYNTHESIZE_SCALAR(jint, int, setMessageCount, messageCount)
 MC_JAVA_SYNTHESIZE_SCALAR(jlong, uint32_t, setFirstUnseenUid, firstUnseenUid)
 MC_JAVA_SYNTHESIZE_SCALAR(jboolean, bool, setAllowsNewPermanentFlags, allowsNewPermanentFlags)

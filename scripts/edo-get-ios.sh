@@ -4,13 +4,15 @@ pushd "`dirname "$0"`" > /dev/null
 scriptpath="`pwd`"
 popd > /dev/null
 
-. "$scriptpath/include.sh/build-dep.sh"
+. "$scriptpath/include.sh/edo-build-dep.sh"
 
 deps="ctemplate-ios tidy-html5-ios"
 for dep in $deps ; do
   name="$dep"
   get_prebuilt_dep
 done
+
+cp -R "$scriptpath/../../libetpan/build-mac/libsasl-ios" "$scriptpath/../Externals/"
 
 deps+=" libsasl-ios"
 if test "x$CONFIGURATION_BUILD_DIR" != x ; then

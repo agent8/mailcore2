@@ -28,6 +28,10 @@ public class IMAPFolderInfo extends NativeObject {
     /** Sets the modification sequence value. */
     public native void setModSequenceValue(long modSequenceValue);
     
+    public native int unSeenMessageCount();
+
+    public native void setUnSeenMessageCount(int var1);
+    
     /** Returns the number of messages. */
     public native int messageCount();
     /** Sets the number of messages. */
