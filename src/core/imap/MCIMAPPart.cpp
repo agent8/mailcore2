@@ -242,7 +242,8 @@ IMAPMultipart * IMAPPart::attachmentWithIMAPBodyMultipart(struct mailimap_body_t
     attachment->setParts(attachments);
     
     attachment->importIMAPFields(body_mpart);
-    if (attachment->filename() != NULL && !MCSTR("")->isEqual(attachment->filename())) {
+    if (attachment->filename() != NULL && !MCSTR("")->isEqual(attachment->filename()) &&
+        !attachment->isInlineAttachment() && partID != NULL && !MCSTR("")->isEqual(partID)) {
         attachment->setPartType(PartTypeSingle);
     }
     attachments->release();
