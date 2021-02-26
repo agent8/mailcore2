@@ -14,9 +14,6 @@ using namespace mailcore;
 
 void IMAPPart::init()
 {
-    mPartID = NULL;
-    mEncoding = Encoding8Bit;
-    mSize = 0;
 }
 
 IMAPPart::IMAPPart()
@@ -27,60 +24,15 @@ IMAPPart::IMAPPart()
 IMAPPart::IMAPPart(IMAPPart * other) : AbstractPart(other)
 {
     init();
-    MC_SAFE_REPLACE_COPY(String, mPartID, other->mPartID);
-    mEncoding = other->mEncoding;
-    mSize = other->mSize;
 }
 
 IMAPPart::~IMAPPart()
 {
-    MC_SAFE_RELEASE(mPartID);
 }
 
 Object * IMAPPart::copy()
 {
     return new IMAPPart(this);
-}
-
-void IMAPPart::setPartID(String * partID)
-{
-    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
-}
-
-String * IMAPPart::partID()
-{
-    return mPartID;
-}
-
-void IMAPPart::setSize(unsigned int size)
-{
-    mSize = size;
-}
-
-unsigned int IMAPPart::size()
-{
-    return mSize;
-}
-
-void IMAPPart::setEncoding(Encoding encoding)
-{
-    mEncoding = encoding;
-}
-
-Encoding IMAPPart::encoding()
-{
-    return mEncoding;
-}
-
-unsigned int IMAPPart::decodedSize()
-{
-    switch (mEncoding) {
-        case MAILIMAP_BODY_FLD_ENC_BASE64:
-            return mSize * 3 / 4;
-            
-        default:
-            return mSize;
-    }
 }
 
 AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)
@@ -91,6 +43,8 @@ AbstractPart * IMAPPart::attachmentWithIMAPBody(struct mailimap_body * body)
     partID = NULL;
     if (body->bd_type == MAILIMAP_BODY_1PART) {
         partID = MCSTR("1");
+    } else {
+        partID = MCSTR("");
     }
     result = attachmentWithIMAPBodyInternal(body, partID);
     result->applyUniquePartID();
@@ -159,6 +113,8 @@ IMAPMessagePart * IMAPPart::attachmentWithIMAPBody1PartMessage(struct mailimap_b
     else if (message->bd_body->bd_type == MAILIMAP_BODY_MPART) {
         // mpart
         nextPartID = partID;
+    } else {
+        nextPartID = MCSTR("");
     }
     
     attachment = new IMAPMessagePart();
@@ -261,7 +217,7 @@ IMAPMultipart * IMAPPart::attachmentWithIMAPBodyMultipart(struct mailimap_body_t
         AbstractPart * subResult;
         String * nextPartID;
 
-        if (partID == NULL) {
+        if (partID == NULL || partID->length() == 0) {
             nextPartID = String::stringWithUTF8Format("%u", count);
         }
         else {
@@ -284,7 +240,12 @@ IMAPMultipart * IMAPPart::attachmentWithIMAPBodyMultipart(struct mailimap_body_t
     }
     attachment->setMimeType(String::stringWithUTF8Format("multipart/%s", body_mpart->bd_media_subtype));
     attachment->setParts(attachments);
-
+    
+    attachment->importIMAPFields(body_mpart);
+    if (attachment->filename() != NULL && !MCSTR("")->isEqual(attachment->filename()) &&
+        !attachment->isInlineAttachment() && partID != NULL && !MCSTR("")->isEqual(partID)) {
+        attachment->setPartType(PartTypeSingle);
+    }
     attachments->release();
 
     return (IMAPMultipart *) attachment->autorelease();

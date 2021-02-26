@@ -137,13 +137,14 @@ namespace mailcore {
         virtual IMAPOperation * expungeOperation(String * folder);
         
         virtual IMAPFetchMessagesOperation * fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                         IndexSet * indexes);
+                                                                         IndexSet * indexes, Array * extraHeaders=NULL);
         //Weicheng
         virtual IMAPFetchMessagesOperation * fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
                                                                          String * partID,
                                                                          IndexSet * indexes);
+
         virtual IMAPFetchMessagesOperation * fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                            IndexSet * indexes);
+                                                                            IndexSet * indexes, Array * extraHeaders=NULL);
         //Weicheng
         virtual IMAPFetchMessagesOperation * fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
                                                                             String * partID,

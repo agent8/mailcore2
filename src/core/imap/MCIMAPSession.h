@@ -9,6 +9,8 @@
 
 #ifdef __cplusplus
 
+#define MAX_IDLE_DELAY (28 * 60)
+
 namespace mailcore {
     
     extern String * IMAPNamespacePersonal;
@@ -102,6 +104,10 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                              ErrorCode * pError);
+        //yyb
+        virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
+                                                             IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                                             Array * extraHeaders, ErrorCode * pError);
         //Weicheng
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              String * partID,
@@ -116,6 +122,10 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
                                                                 IndexSet * numbers, IMAPProgressCallback * progressCallback,
                                                                 ErrorCode * pError);
+        //yyb
+        virtual Array * /* IMAPMessage */ fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                IndexSet * numbers, IMAPProgressCallback * progressCallback,
+                                                                Array * extraHeaders, ErrorCode * pError);
         //Weicheng
         virtual Array * /* IMAPMessage */ fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
                                                                 String * partID,
@@ -173,7 +183,7 @@ namespace mailcore {
         
         virtual bool setupIdle();
         virtual void idle(String * folder, uint32_t lastKnownUID, ErrorCode * pError);
-        virtual IMAPFolderReport * idle(String * folder, ErrorCode * pError);
+        virtual IMAPFolderReport * idle(String * folder, ErrorCode * pError, int maxIdleDelay = MAX_IDLE_DELAY);
         virtual void interruptIdle();
         virtual void unsetupIdle();
         
@@ -253,6 +263,9 @@ namespace mailcore {
         virtual void unlockConnectionLogger();
         virtual ConnectionLogger * connectionLoggerNoLock();
 
+        static void testSetMsgAttHandler(void * session, IMAPMessagesRequestKind requestKind);
+        static Array * testGetParsedMessage(void * mailSession);
+
     private:
         String * mHostname;
         unsigned int mPort;
@@ -280,6 +293,7 @@ namespace mailcore {
         bool mNamespaceEnabled;
         bool mCompressionEnabled;
         bool mIsGmail;
+        bool mBlockSenderEnabled;
         bool mAllowsNewPermanentFlags;
         String * mWelcomeString;
         bool mNeedsMboxMailWorkaround;

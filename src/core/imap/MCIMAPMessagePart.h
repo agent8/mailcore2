@@ -13,10 +13,6 @@ namespace mailcore {
         IMAPMessagePart();
         virtual ~IMAPMessagePart();
         
-        virtual void setPartID(String * partID);
-        virtual String * partID();
-        virtual void setSize(unsigned int size);
-        virtual unsigned int size();
     public: // subclass behavior
         IMAPMessagePart(IMAPMessagePart * other);
         virtual Object * copy();
@@ -24,8 +20,6 @@ namespace mailcore {
         virtual void importSerializable(HashMap * serializable);
         
     private:
-        String * mPartID;
-        unsigned int mSize;
         void init();
     };
     

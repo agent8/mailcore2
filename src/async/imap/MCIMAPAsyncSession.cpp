@@ -2,7 +2,7 @@
 //  MCIMAPAsyncSession.cc
 //  mailcore2
 //
-//  Created by DINH Viêt Hoà on 1/17/13.
+//  Created by DINH ViÃªt HoÃ  on 1/17/13.
 //  Copyright (c) 2013 MailCore. All rights reserved.
 //
 
@@ -558,7 +558,7 @@ IMAPOperation * IMAPAsyncSession::expungeOperation(String * folder)
 }
 
 IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                           IndexSet * uids)
+                                                                           IndexSet * uids, Array * extraHeaders)
 {
     IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
     op->setMainSession(this);
@@ -566,6 +566,9 @@ IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(Strin
     op->setKind(requestKind);
     op->setFetchByUidEnabled(true);
     op->setIndexes(uids);
+    if (extraHeaders) {
+        op->setExtraHeaders(extraHeaders);
+    }
     op->autorelease();
     return op;
 }
@@ -585,13 +588,16 @@ IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByUIDOperation(Strin
     return op;
 }
 IMAPFetchMessagesOperation * IMAPAsyncSession::fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                              IndexSet * numbers)
+                                                                              IndexSet * numbers, Array * extraHeaders)
 {
     IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
     op->setMainSession(this);
     op->setFolder(folder);
     op->setKind(requestKind);
     op->setIndexes(numbers);
+    if (extraHeaders) {
+        op->setExtraHeaders(extraHeaders);
+    }
     op->autorelease();
     return op;
 }

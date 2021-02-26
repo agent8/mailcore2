@@ -12,27 +12,14 @@ MessagePart::MessagePart()
 MessagePart::MessagePart(MessagePart * other) : AbstractMessagePart(other)
 {
     init();
-    setPartID(other->partID());
 }
 
 void MessagePart::init()
 {
-    mPartID = NULL;
 }
 
 MessagePart::~MessagePart()
 {
-    MC_SAFE_RELEASE(mPartID);
-}
-
-void MessagePart::setPartID(String * partID)
-{
-    MC_SAFE_REPLACE_COPY(String, mPartID, partID);
-}
-
-String * MessagePart::partID()
-{
-    return mPartID;
 }
 
 Object * MessagePart::copy()

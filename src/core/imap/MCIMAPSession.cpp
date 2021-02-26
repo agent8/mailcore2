@@ -108,7 +108,6 @@ INITIALIZE(IMAPSEssion)
     pool->release();
 }
 
-#define MAX_IDLE_DELAY (28 * 60)
 
 #define LOCK() pthread_mutex_lock(&mIdleLock)
 #define UNLOCK() pthread_mutex_unlock(&mIdleLock)
@@ -383,6 +382,7 @@ void IMAPSession::init()
     mNamespaceEnabled = false;
     mCompressionEnabled = false;
     mIsGmail = false;
+    mBlockSenderEnabled = false;
     mAllowsNewPermanentFlags = false;
     mWelcomeString = NULL;
     mNeedsMboxMailWorkaround = false;
@@ -1040,6 +1040,16 @@ void IMAPSession::login(ErrorCode * pError)
     enableFeatures();
 
     if (isAutomaticConfigurationEnabled()) {
+        if (isIdentityEnabled()) {
+            IMAPIdentity * serverIdentity = identity(clientIdentity(), pError);
+            if (* pError != ErrorNone) {
+                // Ignore identity errors
+                MCLog("fetch identity failed");
+            }
+            else {
+                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
+            }
+        }
         bool hasDefaultNamespace = false;
         if (isNamespaceEnabled()) {
             HashMap * result = fetchNamespace(pError);
@@ -1086,17 +1096,6 @@ void IMAPSession::login(ErrorCode * pError)
             mDelimiter = folder->delimiter();
             IMAPNamespace * defaultNamespace = IMAPNamespace::namespaceWithPrefix(MCSTR(""), folder->delimiter());
             setDefaultNamespace(defaultNamespace);
-        }
-        
-        if (isIdentityEnabled()) {
-            IMAPIdentity * serverIdentity = identity(clientIdentity(), pError);
-            if (* pError != ErrorNone) {
-                // Ignore identity errors
-                MCLog("fetch identity failed");
-            }
-            else {
-                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
-            }
         }
     }
     else {
@@ -1194,8 +1193,15 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
     int r;
     MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
 
-    r = mailimap_select(mImap, MCUTF8(folder));
-    MCLog("select %s. error: %i\n", folder != NULL?MCUTF8(folder):"NULL", r);
+    if (mBlockSenderEnabled) {
+        r = mailimap_select_with_blocksender(mImap, MCUTF8(folder));
+        if (r == MAILIMAP_ERROR_PROTOCOL) {
+            r = mailimap_select(mImap, MCUTF8(folder));
+        }
+    } else {
+        r = mailimap_select(mImap, MCUTF8(folder));
+    }
+    MCLog("select %s. error: %i\n", folder != NULL ? MCUTF8(folder): "NULL", r);
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
@@ -1278,7 +1284,9 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
     if (mCondstoreEnabled || mXYMHighestModseqEnabled) {
         mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_HIGHESTMODSEQ);
     }
-    
+    if (mBlockSenderEnabled) {
+        mailimap_status_att_list_add(status_att_list, MAILIMAP_STATUS_ATT_BLOCKSENDER);
+    }
     r = mailimap_status(mImap, MCUTF8(folder), status_att_list, &status);
     
     IMAPFolderStatus * fs;
@@ -1714,7 +1722,7 @@ void IMAPSession::createFolder(String * folder, ErrorCode * pError)
     }
     
     * pError = ErrorNone;
-    subscribeFolder(folder, pError);
+    // subscribeFolder(folder, pError);
 }
 
 void IMAPSession::subscribeFolder(String * folder, ErrorCode * pError)
@@ -2415,7 +2423,10 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                         hasBody = true;
                     } else {
                         String * charset = discoverCharset((AbstractPart*)msg->mainPart());
-                        msg->header()->setDefaultCharset(charset);
+                        // used utf-7 to decode string which has '+' will generate unrecognizable characters
+                        if (charset != NULL && charset->caseInsensitiveCompare(MCSTR("utf-7")) != 0) {
+                            msg->header()->setDefaultCharset(charset);
+                        }
                         msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
                         hasHeader = true;
                     }
@@ -2552,37 +2563,15 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         needsGmailMessageID = true;
     }
     if ((requestKind & IMAPMessagesRequestKindFullHeaders) != 0) {
-        char * header;
-        
         MCLog("request envelope");
-        
-        // most important header
-        header = strdup("Date");
-        clist_append(hdrlist, header);
-        header = strdup("Subject");
-        clist_append(hdrlist, header);
-        header = strdup("From");
-        clist_append(hdrlist, header);
-        header = strdup("Sender");
-        clist_append(hdrlist, header);
-        header = strdup("Reply-To");
-        clist_append(hdrlist, header);
-        header = strdup("To");
-        clist_append(hdrlist, header);
-        header = strdup("Cc");
-        clist_append(hdrlist, header);
-        header = strdup("Message-ID");
-        clist_append(hdrlist, header);
-        header = strdup("References");
-        clist_append(hdrlist, header);
-        header = strdup("In-Reply-To");
-        clist_append(hdrlist, header);
-        header = strdup("List-Unsubscribe");
-        clist_append(hdrlist, header);
-        header = strdup("List-ID");
-        clist_append(hdrlist, header);
-        header = strdup("Precedence");
-        clist_append(hdrlist, header);
+        char * headers[] = {
+            "Date", "Subject", "From", "Sender", "Reply-To", "To", "Cc",
+            "Message-ID", "References", "In-Reply-To", "List-Unsubscribe", "List-ID", "Precedence",
+            "Authentication-Results", "DKIM-Signature", "Return-Path", "Received", "ARC-Authentication-Results", "ARC-Message-Signature", "ARC-Seal" // For Anti-Phishing
+        };
+        for (int i = sizeof(headers)/sizeof(headers[0]) - 1; i >= 0; i--) {
+            clist_append(hdrlist, strdup(headers[i]));
+        }
     }
     //Bcc header
     if ((requestKind & IMAPMessagesRequestKindHeaderBcc) != 0) {
@@ -2654,12 +2643,10 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     }
     if ((requestKind & IMAPMessagesRequestKindExtraHeaders) != 0) {
         // custom header request
-        char * header;
-        
         if (extraHeaders && extraHeaders->count() > 0) {
             for (unsigned int i = 0; i < extraHeaders->count(); i++) {
                 String * headerString = (String *)extraHeaders->objectAtIndex(i);
-                header = strdup(headerString->UTF8Characters());
+                char * header = strdup(headerString->UTF8Characters());
                 clist_append(hdrlist, header);
             }
         }
@@ -2751,16 +2738,29 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         * pError = ErrorConnection;
         return NULL;
     }
-    else if (r == MAILIMAP_ERROR_PARSE) {
-        MCLog("error parse");
-        mShouldDisconnect = true;
-        * pError = ErrorParse;
-        return NULL;
-    }
+//    else if (r == MAILIMAP_ERROR_PARSE) {
+//        MCLog("error parse");
+//        mShouldDisconnect = true;
+//        * pError = ErrorParse;
+//        return NULL;
+//    }
     else if (hasError(r)) {
-        MCLog("error fetch");
-        * pError = ErrorFetch;
-        return NULL;
+        if ((r == MAILIMAP_ERROR_PARSE || r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
+            // For AT&T account, the response is NO, but the body struct is returned.
+            // No need to release the fetch_result. No need to do the MboxMailWorkaround.
+            MCLog("fetch list with error return code.");
+            IMAPSyncResult * result;
+            result = new IMAPSyncResult();
+            result->setModifiedOrAddedMessages(messages);
+            result->setVanishedMessages(vanishedMessages);
+            result->autorelease();
+            * pError = ErrorNone;
+            return result;
+        } else {
+            MCLog("error fetch");
+            * pError = ErrorFetch;
+            return NULL;
+        }
     }
     
     IMAPSyncResult * result;
@@ -2778,7 +2778,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
                 requestKind = (IMAPMessagesRequestKind) (requestKind & ~IMAPMessagesRequestKindHeaders);
                 requestKind = (IMAPMessagesRequestKind) (requestKind | IMAPMessagesRequestKindFullHeaders);
 
-                result = fetchMessages(folder, requestKind,partID, fetchByUID,
+                result = fetchMessages(folder, requestKind, partID, fetchByUID,
                     imapset, uidsFilter, numbersFilter,
                     modseq, NULL, progressCallback, extraHeaders, pError);
                 if (result != NULL) {
@@ -2803,6 +2803,14 @@ Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind
 {
     return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, NULL, pError);
 }
+
+//yyb
+Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
+                                        IndexSet * uids, IMAPProgressCallback * progressCallback, Array * extraHeaders, ErrorCode * pError)
+{
+    return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
+}
+
 //Weicheng
 Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                              String * partID,
@@ -2835,6 +2843,14 @@ Array * IMAPSession::fetchMessagesByNumber(String * folder, IMAPMessagesRequestK
                                            ErrorCode * pError)
 {
     return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, NULL, numbers, progressCallback, NULL, pError);
+}
+
+//yyb
+Array * IMAPSession::fetchMessagesByNumber(String * folder, IMAPMessagesRequestKind requestKind,
+                                           IndexSet * numbers, IMAPProgressCallback * progressCallback,
+                                           Array * extraHeaders, ErrorCode * pError)
+{
+    return fetchMessagesByNumberWithExtraHeaders(folder, requestKind, NULL, numbers, progressCallback, extraHeaders, pError);
 }
 
 //Weicheng
@@ -3781,7 +3797,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
 }
 
 //added by Edison
-IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError)
+IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError, int maxIdleDelay)
 {
     int r;
     
@@ -3808,7 +3824,7 @@ IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError)
     
     if (!mImap->imap_selection_info->sel_has_exists && !mImap->imap_selection_info->sel_has_recent) {
         int r;
-        r = mailstream_wait_idle(mImap->imap_stream, MAX_IDLE_DELAY);
+        r = mailstream_wait_idle(mImap->imap_stream, maxIdleDelay);
         switch (r) {
             case MAILSTREAM_IDLE_ERROR:
             case MAILSTREAM_IDLE_CANCELLED:
@@ -4509,6 +4525,9 @@ void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
     if (mailimap_has_enable(mImap)) {
         capabilities->addIndex(IMAPCapabilityEnable);
     }
+    if (mailimap_has_extension(mImap, (char *)"BLOCKSENDER")) {
+        capabilities->addIndex(IMAPCapabilityBlockSender);
+    }
     applyCapabilities(capabilities);
 }
 
@@ -4563,6 +4582,9 @@ void IMAPSession::applyCapabilities(IndexSet * capabilities)
     }
     if (capabilities->containsIndex(IMAPCapabilityCompressDeflate)) {
         mCompressionEnabled = true;
+    }
+    if (capabilities->containsIndex(IMAPCapabilityBlockSender)) {
+        mBlockSenderEnabled = true;
     }
 }
 
@@ -4827,4 +4849,90 @@ String * IMAPSession::gmailUserDisplayName()
 
 String * IMAPSession::getResponse(){
     return mLoginResponse;
+}
+
+
+//only for test
+void IMAPSession::testSetMsgAttHandler(void * imapses, IMAPMessagesRequestKind requestKind) {
+    
+    bool needsHeader;
+    bool needsBody;
+    bool needsFlags;
+    bool needsGmailLabels;
+    bool needsGmailMessageID;
+    bool needsGmailThreadID;
+    bool fetchByUID;
+    Array * messages;
+    IndexSet * vanishedMessages = nullptr;
+    IndexSet * uidsFilter = nullptr;
+    IndexSet * numbersFilter = nullptr;
+    HashMap * mapping = nullptr;
+    uint32_t mLastFetchedSequenceNumber = 0;
+    
+    mailimap * session = (mailimap *)imapses;
+    
+    messages = Array::array();
+    
+    needsHeader = false;
+    needsBody = false;
+    needsFlags = false;
+    needsGmailLabels = false;
+    needsGmailMessageID = false;
+    needsGmailThreadID = false;
+    
+    if ((requestKind & IMAPMessagesRequestKindFlags) != 0) {
+        needsFlags = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindGmailLabels) != 0) {
+        needsGmailLabels = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindGmailThreadID) != 0) {
+        needsGmailThreadID = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindGmailMessageID) != 0) {
+        needsGmailMessageID = true;
+    }
+    
+    if ((requestKind & IMAPMessagesRequestKindPlainBody) != 0) {
+        needsBody = true;
+    }
+    if ((requestKind & IMAPMessagesRequestKindStructure) != 0) {
+        needsBody = true;
+    }
+    
+    struct msg_att_handler_data * pMsgAttData = ( struct msg_att_handler_data *)malloc(sizeof(struct msg_att_handler_data));
+    struct msg_att_handler_data& msg_att_data = *pMsgAttData;
+    
+    memset(&msg_att_data, 0, sizeof(msg_att_data));
+    msg_att_data.uidsFilter = uidsFilter;
+    msg_att_data.numbersFilter = numbersFilter;
+    msg_att_data.fetchByUID = fetchByUID;
+    msg_att_data.result = messages;
+    msg_att_data.requestKind = requestKind;
+    msg_att_data.mLastFetchedSequenceNumber = mLastFetchedSequenceNumber;
+    msg_att_data.mapping = mapping;
+    msg_att_data.needsHeader = needsHeader;
+    msg_att_data.needsBody = needsBody;
+    msg_att_data.needsFlags = needsFlags;
+    msg_att_data.needsGmailLabels = needsGmailLabels;
+    msg_att_data.needsGmailMessageID = needsGmailMessageID;
+    msg_att_data.needsGmailThreadID = needsGmailThreadID;
+    
+    session->imap_msg_att_handler = msg_att_handler;
+    session->imap_msg_att_handler_context = pMsgAttData;
+}
+
+
+Array * IMAPSession::testGetParsedMessage(void * mailSession) {
+    
+    Array * messages;
+
+    mailimap * session = (mailimap *)mailSession;
+    
+    if ( session->imap_msg_att_handler_context) {
+        struct msg_att_handler_data* msg_att_data = (struct msg_att_handler_data*)session->imap_msg_att_handler_context;
+        messages = msg_att_data->result;
+    }
+
+    return messages;
 }
