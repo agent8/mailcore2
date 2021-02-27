@@ -72,6 +72,8 @@ src\core\renderer\MCRenderer.h
 src\core\renderer\MCHTMLRendererCallback.h
 src\core\renderer\MCDateFormatter.h
 src\core\renderer\MCAddressDisplay.h
+src\core\renderer\MCIMAPPartParser.h
+src\core\renderer\MCHTMLRenderer.h
 src\core\provider\MCProvider.h
 src\core\provider\MCMailProvidersManager.h
 src\core\provider\MCMailProvider.h
@@ -104,6 +106,8 @@ src\async\imap\MCIMAPCapabilityOperation.h
 src\async\imap\MCIMAPQuotaOperation.h
 src\async\imap\MCIMAPOperationCallback.h
 src\async\imap\MCIMAPMessageRenderingOperation.h
+src\async\imap\MCIMAPCustomCommandOperation.h
+src\async\imap\MCIMAPCheckAccountOperation.h
 src\async\pop\MCAsyncPOP.h
 src\async\pop\MCPOPAsyncSession.h
 src\async\pop\MCPOPOperation.h
