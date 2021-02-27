@@ -50,6 +50,7 @@ src\core\imap\MCIMAPSession.h
 src\core\imap\MCIMAPSyncResult.h
 src\core\imap\MCIMAPFolderStatus.h
 src\core\imap\MCIMAPIdentity.h
+src\core\imap\MCIMAPFolderReport.h
 src\core\pop\MCPOP.h
 src\core\pop\MCPOPMessageInfo.h
 src\core\pop\MCPOPProgressCallback.h

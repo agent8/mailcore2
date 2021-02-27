@@ -4879,6 +4879,7 @@ void IMAPSession::testSetMsgAttHandler(void * imapses, IMAPMessagesRequestKind r
     needsGmailLabels = false;
     needsGmailMessageID = false;
     needsGmailThreadID = false;
+	fetchByUID = false;
     
     if ((requestKind & IMAPMessagesRequestKindFlags) != 0) {
         needsFlags = true;
@@ -4925,7 +4926,7 @@ void IMAPSession::testSetMsgAttHandler(void * imapses, IMAPMessagesRequestKind r
 
 Array * IMAPSession::testGetParsedMessage(void * mailSession) {
     
-    Array * messages;
+    Array * messages = NULL;
 
     mailimap * session = (mailimap *)mailSession;
     

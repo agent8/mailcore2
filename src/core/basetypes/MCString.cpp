@@ -1,4 +1,4 @@
-#include "MCWin32.h" // should be included first.
+﻿#include "MCWin32.h" // should be included first.
 
 #include "MCString.h"
 
@@ -46,7 +46,7 @@
 #if defined(_MSC_VER)
 #define PATH_SEPARATOR_CHAR '\\'
 #define PATH_SEPARATOR_STRING "\\"
-#define FILENAME_ILLEGAL_STRING "\/:*?\"<>|"
+#define FILENAME_ILLEGAL_STRING "/:*?\"<>|"
 #define FILENAME_MAX_LENGHT 255
 #else
 #define PATH_SEPARATOR_CHAR '/'

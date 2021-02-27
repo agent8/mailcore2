@@ -96,6 +96,8 @@ namespace mailcore {
         
         virtual String * lastPathComponent();
         virtual String * pathExtension();
+        virtual String * filenameFix();
+        
         virtual Data * dataUsingEncoding(const char * charset = NULL);
         
         virtual const char * fileSystemRepresentation();

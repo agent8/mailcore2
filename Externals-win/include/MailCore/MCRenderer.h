@@ -13,5 +13,6 @@
 #include <MailCore/MCHTMLRendererCallback.h>
 #include <MailCore/MCDateFormatter.h>
 #include <MailCore/MCAddressDisplay.h>
-
+#include <MailCore/MCIMAPPartParser.h>
+#include <MailCore/MCHTMLRenderer.h>
 #endif
