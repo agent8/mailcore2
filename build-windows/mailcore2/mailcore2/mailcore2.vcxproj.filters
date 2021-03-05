@@ -567,6 +567,9 @@
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolderReport.h">
       <Filter>Source Files\core\imap</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\core\renderer\MCIMAPPartParser.h">
+      <Filter>Source Files\core\renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\core\abstract\MCAbstractMessage.cpp">
@@ -973,6 +976,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolderReport.cpp">
       <Filter>Source Files\core\imap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\renderer\MCIMAPPartParser.cpp">
+      <Filter>Source Files\core\renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

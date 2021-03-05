@@ -168,6 +168,7 @@
     <ClInclude Include="..\..\..\src\core\renderer\MCHTMLRenderer.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCHTMLRendererCallback.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCHTMLRendererIMAPDataCallback.h" />
+    <ClInclude Include="..\..\..\src\core\renderer\MCIMAPPartParser.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCRenderer.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCSizeFormatter.h" />
     <ClInclude Include="..\..\..\src\core\rfc822\MCAttachment.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="..\..\..\src\core\renderer\MCHTMLRenderer.cpp" />
     <ClCompile Include="..\..\..\src\core\renderer\MCHTMLRendererCallback.cpp" />
     <ClCompile Include="..\..\..\src\core\renderer\MCHTMLRendererIMAPDataCallback.cpp" />
+    <ClCompile Include="..\..\..\src\core\renderer\MCIMAPPartParser.cpp" />
     <ClCompile Include="..\..\..\src\core\renderer\MCSizeFormatter.cpp" />
     <ClCompile Include="..\..\..\src\core\rfc822\MCAttachment.cpp" />
     <ClCompile Include="..\..\..\src\core\rfc822\MCMessageBuilder.cpp" />
