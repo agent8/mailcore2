@@ -81,8 +81,15 @@ extern unsigned long long wcstoull(const wchar_t*, wchar_t**, int);
 
 #endif
 
+//Not supported on windows
+#ifdef _MSC_VER
+#ifndef DEPRECATED_ATTRIBUTE
+#define DEPRECATED_ATTRIBUTE
+#endif
+#else
 #ifndef DEPRECATED_ATTRIBUTE
 #define DEPRECATED_ATTRIBUTE        __attribute__((deprecated))
+#endif
 #endif
 
 #endif
