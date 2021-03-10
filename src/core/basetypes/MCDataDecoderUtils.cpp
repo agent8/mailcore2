@@ -3,9 +3,13 @@
 #include <libetpan/libetpan.h>
 
 #include <string.h>
-#if __APPLE__
+
+#ifdef _MSC_VER
+//
+#else
 #include <strings.h>
 #endif
+
 namespace mailcore {
 
 static size_t uudecode(const char * text, size_t size, char * dst, size_t dst_buf_size)
