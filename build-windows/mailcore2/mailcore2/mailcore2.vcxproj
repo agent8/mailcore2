@@ -27,6 +27,7 @@
     <ClInclude Include="..\..\..\src\async\imap\MCIMAPCheckAccountOperation.h" />
     <ClInclude Include="..\..\..\src\async\imap\MCIMAPConnectOperation.h" />
     <ClInclude Include="..\..\..\src\async\imap\MCIMAPCopyMessagesOperation.h" />
+    <ClInclude Include="..\..\..\src\async\imap\MCIMAPCustomCommandOperation.h" />
     <ClInclude Include="..\..\..\src\async\imap\MCIMAPMoveMessagesOperation.h" />
     <ClInclude Include="..\..\..\src\async\imap\MCIMAPCreateFolderOperation.h" />
     <ClInclude Include="..\..\..\src\async\imap\MCIMAPDeleteFolderOperation.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="..\..\..\src\core\basetypes\MCWin32.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAP.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolder.h" />
+    <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolderReport.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPFolderStatus.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPIdentity.h" />
     <ClInclude Include="..\..\..\src\core\imap\MCIMAPMessage.h" />
@@ -166,6 +168,7 @@
     <ClInclude Include="..\..\..\src\core\renderer\MCHTMLRenderer.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCHTMLRendererCallback.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCHTMLRendererIMAPDataCallback.h" />
+    <ClInclude Include="..\..\..\src\core\renderer\MCIMAPPartParser.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCRenderer.h" />
     <ClInclude Include="..\..\..\src\core\renderer\MCSizeFormatter.h" />
     <ClInclude Include="..\..\..\src\core\rfc822\MCAttachment.h" />
@@ -193,6 +196,7 @@
     <ClCompile Include="..\..\..\src\async\imap\MCIMAPCheckAccountOperation.cpp" />
     <ClCompile Include="..\..\..\src\async\imap\MCIMAPConnectOperation.cpp" />
     <ClCompile Include="..\..\..\src\async\imap\MCIMAPCopyMessagesOperation.cpp" />
+    <ClCompile Include="..\..\..\src\async\imap\MCIMAPCustomCommandOperation.cpp" />
     <ClCompile Include="..\..\..\src\async\imap\MCIMAPMoveMessagesOperation.cpp" />
     <ClCompile Include="..\..\..\src\async\imap\MCIMAPCreateFolderOperation.cpp" />
     <ClCompile Include="..\..\..\src\async\imap\MCIMAPDeleteFolderOperation.cpp" />
@@ -282,6 +286,7 @@
     <ClCompile Include="..\..\..\src\core\basetypes\MCValue.cpp" />
     <ClCompile Include="..\..\..\src\core\basetypes\MCWin32.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolder.cpp" />
+    <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolderReport.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPFolderStatus.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPIdentity.cpp" />
     <ClCompile Include="..\..\..\src\core\imap\MCIMAPMessage.cpp" />
@@ -306,6 +311,7 @@
     <ClCompile Include="..\..\..\src\core\renderer\MCHTMLRenderer.cpp" />
     <ClCompile Include="..\..\..\src\core\renderer\MCHTMLRendererCallback.cpp" />
     <ClCompile Include="..\..\..\src\core\renderer\MCHTMLRendererIMAPDataCallback.cpp" />
+    <ClCompile Include="..\..\..\src\core\renderer\MCIMAPPartParser.cpp" />
     <ClCompile Include="..\..\..\src\core\renderer\MCSizeFormatter.cpp" />
     <ClCompile Include="..\..\..\src\core\rfc822\MCAttachment.cpp" />
     <ClCompile Include="..\..\..\src\core\rfc822\MCMessageBuilder.cpp" />
@@ -327,31 +333,32 @@
     <ProjectGuid>{AAD35E01-77E4-43CB-BBB4-F7F6692EA829}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mailcore2</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -373,12 +380,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.17763.0\ucrt;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.17763.0\ucrt\x86;$(LibraryPath)</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.17763.0\ucrt;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.17763.0\ucrt\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExcludePath>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.10240.0\ucrt;$(ExcludePath)</ExcludePath>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -388,9 +405,10 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_LIB;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);..\..\include;..\..\..\Externals\include;..\..\..\src\core\basetypes;..\..\..\src\core\zip;..\..\..\src\core\zip\minizip;..\..\..\src\core\renderer;..\..\..\src\core/rfc822;..\..\..\src\core/imap;..\..\..\src\core\abstract;..\..\..\src\core\security;..\..\..\src\core\imap;..\..\..\src\core\pop;..\..\..\src\core\nntp;..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);..\..\..\Externals-win\include;..\..\..\src\core\basetypes;..\..\..\src\core\zip;..\..\..\src\core\zip\minizip;..\..\..\src\core\renderer;..\..\..\src\core/rfc822;..\..\..\src\core/imap;..\..\..\src\core\abstract;..\..\..\src\core\security;..\..\..\src\core\imap;..\..\..\src\core\pop;..\..\..\src\core\nntp;..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -404,9 +422,10 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);..\..\include;..\..\..\Externals\include;..\..\..\src\core\basetypes;..\..\..\src\core\zip;..\..\..\src\core\zip\minizip;..\..\..\src\core\renderer;..\..\..\src\core/rfc822;..\..\..\src\core/imap;..\..\..\src\core\abstract;..\..\..\src\core\security;..\..\..\src\core\imap;..\..\..\src\core\pop;..\..\..\src\core\nntp;..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -422,9 +441,11 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);..\..\include;..\..\..\Externals\include;..\..\..\src\core\basetypes;..\..\..\src\core\zip;..\..\..\src\core\zip\minizip;..\..\..\src\core\renderer;..\..\..\src\core/rfc822;..\..\..\src\core/imap;..\..\..\src\core\abstract;..\..\..\src\core\security;..\..\..\src\core\imap;..\..\..\src\core\pop;..\..\..\src\core\nntp;..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);..\..\..\Externals-win\include;..\..\..\src\core\basetypes;..\..\..\src\core\zip;..\..\..\src\core\zip\minizip;..\..\..\src\core\renderer;..\..\..\src\core/rfc822;..\..\..\src\core/imap;..\..\..\src\core\abstract;..\..\..\src\core\security;..\..\..\src\core\imap;..\..\..\src\core\pop;..\..\..\src\core\nntp;..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -442,9 +463,10 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_DLL;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);..\..\include;..\..\..\Externals\include;..\..\..\src\core\basetypes;..\..\..\src\core\zip;..\..\..\src\core\zip\minizip;..\..\..\src\core\renderer;..\..\..\src\core/rfc822;..\..\..\src\core/imap;..\..\..\src\core\abstract;..\..\..\src\core\security;..\..\..\src\core\imap;..\..\..\src\core\pop;..\..\..\src\core\nntp;..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
