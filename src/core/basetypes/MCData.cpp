@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#if __APPLE__
+#if !defined(_MSC_VER)
 #include <sys/mman.h>
 #endif
 #include <pthread.h>
