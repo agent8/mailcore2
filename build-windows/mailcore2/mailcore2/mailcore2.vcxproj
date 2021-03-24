@@ -384,6 +384,7 @@
     <LibraryPath>C:\Program Files %28x86%29\Windows Kits\10\Lib\10.0.17763.0\ucrt\x86;$(LibraryPath)</LibraryPath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <TargetExt>.lib</TargetExt>
+    <IntDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
