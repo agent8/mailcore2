@@ -397,6 +397,7 @@
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <ExcludePath>C:\Program Files %28x86%29\Windows Kits\10\Include\10.0.10240.0\ucrt;$(ExcludePath)</ExcludePath>
     <TargetExt>.lib</TargetExt>
+    <IntDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
