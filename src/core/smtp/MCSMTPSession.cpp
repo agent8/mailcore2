@@ -642,6 +642,7 @@ void SMTPSession::checkAccount(Address * from, ErrorCode * pError)
         return;
     }
 
+    // by luzhixin, 2021.3.30, for account verification failure on ios
     // r = mailsmtp_rcpt(mSmtp, "email@invalid.com");
     // saveLastResponse();
     // if (r == MAILSMTP_ERROR_STREAM) {
