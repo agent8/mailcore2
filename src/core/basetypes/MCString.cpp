@@ -2570,32 +2570,37 @@ String * String::stringByDeletingPathExtension()
  * Find the first occurrence of the byte string s in byte string l.
  *  lm add memmem Func
  */
-void *memmem(const void *start, unsigned int s_len, const void *find, unsigned int f_len)
+const void * memmem(const void * l, unsigned int l_len, const void * s, unsigned int s_len)
 {
-	char          *p = (char *)start;
-	char		  *q = (char *)find;;
-	unsigned int  len = 0;
+    if (l == NULL || s == NULL) {
+        return NULL;
+    }
 
-	if (s_len == 0 || f_len == 0)
-		return NULL;
+    if (l_len == 0 || s_len == 0) {
+        return NULL;
+    }
 
-	if (s_len < f_len)
-		return NULL;
+    if (l_len < s_len) {
+        return NULL;
+    }
 
-	while ((p - (char *)start + f_len) <= s_len)
-	{
-		while (*p++ == *q++)
-		{
-			len++;
-			if (len == f_len)
-				return(p - f_len);
-		};
+    const char * cl = (const char *)l;
+    const char * cs = (const char *)s;
 
-		q = (char *)find;
-		len = 0;
-	};
+    if (s_len == 1) {
+        return memchr(l, (int)(*cs), l_len);
+    }
 
-	return NULL;
+    const char * cur = cl;
+    const char * last = cl + l_len - s_len;
+
+    for (cur = cl; cur <= last; cur++) {
+        if (cur[0] == cs[0] && memcmp(cur, cs, s_len) == 0) {
+            return cur;
+        }
+    }
+
+    return NULL;
 }
 #endif
 
