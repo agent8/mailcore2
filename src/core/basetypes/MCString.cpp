@@ -2565,11 +2565,11 @@ String * String::stringByDeletingPathExtension()
     return substringToIndex(location);
 }
 
+#if defined(_MSC_VER)
 /*
  * Find the first occurrence of the byte string s in byte string l.
  *  lm add memmem Func
  */
-
 void *memmem(const void *start, unsigned int s_len, const void *find, unsigned int f_len)
 {
 	char          *p = (char *)start;
@@ -2597,6 +2597,7 @@ void *memmem(const void *start, unsigned int s_len, const void *find, unsigned i
 
 	return NULL;
 }
+#endif
 
 Array * String::componentsSeparatedByString(String * separator)
 {
