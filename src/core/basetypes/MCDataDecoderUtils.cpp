@@ -3,7 +3,12 @@
 #include <libetpan/libetpan.h>
 
 #include <string.h>
+
+#ifdef _MSC_VER
+//
+#else
 #include <strings.h>
+#endif
 
 namespace mailcore {
 

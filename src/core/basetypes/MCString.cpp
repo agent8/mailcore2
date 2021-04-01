@@ -46,7 +46,7 @@
 #if defined(_MSC_VER)
 #define PATH_SEPARATOR_CHAR '\\'
 #define PATH_SEPARATOR_STRING "\\"
-#define FILENAME_ILLEGAL_STRING "\/:*?\"<>|"
+#define FILENAME_ILLEGAL_STRING "/:*?\"<>|"
 #define FILENAME_MAX_LENGHT 255
 #else
 #define PATH_SEPARATOR_CHAR '/'
@@ -2564,6 +2564,40 @@ String * String::stringByDeletingPathExtension()
     }
     return substringToIndex(location);
 }
+
+#if defined(_MSC_VER)
+/*
+ * Find the first occurrence of the byte string s in byte string l.
+ *  lm add memmem Func
+ */
+void *memmem(const void *start, unsigned int s_len, const void *find, unsigned int f_len)
+{
+	char          *p = (char *)start;
+	char		  *q = (char *)find;;
+	unsigned int  len = 0;
+
+	if (s_len == 0 || f_len == 0)
+		return NULL;
+
+	if (s_len < f_len)
+		return NULL;
+
+	while ((p - (char *)start + f_len) <= s_len)
+	{
+		while (*p++ == *q++)
+		{
+			len++;
+			if (len == f_len)
+				return(p - f_len);
+		};
+
+		q = (char *)find;
+		len = 0;
+	};
+
+	return NULL;
+}
+#endif
 
 Array * String::componentsSeparatedByString(String * separator)
 {

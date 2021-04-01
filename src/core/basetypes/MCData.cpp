@@ -1,3 +1,6 @@
+#if _MSC_VER
+#include <libetpan/win_etpan.h>
+#endif
 #include "MCWin32.h" // should be first include.
 
 #include "MCData.h"
@@ -7,7 +10,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#if !defined(_MSC_VER)
 #include <sys/mman.h>
+#endif
 #include <pthread.h>
 #if USE_UCHARDET
 #include <uchardet/uchardet.h>
