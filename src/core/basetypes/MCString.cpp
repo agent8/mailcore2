@@ -1,4 +1,4 @@
-#include "MCWin32.h" // should be included first.
+﻿#include "MCWin32.h" // should be included first.
 
 #include "MCString.h"
 
@@ -46,7 +46,7 @@
 #if defined(_MSC_VER)
 #define PATH_SEPARATOR_CHAR '\\'
 #define PATH_SEPARATOR_STRING "\\"
-#define FILENAME_ILLEGAL_STRING "\/:*?\"<>|"
+#define FILENAME_ILLEGAL_STRING "/:*?\"<>|"
 #define FILENAME_MAX_LENGHT 255
 #else
 #define PATH_SEPARATOR_CHAR '/'
@@ -2564,6 +2564,45 @@ String * String::stringByDeletingPathExtension()
     }
     return substringToIndex(location);
 }
+
+#if defined(_MSC_VER)
+/*
+ * Find the first occurrence of the byte string s in byte string l.
+ *  lm add memmem Func
+ */
+const void * memmem(const void * l, unsigned int l_len, const void * s, unsigned int s_len)
+{
+    if (l == NULL || s == NULL) {
+        return NULL;
+    }
+
+    if (l_len == 0 || s_len == 0) {
+        return NULL;
+    }
+
+    if (l_len < s_len) {
+        return NULL;
+    }
+
+    const char * cl = (const char *)l;
+    const char * cs = (const char *)s;
+
+    if (s_len == 1) {
+        return memchr(l, (int)(*cs), l_len);
+    }
+
+    const char * cur = cl;
+    const char * last = cl + l_len - s_len;
+
+    for (cur = cl; cur <= last; cur++) {
+        if (cur[0] == cs[0] && memcmp(cur, cs, s_len) == 0) {
+            return cur;
+        }
+    }
+
+    return NULL;
+}
+#endif
 
 Array * String::componentsSeparatedByString(String * separator)
 {
