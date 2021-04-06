@@ -2,7 +2,7 @@
 //  MCIMAPAsyncSession.cc
 //  mailcore2
 //
-//  Created by DINH ViÃªt HoÃ  on 1/17/13.
+//  Created by DINH Viêt Hoà on 1/17/13.
 //  Copyright (c) 2013 MailCore. All rights reserved.
 //
 
