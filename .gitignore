@@ -34,6 +34,7 @@ build-mac/mailcore2.xcodeproj/project.xcworkspace/xcshareddata
 *.sdf
 *.opensdf
 *.suo
+*.vcxproj.user
 build-windows/mailcore2/.vs
 build-windows/_headers_depends
 build-windows/mailcore2/Debug
