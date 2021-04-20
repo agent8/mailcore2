@@ -108,6 +108,15 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                              Array * extraHeaders, ErrorCode * pError);
+
+        // luzhixin
+        // After fetchMessagesByUID, check if any messages are lost because of parsing error.
+        // If any, retry to fetch the lost messages one by one.
+        // Max count of messages to retry is 10.
+        virtual Array * /* IMAPMessage */ fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                     IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                                                     Array * extraHeaders, ErrorCode * pError);
+
         //Weicheng
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                                              String * partID,
@@ -357,6 +366,11 @@ namespace mailcore {
                                       bool wholePart, uint32_t offset, uint32_t length,
                                       Encoding encoding, IMAPProgressCallback * progressCallback, ErrorCode * pError);
         void storeLabels(String * folder, bool identifier_is_uid, IndexSet * identifiers, IMAPStoreFlagsRequestKind kind, Array * labels, ErrorCode * pError);
+
+        // luzhixin
+        // clear read_buffer of last command
+        // may be used after parsing error
+        void clearStreamBufferOfLastCommand();
     };
 
 }
