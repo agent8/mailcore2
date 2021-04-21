@@ -986,4 +986,9 @@
       <Filter>Source Files\core\rfc822</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\build_headers.list">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
 </Project>
