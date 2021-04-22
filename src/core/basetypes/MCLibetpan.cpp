@@ -177,6 +177,18 @@ static int tmcomp(struct tm * atmp, struct tm * btmp)
     return result;
 }
 
+//yyb: compatible with windows
+#if _MSC_VER 
+
+time_t mailcore::mkgmtime(struct tm * tmp)
+{
+    time_t t = mailcore::win32_mkgmtime(tmp);
+
+    return t;
+}
+
+#else 
+
 time_t mailcore::mkgmtime(struct tm * tmp)
 {
     int            dir;
@@ -220,3 +232,5 @@ time_t mailcore::mkgmtime(struct tm * tmp)
     t += saved_seconds;
     return t;
 }
+
+#endif

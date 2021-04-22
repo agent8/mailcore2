@@ -1,4 +1,4 @@
-//
+﻿//
 //  MCIMAPAsyncSession.cc
 //  mailcore2
 //

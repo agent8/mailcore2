@@ -211,3 +211,9 @@ char * mailcore::win32_mkdtemp(char *path)
     }
 }
 
+//yyb
+time_t mailcore::win32_mkgmtime(struct tm *tm) {
+
+    time_t res = _mkgmtime(tm);
+    return res;
+}
