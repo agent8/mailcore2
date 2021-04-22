@@ -67,6 +67,8 @@ namespace mailcore {
     pid_t win32_getpid(void);
     
     char * win32_mkdtemp(char *name_template);
+    //By yyb
+    time_t win32_mkgmtime(struct tm *tm);
 }
 #endif
 
