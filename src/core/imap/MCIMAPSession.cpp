@@ -667,7 +667,7 @@ void IMAPSession::connect(ErrorCode * pError)
 
     if (mHostname == NULL) {
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mHostname is NULL");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mHostname is NULL");
         goto close;
     }
 
@@ -677,7 +677,7 @@ void IMAPSession::connect(ErrorCode * pError)
         r = mailimap_socket_connect_voip(mImap, MCUTF8(mHostname), mPort, isVoIPEnabled());
         if (hasError(r)) {
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, mailimap_socket_connect_voip fail, r = %d", r);
+            MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_socket_connect_voip fail, r = %d", r);
             goto close;
         }
 
@@ -695,7 +695,7 @@ void IMAPSession::connect(ErrorCode * pError)
         if (hasError(r)) {
             MCLog("connect error %i", r);
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, mailimap_ssl_connect_voip fail, r = %d", r);
+            MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_ssl_connect_voip fail, r = %d", r);
             goto close;
         }
         if (!checkCertificate()) {
@@ -713,7 +713,7 @@ void IMAPSession::connect(ErrorCode * pError)
         if (hasError(r)) {
             MCLog("connect error %i", r);
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, mailimap_socket_connect_voip fail, r = %d", r);
+            MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_socket_connect_voip fail, r = %d", r);
             goto close;
         }
         break;
@@ -924,7 +924,7 @@ void IMAPSession::login(ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, MAILIMAP_ERROR_STREAM, mAuthType = %d", mAuthType);
+        MCLogOutput("Mailcore ERROR: ErrorConnection, MAILIMAP_ERROR_STREAM, mAuthType = %d", mAuthType);
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -975,7 +975,7 @@ void IMAPSession::login(ErrorCode * pError)
         else if (response->locationOfString(MCSTR("Service temporarily unavailable")) != -1) {
             mShouldDisconnect = true;
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, Service temporarily unavailable");
+            MCLogOutput("Mailcore ERROR: ErrorConnection, Service temporarily unavailable");
         }
         /*
          Full error list: https://docs.google.com/spreadsheets/d/1dGLOjZtv4OqFj-ENW9CdN1Q-QURuZQwCpvYn8q5_NOA/edit#gid=1970104932
@@ -1180,7 +1180,7 @@ String * IMAPSession::customCommand(String * command, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_custom_command returns MAILIMAP_ERROR_STREAM, command = %s",
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_custom_command returns MAILIMAP_ERROR_STREAM, command = %s",
                     MCUTF8(command) == NULL ? "" : MCUTF8(command));
         return NULL;
     }
@@ -1216,19 +1216,23 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
         mShouldDisconnect = true;
         * pError = ErrorConnection;
         MCLog("select error : %s %i", MCUTF8DESC(this), * pError);
-        MCLogOutput("MC ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM",
+        MCLogOutput("Mailcore ERROR: SelectFolder, ErrorConnection, %s returns MAILIMAP_ERROR_STREAM",
                     mBlockSenderEnabled ? "mailimap_select_with_blocksender" : "mailimap_select");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
         mShouldDisconnect = true;
         * pError = ErrorParse;
+        MCLogOutput("Mailcore ERROR: SelectFolder, ErrorParse, %s returns MAILIMAP_ERROR_PARSE",
+                    mBlockSenderEnabled ? "mailimap_select_with_blocksender" : "mailimap_select");
         return;
     }
     else if (hasError(r)) {
         * pError = ErrorNonExistantFolder;
         mState = STATE_LOGGEDIN;
         MC_SAFE_RELEASE(mCurrentFolder);
+        MCLogOutput("Mailcore ERROR: SelectFolder, ErrorNonExistantFolder, %s returns %d",
+                    mBlockSenderEnabled ? "mailimap_select_with_blocksender" : "mailimap_select", r);
         return;
     }
 
@@ -1310,7 +1314,7 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
         mShouldDisconnect = true;
         * pError = ErrorConnection;
         MCLog("status error : %s %i", MCUTF8DESC(this), * pError);
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_status returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_status returns MAILIMAP_ERROR_STREAM");
         mailimap_status_att_list_free(status_att_list);
         return fs;
     }
@@ -1388,7 +1392,7 @@ void IMAPSession::noop(ErrorCode * pError)
         r = mailimap_noop(mImap);
         if (r == MAILIMAP_ERROR_STREAM) {
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, mailimap_noop returns MAILIMAP_ERROR_STREAM");
+            MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_noop returns MAILIMAP_ERROR_STREAM");
         }
         if (r == MAILIMAP_ERROR_NOOP) {
             * pError = ErrorNoop;
@@ -1468,7 +1472,7 @@ static Array * resultsWithError(int r, clist * list, ErrorCode * pError)
     result = Array::array();
     if (r == MAILIMAP_ERROR_STREAM) {
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1672,7 +1676,7 @@ void IMAPSession::renameFolder(String * folder, String * otherName, ErrorCode * 
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_rename returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_rename returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1699,7 +1703,7 @@ void IMAPSession::deleteFolder(String * folder, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_delete returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_delete returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1726,7 +1730,7 @@ void IMAPSession::createFolder(String * folder, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_create returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_create returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1755,7 +1759,7 @@ void IMAPSession::subscribeFolder(String * folder, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_subscribe returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_subscribe returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1782,7 +1786,7 @@ void IMAPSession::unsubscribeFolder(String * folder, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_unsubscribe returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_unsubscribe returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1851,7 +1855,7 @@ void IMAPSession::appendMessageWithCustomFlagsAndDate(String * folder, Data * me
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_uidplus_append returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_uidplus_append returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -1915,7 +1919,7 @@ void IMAPSession::copyMessages(String * folder, IndexSet * uidSet, String * dest
         if (r == MAILIMAP_ERROR_STREAM) {
             mShouldDisconnect = true;
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, mailimap_uidplus_uid_copy returns MAILIMAP_ERROR_STREAM");
+            MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_uidplus_uid_copy returns MAILIMAP_ERROR_STREAM");
             goto release;
         }
         else if (r == MAILIMAP_ERROR_PARSE) {
@@ -2001,7 +2005,7 @@ void IMAPSession::moveMessages(String * folder, IndexSet * uidSet, String * dest
         if (r == MAILIMAP_ERROR_STREAM) {
             mShouldDisconnect = true;
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, mailimap_uidplus_uid_move returns MAILIMAP_ERROR_STREAM");
+            MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_uidplus_uid_move returns MAILIMAP_ERROR_STREAM");
             goto release;
         }
         else if (r == MAILIMAP_ERROR_PARSE) {
@@ -2064,7 +2068,7 @@ void IMAPSession::expunge(String * folder, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_expunge returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_expunge returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -2180,7 +2184,7 @@ HashMap * IMAPSession::fetchMessageNumberUIDMapping(String * folder, uint32_t fr
         MCLog("error stream");
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_uid_fetch returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_uid_fetch returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -2761,7 +2765,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         MCLog("error stream");
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", fetchByUID ? "mailimap_uid_fetch" : "mailimap_fetch");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", fetchByUID ? "mailimap_uid_fetch" : "mailimap_fetch");
         return NULL;
     }
 //    else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3154,7 +3158,7 @@ Data * IMAPSession::fetchMessage(String * folder, bool identifier_is_uid, uint32
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, fetch_rfc822 returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, fetch_rfc822 returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3248,7 +3252,7 @@ Data * IMAPSession::fetchNonDecodedMessageAttachment(String * folder, bool ident
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, fetch_imap returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, fetch_imap returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3793,7 +3797,7 @@ IndexSet * IMAPSession::search(String * folder, IMAPSearchExpression * expressio
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", mIsGmail ? "mailimap_uid_search_literalplus" : "mailimap_uid_search");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", mIsGmail ? "mailimap_uid_search_literalplus" : "mailimap_uid_search");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3824,7 +3828,7 @@ void IMAPSession::getQuota(uint32_t *usage, uint32_t *limit, ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_quota_getquotaroot returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_quota_getquotaroot returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3892,7 +3896,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_idle returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_idle returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3915,7 +3919,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
                 mShouldDisconnect = true;
                 * pError = ErrorConnection;
                 MCLog("error or cancelled");
-                MCLogOutput("MC ERROR: ErrorConnection, mailstream_wait_idle returns MAILSTREAM_IDLE_CANCELLED");
+                MCLogOutput("Mailcore ERROR: ErrorConnection, mailstream_wait_idle returns MAILSTREAM_IDLE_CANCELLED");
                 return;
             }
             case MAILSTREAM_IDLE_INTERRUPTED:
@@ -3937,7 +3941,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_idle_done returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_idle_done returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3966,7 +3970,7 @@ IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError, int ma
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_idle returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_idle returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -3988,7 +3992,7 @@ IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError, int ma
             {
                 mShouldDisconnect = true;
                 * pError = ErrorConnection;
-                MCLogOutput("MC ERROR: ErrorConnection, mailstream_wait_idle returns MAILSTREAM_IDLE_CANCELLED");
+                MCLogOutput("Mailcore ERROR: ErrorConnection, mailstream_wait_idle returns MAILSTREAM_IDLE_CANCELLED");
                 MCLog("error or cancelled");
                 return NULL;
             }
@@ -4011,7 +4015,7 @@ IMAPFolderReport * IMAPSession::idle(String * folder, ErrorCode * pError, int ma
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_idle_done returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_idle_done returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4082,7 +4086,7 @@ IMAPIdentity * IMAPSession::identity(IMAPIdentity * clientIdentity, ErrorCode * 
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_id returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_id returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4175,7 +4179,7 @@ HashMap * IMAPSession::fetchNamespace(ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_namespace returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_namespace returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4372,7 +4376,7 @@ void IMAPSession::storeFlagsAndCustomFlags(String * folder, bool identifier_is_u
         if (r == MAILIMAP_ERROR_STREAM) {
             mShouldDisconnect = true;
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", identifier_is_uid ? "mailimap_uid_store" : "mailimap_store");
+            MCLogOutput("Mailcore ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", identifier_is_uid ? "mailimap_uid_store" : "mailimap_store");
             goto release;
         }
         else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4415,7 +4419,7 @@ void IMAPSession::storeFlagsAndCustomFlags(String * folder, bool identifier_is_u
             if (r == MAILIMAP_ERROR_STREAM) {
                 mShouldDisconnect = true;
                 * pError = ErrorConnection;
-                MCLogOutput("MC ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", identifier_is_uid ? "mailimap_uid_store" : "mailimap_store");
+                MCLogOutput("Mailcore ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", identifier_is_uid ? "mailimap_uid_store" : "mailimap_store");
                 goto release;
             }
             else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4517,7 +4521,7 @@ void IMAPSession::storeLabels(String * folder, bool identifier_is_uid, IndexSet 
         if (r == MAILIMAP_ERROR_STREAM) {
             mShouldDisconnect = true;
             * pError = ErrorConnection;
-            MCLogOutput("MC ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", identifier_is_uid ? "mailimap_uid_store_xgmlabels" : "mailimap_store_xgmlabels");
+            MCLogOutput("Mailcore ERROR: ErrorConnection, %s returns MAILIMAP_ERROR_STREAM", identifier_is_uid ? "mailimap_uid_store_xgmlabels" : "mailimap_store_xgmlabels");
             goto release;
         }
         else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4604,7 +4608,7 @@ IndexSet * IMAPSession::capability(ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_capability returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_capability returns MAILIMAP_ERROR_STREAM");
         return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
@@ -4982,7 +4986,7 @@ void IMAPSession::enableCompression(ErrorCode * pError)
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        MCLogOutput("MC ERROR: ErrorConnection, mailimap_compress returns MAILIMAP_ERROR_STREAM");
+        MCLogOutput("Mailcore ERROR: ErrorConnection, mailimap_compress returns MAILIMAP_ERROR_STREAM");
         return;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
