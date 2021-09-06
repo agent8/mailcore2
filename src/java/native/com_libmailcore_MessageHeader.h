@@ -253,6 +253,14 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_MessageHeader_extraHeaderValueFor
 
 /*
  * Class:     com_libmailcore_MessageHeader
+ * Method:    extraHeaderValuesForName
+ * Signature: ([Ljava/lang/String;)Ljava/util/List;
+ */
+JNIEXPORT jobject JNICALL Java_com_libmailcore_MessageHeader_extraHeaderValuesForName
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_libmailcore_MessageHeader
  * Method:    allExtraHeadersNames
  * Signature: ()Ljava/util/List;
  */
