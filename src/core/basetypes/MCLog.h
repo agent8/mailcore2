@@ -5,9 +5,12 @@
 #include <stdio.h>
 #include <MailCore/MCUtils.h>
 
-#define MCLog(...) MCLogInternal(NULL, __FILE__, __LINE__, 0, __VA_ARGS__)
-#define MCLogStack(...) MCLogInternal(NULL, __FILE__, __LINE__, 1, __VA_ARGS__)
-#define MCLogOutput(...) MCHandleLog(__FILE__, __LINE__, __VA_ARGS__)
+//zhaoshuo:
+//if log is disabled, should not calculate __VA_ARGS__ if it is a statement. like TypesUtils.cpp#arrayObjectToJavaConverter#MCUTF8(...)
+//some messages can't translate to UTF8 code, and may cause crash.
+#define MCLog(...) if(MCLogEnabled) MCLogInternal(NULL, __FILE__, __LINE__, 0, __VA_ARGS__)
+#define MCLogStack(...) if(MCLogEnabled) MCLogInternal(NULL, __FILE__, __LINE__, 1, __VA_ARGS__)
+#define MCLogOutput(...) if(MCLogEnabled) MCHandleLog(__FILE__, __LINE__, __VA_ARGS__)
 
 MAILCORE_EXPORT
 extern int MCLogEnabled;
