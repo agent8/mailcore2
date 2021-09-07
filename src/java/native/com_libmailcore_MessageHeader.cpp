@@ -92,6 +92,15 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_MessageHeader_extraHeaderValueFor
     return (jstring) result;
 }
 
+JNIEXPORT jobject JNICALL Java_com_libmailcore_MessageHeader_extraHeaderValuesForName
+  (JNIEnv * env, jobject obj, jstring name)
+{
+    MC_POOL_BEGIN;
+    jobject result = MC_TO_JAVA(MC_JAVA_NATIVE_INSTANCE->extraHeaderValuesForName(MC_FROM_JAVA(String, name)));
+    MC_POOL_END;
+    return result;
+}
+
 JNIEXPORT jobject JNICALL Java_com_libmailcore_MessageHeader_allExtraHeadersNames
   (JNIEnv * env, jobject obj)
 {
