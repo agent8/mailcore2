@@ -51,6 +51,7 @@ core/imap/MCIMAPSession.h
 core/imap/MCIMAPSyncResult.h
 core/imap/MCIMAPFolderStatus.h
 core/imap/MCIMAPIdentity.h
+core/imap/MCIMAPFolderReport.h
 core/pop/MCPOP.h
 core/pop/MCPOPMessageInfo.h
 core/pop/MCPOPProgressCallback.h
