@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <set>
+#include <algorithm>
 
 #include "MCDefines.h"
 #include "MCIMAPSearchExpression.h"
