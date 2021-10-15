@@ -308,9 +308,9 @@ void SMTPSession::connect(ErrorCode * pError)
             
             MCLog("init");
             if (useHeloIPEnabled()) {
-                r = mailsmtp_init_with_ip(mSmtp, 1);
+                r = mailsmtp_init_with_ip(mSmtp, 1, MCUTF8(mHostname));
             } else {
-                r = mailsmtp_init(mSmtp);
+                r = mailsmtp_init(mSmtp, MCUTF8(mHostname));
             }
             saveLastResponse();
             if (r == MAILSMTP_ERROR_STREAM) {
@@ -337,9 +337,9 @@ void SMTPSession::connect(ErrorCode * pError)
             
             MCLog("init after starttls");
             if (useHeloIPEnabled()) {
-                r = mailsmtp_init_with_ip(mSmtp, 1);
+                r = mailsmtp_init_with_ip(mSmtp, 1, MCUTF8(mHostname));
             } else {
-                r = mailsmtp_init(mSmtp);
+                r = mailsmtp_init(mSmtp, MCUTF8(mHostname));
             }
             saveLastResponse();
             if (r == MAILSMTP_ERROR_STREAM) {
@@ -367,9 +367,9 @@ void SMTPSession::connect(ErrorCode * pError)
             
             MCLog("init");
             if (useHeloIPEnabled()) {
-                r = mailsmtp_init_with_ip(mSmtp, 1);
+                r = mailsmtp_init_with_ip(mSmtp, 1, MCUTF8(mHostname));
             } else {
-                r = mailsmtp_init(mSmtp);
+                r = mailsmtp_init(mSmtp, MCUTF8(mHostname));
             }
             saveLastResponse();
             if (r == MAILSMTP_ERROR_STREAM) {
@@ -393,9 +393,9 @@ void SMTPSession::connect(ErrorCode * pError)
             
             MCLog("init");
             if (useHeloIPEnabled()) {
-                r = mailsmtp_init_with_ip(mSmtp, 1);
+                r = mailsmtp_init_with_ip(mSmtp, 1, MCUTF8(mHostname));
             } else {
-                r = mailsmtp_init(mSmtp);
+                r = mailsmtp_init(mSmtp, MCUTF8(mHostname));
             }
             saveLastResponse();
             if (r == MAILSMTP_ERROR_STREAM) {
