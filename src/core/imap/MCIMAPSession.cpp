@@ -5,6 +5,9 @@
 #include <libetpan/libetpan.h>
 #include <string.h>
 #include <stdlib.h>
+#include <vector>
+#include <set>
+#include <algorithm>
 
 #include "MCDefines.h"
 #include "MCIMAPSearchExpression.h"
@@ -2811,6 +2814,129 @@ Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind
     return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
 }
 
+// respMsgs must be an array of IMAPMessage
+// the returned vector is sorted
+static std::vector<uint32_t> getLostUids(IndexSet * reqUids, Array * respMsgs)
+{
+    std::vector<uint32_t> reqUidsVec;
+    if (reqUids != nullptr) {
+        for (unsigned int i = 0; i < reqUids->rangesCount(); ++i) {
+            uint64_t left = RangeLeftBound(reqUids->allRanges()[i]);
+            uint64_t right = RangeRightBound(reqUids->allRanges()[i]);
+            // UINT64_MAX means empty Range
+            if (right != UINT64_MAX) {
+                for (uint32_t uid = (uint32_t)left; uid <= (uint32_t)right; ++uid) {
+                    reqUidsVec.push_back(uid);
+                }
+            }
+        }
+    }
+
+    std::set<uint32_t> respUids;
+    if (respMsgs != nullptr && respMsgs->count() > 0) {
+        String * imapMessageClassName = IMAPMessage().className();
+        const unsigned int msgCnt = respMsgs->count();
+        for (unsigned int i = 0; i < msgCnt; ++i) {
+            Object * obj = respMsgs->objectAtIndex(i);
+            // make sure that the obj is a pointer to IMAPMessage
+            if (obj != nullptr && imapMessageClassName->compare(obj->className()) == 0) {
+                IMAPMessage * msg = (IMAPMessage *)obj;
+                respUids.insert(msg->uid());
+            }
+        }
+    }
+
+    std::vector<uint32_t> lostUids;
+    for (auto uid : reqUidsVec) {
+        if (respUids.find(uid) == respUids.end()) {
+            lostUids.push_back(uid);
+        }
+    }
+
+    std::sort(lostUids.begin(), lostUids.end());
+
+    return lostUids;
+}
+
+static int compareImapMsgByUid(void * a, void * b, void * context)
+{
+    if (a == nullptr || b == nullptr) {
+        return 0;
+    }
+
+    uint32_t uid1 = ((IMAPMessage *)a)->uid();
+    uint32_t uid2 = ((IMAPMessage *)b)->uid();
+
+    int ret = 0;
+    if (uid1 > uid2) {
+        ret = 1;
+    } else if (uid1 < uid2) {
+        ret = -1;
+    } else {
+        ret = 0;
+    }
+
+    return ret;
+}
+
+// luzhixin
+// After fetchMessagesByUID, check if any messages are lost because of parsing error.
+// If any, retry to fetch the lost messages one by one.
+// Max count of messages to retry is 10.
+Array * IMAPSession::fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesRequestKind requestKind,
+                                                IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                                Array * extraHeaders, ErrorCode * pError)
+{
+    Array * respMsgs = nullptr;
+
+    if (folder == nullptr || uids == nullptr) {
+        return respMsgs;
+    }
+
+    unsigned int reqUidsCnt = uids->count();
+    if (reqUidsCnt == 0) {
+        return respMsgs;
+    }
+
+    respMsgs = fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
+    if (*pError != ErrorNone && *pError != ErrorFetch) {
+        return respMsgs;
+    }
+
+    if (respMsgs != nullptr && respMsgs->count() == reqUidsCnt) {
+        return respMsgs;
+    }
+
+    // find out the uids which are in the request uids but not in the response uids
+    std::vector<uint32_t> lostUids = getLostUids(uids, respMsgs);
+
+    const int maxCnt = 10;  // retry 10 messages at most
+    int cnt = 0;
+    for (auto r_it = lostUids.crbegin(); r_it != lostUids.crend() && cnt < maxCnt; ++r_it) {
+        clearStreamBufferOfLastCommand();
+        IndexSet * singleUidSet = IndexSet::indexSetWithIndex(*r_it);
+        ErrorCode errCode = ErrorNone;
+        Array * msgs = fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, singleUidSet, progressCallback, extraHeaders, &errCode);
+        if (msgs != nullptr && msgs->count() == 1) {
+            if (respMsgs == nullptr) {
+                respMsgs = Array::array();
+            }
+            respMsgs->addObjectsFromArray(msgs);
+        }
+        ++cnt;
+    }
+
+    if (respMsgs != nullptr && respMsgs->count() > 1) {
+        respMsgs->sortArray(compareImapMsgByUid, nullptr);
+    }
+
+    if (*pError == ErrorFetch && respMsgs != nullptr && respMsgs->count() > 0) {
+        *pError = ErrorNone;
+    }
+
+    return respMsgs;
+}
+
 //Weicheng
 Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
                                              String * partID,
@@ -4936,4 +5062,36 @@ Array * IMAPSession::testGetParsedMessage(void * mailSession) {
     }
 
     return messages;
+}
+
+// luzhixin
+// clear read_buffer of last command
+// may be used after parsing error
+void IMAPSession::clearStreamBufferOfLastCommand()
+{
+    if (mImap == nullptr) {
+        return;
+    }
+
+    if (mImap->imap_stream_buffer != nullptr) {
+        mImap->imap_stream_buffer->len = 0;
+        if (mImap->imap_stream_buffer->str != nullptr) {
+            mImap->imap_stream_buffer->str[0] = 0;
+        }
+    }
+
+    if (mImap->imap_stream == nullptr || mImap->imap_stream->read_buffer_len == 0) {
+        return;
+    }
+
+    char * lineStr = mailimap_read_line(mImap);
+    while (lineStr != nullptr && strlen(lineStr) != 0) {
+        if (strstr(lineStr, " OK") != nullptr || strstr(lineStr, " NO") != nullptr || strstr(lineStr, " BAD") != nullptr) {
+            mImap->imap_stream_buffer->len = 0;
+            break;
+        }
+        lineStr = mailimap_read_line(mImap);
+    }
+
+    return;
 }

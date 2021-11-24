@@ -2275,20 +2275,6 @@
             "trash": "Deleted Items"
         },
         "servers": {
-            "imap": [
-                {
-                    "hostname": "outlook.office365.com",
-                    "port": 993,
-                    "ssl": true
-                }
-            ],
-            "smtp": [
-                {
-                    "hostname": "smtp.office365.com",
-                    "port": 587,
-                    "starttls": true
-                }
-            ]
         }
     },
     "office365-enterprise": {
@@ -2302,20 +2288,6 @@
             ".+\\.mail\\.protection\\.outlook\\.com"
         ],
         "servers": {
-            "imap": [
-                {
-                    "hostname": "outlook.office365.com",
-                    "port": 993,
-                    "ssl": true
-                }
-            ],
-            "smtp": [
-                {
-                    "hostname": "smtp.office365.com",
-                    "port": 587,
-                    "starttls": true
-                }
-            ]
         }
     },
     "one.com": {
