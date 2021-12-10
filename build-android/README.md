@@ -45,22 +45,48 @@ export ANDROID_SDK=/Users/xxx/Library/Android/sdk
 - build.sh: Change libetpan version to 7
 - build.sh: Change `-source 1.6 -target 1.6` to `-source 1.8 -target 1.8`
 - `mkdir third-party`
-- Copy libetpan-android-7.zip (from step "Compile libetpan") to third-party folder and extract it
-- `./build.sh`
+- Copy libetpan-android-7.zip (from step "Compile libetpan") to third-party folder
 
-old:
-$ cp libetpan/build-android/dependencies/cyrus-sasl/cyrus-sasl-android-4.zip mailcore2/build-android/third-party/
-$ cp libetpan/build-android/dependencies/openssl/openssl-android-3.zip mailcore2/build-android/third-party/
-$ cp libetpan/build-android/libetpan-android-6.zip mailcore2/build-android/third-party/
-$ cd mailcore2/build-android/third-party
-$ unzip cyrus-sasl-android-4.zip
-$ unzip openssl-android-3.zip
-$ unzip libetpan-android-6.zip
+    `$ cp libetpan/build-android/libetpan-android-7.zip mailcore2/build-android/third-party/`
 
-$ export ANDROID_SDK=/path/to/android-sdk
-$ export ANDROID_NDK=/Users/xxx/Library/Android/sdk/ndk/17.2.4988734 #Use ndk 17
-$ cd build-android
-$ ./build.sh
+- Copy openssl-android-3.zip (from step "Compile libetpan") to third-party folder
+
+    `$ cp libetpan/build-android/dependencies/openssl/openssl-android-3.zip mailcore2/build-android/third-party/`
+
+- Copy cyrus-sasl-android-4.zip (from step "Compile libetpan") to third-party folder
+
+    `cp libetpan/build-android/dependencies/cyrus-sasl/cyrus-sasl-android-4.zip mailcore2/build-android/third-party/`
+
+- Copy iconv-android-1.zip (from step "Compile libetpan") to third-party folder
+
+    `cp libetpan/build-android/dependencies/iconv/iconv-android-1.zip mailcore2/build-android/third-party/`
+
+- Extract libetpan-android-7.zip, openssl-android-3.zip, cyrus-sasl-android-4.zip, iconv-android-1.zip
+
+    `$ cd mailcore2/build-android/third-party`
+
+    `$ unzip libetpan-android-7.zip`
+
+    `$ unzip openssl-android-3.zip`
+
+    `$ unzip cyrus-sasl-android-4.zip`
+
+    `$ unzip iconv-android-1.zip`
+
+
+- build
+
+    `$ export ANDROID_SDK=/path/to/android-sdk`
+
+    `$ export ANDROID_NDK=/Users/xxx/Library/Android/sdk/ndk/17.2.4988734 #Use ndk 17`
+
+    `$ cd build-android`
+
+    `$ ./build.sh`
+
+It will produce the following binaries:
+- mailcore2-android-*version*.aar
+
 
 ## Shrink mailcore (by removing unnecessary files to reduce 50% of file size)
 - cd to the directory where `mailcore2-android-4.aar` is located
