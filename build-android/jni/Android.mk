@@ -28,6 +28,7 @@ includes = \
     $(LIBXML2_PATH)/include \
     $(TIDY_HTML5_PATH)/include \
     $(OPENSSL_PATH)/include \
+    $(ICONV_PATH)/include \
     $(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/include \
     $(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)/include \
     $(addprefix $(src_dir)/, $(subdirs))
@@ -86,6 +87,11 @@ LOCAL_SRC_FILES := $(OPENSSL_PATH)/libs/$(TARGET_ARCH_ABI)/libssl.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE    := iconv
+LOCAL_SRC_FILES := $(ICONV_PATH)/libs/$(TARGET_ARCH_ABI)/libiconv.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE    := icu4c
 LOCAL_SRC_FILES := $(ICU4C_PATH)/libs/$(TARGET_ARCH_ABI)/libicu4c.a
 include $(PREBUILT_STATIC_LIBRARY)
@@ -126,5 +132,5 @@ LOCAL_CFLAGS := -DNOCRYPT
 LOCAL_LDLIBS := -lz -llog \
      -lgnustl_shared -L$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)
 LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
-LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto icu4c xml2 tidy ctemplate
+LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto iconv icu4c xml2 tidy ctemplate
 include $(BUILD_SHARED_LIBRARY)

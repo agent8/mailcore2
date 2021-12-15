@@ -5,10 +5,11 @@ package_name=mailcore2-android
 ctemplate_build_version=3
 cyrus_sasl_build_version=4
 icu4c_build_version=3
-libetpan_build_version=6
+libetpan_build_version=7
 libxml2_build_version=3
 tidy_html5_build_version=3
 openssl_build_version=3
+iconv_build_version=1
 
 current_dir="`pwd`"
 
@@ -47,7 +48,8 @@ function build {
         LIBXML2_PATH=$current_dir/third-party/libxml2-android-$libxml2_build_version \
         TIDY_HTML5_PATH=$current_dir/third-party/tidy-html5-android-$tidy_html5_build_version \
         OPENSSL_PATH=$current_dir/third-party/openssl-android-$openssl_build_version \
-        CYRUS_SASL_PATH=$current_dir/third-party/cyrus-sasl-android-$cyrus_sasl_build_version
+        CYRUS_SASL_PATH=$current_dir/third-party/cyrus-sasl-android-$cyrus_sasl_build_version \
+        ICONV_PATH=$current_dir/third-party/iconv-android-$iconv_build_version
 
     mkdir -p "$current_dir/bin/jni/$TARGET_ARCH_ABI"
     cp "$current_dir/libs/$TARGET_ARCH_ABI/libMailCore.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
@@ -76,7 +78,7 @@ cd "$current_dir/third-party"
 
 # Start building.
 ANDROID_PLATFORM=android-21
-archs="armeabi armeabi-v7a x86 arm64-v8a x86_64"
+archs="arm64-v8a armeabi-v7a x86 x86_64"
 for arch in $archs ; do
   TARGET_ARCH_ABI=$arch
   build
