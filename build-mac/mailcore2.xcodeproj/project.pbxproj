@@ -1495,6 +1495,10 @@
 		DA0F1C7C177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA0F1C79177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp */; };
 		DA89896D178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA89896C178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm */; };
 		DA89896E178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA89896C178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm */; };
+		DA8CB3D92775BE48005FAEF5 /* MCOIMAPBaseOperation+Private.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C608167F17766FC5001F1018 /* MCOIMAPBaseOperation+Private.h */; };
+		DA8CB3DE2775BEDC005FAEF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		DA8CB3DF2775C281005FAEF5 /* MCOIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
+		DA8CB3E02775C298005FAEF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
 		DAACAD5117886807000B4517 /* MCHTMLRendererIMAPDataCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAACAD4F17886807000B4517 /* MCHTMLRendererIMAPDataCallback.cpp */; };
 		DAACAD5217886807000B4517 /* MCHTMLRendererIMAPDataCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAACAD4F17886807000B4517 /* MCHTMLRendererIMAPDataCallback.cpp */; };
 		DAD28C8B1783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD28C891783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp */; };
@@ -1886,6 +1890,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				DA8CB3DE2775BEDC005FAEF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
+				DA8CB3D92775BE48005FAEF5 /* MCOIMAPBaseOperation+Private.h in CopyFiles */,
 				5C713934238FE89B00E2D64B /* MCHTMLRenderer.h in CopyFiles */,
 				5C713916238F79D400E2D64B /* MCIMAPPartParser.h in CopyFiles */,
 				127F30AD22F98D72008C2455 /* MCIMAPFolderReport.h in CopyFiles */,
@@ -2132,6 +2138,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				DA8CB3E02775C298005FAEF5 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
+				DA8CB3DF2775C281005FAEF5 /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
 				AAB17E1F2775A666008CD55A /* MCIMAPCheckAccountOperation.h in CopyFiles */,
 				AAB17E1E2775A64B008CD55A /* MCIMAPCustomCommandOperation.h in CopyFiles */,
 				AAB17E1D2775A607008CD55A /* MCHTMLRenderer.h in CopyFiles */,
