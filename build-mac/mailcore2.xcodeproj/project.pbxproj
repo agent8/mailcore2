@@ -728,6 +728,14 @@
 		A1FA45081C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
 		A1FA45091C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
 		A1FA450A1C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
+		AAF0D0CD277AF9790035D6BD /* MCIMAPFolderReport.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
+		AAF0D0CE277AF9B20035D6BD /* MCIMAPPartParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
+		AAF0D0CF277AF9B20035D6BD /* MCHTMLRenderer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD67C16BDCDD400DB18F1 /* MCHTMLRenderer.h */; };
+		AAF0D0D0277AF9D80035D6BD /* MCIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */; };
+		AAF0D0D1277AF9E70035D6BD /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
+		AAF0D0D2277AFB9D0035D6BD /* MCOIMAPBaseOperation+Private.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C608167F17766FC5001F1018 /* MCOIMAPBaseOperation+Private.h */; };
+		AAF0D0D3277AFBA90035D6BD /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		AAF0D0D4277AFBB30035D6BD /* MCOIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
 		BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD6272981A13FF2A00129AA8 /* test-all-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD6272961A13FF2A00129AA8 /* test-all-mac.mm */; };
@@ -1551,6 +1559,13 @@
 			remoteGlobalIDString = C682E2C015B315EF00BE9DA7;
 			remoteInfo = "libetpan ios";
 		};
+		AAF0D0C7277AF9440035D6BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C682E21815B315EF00BE9DA7;
+			remoteInfo = "libetpan ios";
+		};
 		C600B61E1A244BD8000728F1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C64EA52E169E772200778456 /* Project object */;
@@ -2120,6 +2135,14 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AAF0D0D4277AFBB30035D6BD /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
+				AAF0D0D3277AFBA90035D6BD /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
+				AAF0D0D2277AFB9D0035D6BD /* MCOIMAPBaseOperation+Private.h in CopyFiles */,
+				AAF0D0D1277AF9E70035D6BD /* MCIMAPCheckAccountOperation.h in CopyFiles */,
+				AAF0D0D0277AF9D80035D6BD /* MCIMAPCustomCommandOperation.h in CopyFiles */,
+				AAF0D0CE277AF9B20035D6BD /* MCIMAPPartParser.h in CopyFiles */,
+				AAF0D0CF277AF9B20035D6BD /* MCHTMLRenderer.h in CopyFiles */,
+				AAF0D0CD277AF9790035D6BD /* MCIMAPFolderReport.h in CopyFiles */,
 				F38221A61C7B62E900E00721 /* MCONNTPPostOperation.h in CopyFiles */,
 				F38221A51C7B629B00E00721 /* MCNNTPPostOperation.h in CopyFiles */,
 				817FA52A1C69038F006146BD /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */,
@@ -4292,6 +4315,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AAF0D0C8277AF9440035D6BD /* PBXTargetDependency */,
 			);
 			name = "static mailcore2 ios";
 			productName = mailcore;
@@ -5385,6 +5409,11 @@
 			isa = PBXTargetDependency;
 			name = "libetpan ios";
 			targetProxy = 3DF6798A1F60F40600D4BDC4 /* PBXContainerItemProxy */;
+		};
+		AAF0D0C8277AF9440035D6BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libetpan ios";
+			targetProxy = AAF0D0C7277AF9440035D6BD /* PBXContainerItemProxy */;
 		};
 		C600B61F1A244BD8000728F1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

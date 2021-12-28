@@ -326,7 +326,7 @@ get_prebuilt_dep()
   BUILD_TIMESTAMP=`date +'%Y%m%d%H%M%S'`
   tempbuilddir="$scriptpath/../Externals/workdir/$BUILD_TIMESTAMP"
   
-  if test "$name" = "libetpan-osx" ; then
+  if test "$name" = "libetpan-osx" -o "$name" = "libetpan-ios" ; then
   	echo "Skip Downloading $name"
   	mkdir -p "$scriptpath/../Externals/$name/include/libetpan/"
   	echo "cp -f  $scriptpath/../../libetpan/include/libetpan/*  $scriptpath/../Externals/$name/include/libetpan/"
