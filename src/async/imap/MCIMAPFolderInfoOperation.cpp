@@ -62,12 +62,11 @@ void IMAPFolderInfoOperation::main()
     mInfo->setAllowsNewPermanentFlags(session()->session()->allowsNewPermanentFlags());
 
     if(mIncludeUnSeen){
-        IMAPFolderStatus *status = session()->session()->folderStatus(folder(), &error);
-        if (error != ErrorNone) {
-            setError(error);
-            return;
+        ErrorCode statusError = ErrorNone;
+        IMAPFolderStatus *status = session()->session()->folderStatus(folder(), &statusError);
+        if (statusError == ErrorNone) {
+            mInfo->setUnSeenMessageCount(status->unseenCount());
         }
-        mInfo->setUnSeenMessageCount(status->unseenCount());
     }
     
     setError(error);
