@@ -66,6 +66,8 @@ void IMAPFolderInfoOperation::main()
         IMAPFolderStatus *status = session()->session()->folderStatus(folder(), &statusError);
         if (statusError == ErrorNone) {
             mInfo->setUnSeenMessageCount(status->unseenCount());
+        } else {
+            mInfo->setUnSeenMessageCount(-1);
         }
     }
     
