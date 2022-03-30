@@ -1608,6 +1608,10 @@ Array * /* IMAPFolder */ IMAPSession::fetchAllFolders(ErrorCode * pError)
     
     if (mXListEnabled) {
         r = mailimap_xlist(mImap, MCUTF8(prefix), "*", &imap_folders);
+        if (r == MAILIMAP_ERROR_PARSE) {
+            clearStreamBufferOfLastCommand();
+            r = mailimap_list(mImap, MCUTF8(prefix), "*", &imap_folders);
+        }
     }
     else {
         r = mailimap_list(mImap, MCUTF8(prefix), "*", &imap_folders);
