@@ -19,7 +19,7 @@
 @interface MCOIMAPPart : MCOAbstractPart <NSCoding>
 
 /** A part identifier looks like 1.2.1 */
-@property (nonatomic, copy) NSString * partID;
+@property (nonatomic, copy) NSString * _Nullable partID;
 
 /** The size of the single part in bytes */
 @property (nonatomic, nonatomic) unsigned int size;
