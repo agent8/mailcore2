@@ -56,7 +56,7 @@ namespace mailcore {
 #endif
 
 /** A part identifier looks like 1.2.1 */
-@property (nonatomic, copy) NSString * partID;
+@property (nonatomic, copy) NSString * _Nullable partID;
 
 /** Returns type of the part (single / message part / multipart/mixed,
  multipart/related, multipart/alternative). See MCOPartType.*/
@@ -66,24 +66,24 @@ namespace mailcore {
 @property (nonatomic, copy) NSString * _Nullable filename;
 
 /** Returns MIME type of the part. For example application/data.*/
-@property (nonatomic, copy) NSString * mimeType;
+@property (nonatomic, copy) NSString * _Nullable mimeType;
 
 /** Returns charset of the part in case it's a text single part.*/
-@property (nonatomic, copy) NSString * charset;
+@property (nonatomic, copy) NSString * _Nullable charset;
 
 /** Returns the unique ID generated for this part.
  It's a unique identifier that's created when the object is created manually
  or created by the parser.*/
-@property (nonatomic, copy) NSString * uniqueID;
+@property (nonatomic, copy) NSString * _Nullable uniqueID;
 
 /** Returns the value of the Content-ID field of the part.*/
-@property (nonatomic, copy) NSString * contentID;
+@property (nonatomic, copy) NSString * _Nullable contentID;
 
 /** Returns the value of the Content-Location field of the part.*/
-@property (nonatomic, copy) NSString * contentLocation;
+@property (nonatomic, copy) NSString * _Nullable contentLocation;
 
 /** Returns the value of the Content-Description field of the part.*/
-@property (nonatomic, copy) NSString * contentDescription;
+@property (nonatomic, copy) NSString * _Nullable contentDescription;
 
 /** Returns whether the part is an explicit inline attachment.*/
 @property (nonatomic, assign, getter=isInlineAttachment) BOOL inlineAttachment;
