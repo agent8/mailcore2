@@ -51,10 +51,10 @@
 
 
 /** Returns the display name of the address.*/
-@property (nonatomic, copy) NSString * _Nullable displayName;
+@property (nonatomic, copy) NSString * displayName;
 
 /** Returns the mailbox of the address.*/
-@property (nonatomic, copy) NSString * _Nullable mailbox;
+@property (nonatomic, copy) NSString * mailbox;
 
 /** Returns the RFC822 encoding of the address.
 
