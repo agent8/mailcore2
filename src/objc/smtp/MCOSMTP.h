@@ -13,5 +13,6 @@
 #import <MailCore/MCOSMTPSession.h>
 #import <MailCore/MCOSMTPSendOperation.h>
 #import <MailCore/MCOSMTPOperation.h>
+#import <MailCore/MCOSMTPSyncSession.h>
 
 #endif
