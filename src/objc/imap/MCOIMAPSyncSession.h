@@ -16,15 +16,8 @@
 
 @class MCOIMAPOperation;
 @class MCOIMAPNamespace;
-@class MCOIndexSet;
-@class MCOIMAPIdentityOperation;
-@class MCOIMAPCapabilityOperation;
-@class MCOIMAPQuotaOperation;
-@class MCOIMAPMessageRenderingOperation;
-@class MCOIMAPMessage;
 @class MCOIMAPIdentity;
-@class MCOIMAPCustomCommandOperation;
-@class MCOIMAPCheckAccountOperation;
+
 /**
  This is the main IMAP class from which all operations are created
 
@@ -110,13 +103,13 @@
 
 /** This is the timeout of the connection. */
 
-- (MCOErrorCode) getErrorCode;
+- (MCOErrorCode) getErrorCode; //not used
 
-- (NSString*) loginResponse;
+- (NSString*) loginResponse; //not used
 
-- (MCOErrorCode) login;
+- (MCOErrorCode) login; //not used
 
-- (MCOErrorCode) loginIfNeeded;
+- (MCOErrorCode) loginIfNeeded; //not used
 
 - (MCOErrorCode) connect;
                          

@@ -21,8 +21,7 @@
  to begin the operation.
 */
 
-@class MCOSMTPSendOperation;
-@class MCOSMTPOperation;
+
 @class MCOAddress;
 
 @interface MCOSMTPSyncSession : NSObject
@@ -77,11 +76,11 @@
 @property (nonatomic, copy) MCOConnectionLogger connectionLogger;
 
 
-- (MCOErrorCode) loginIfNeeded;
+- (MCOErrorCode) loginIfNeeded; //Not used
 
-- (NSString*) lastSMTPResponse;
+- (NSString*) lastSMTPResponse; //Not used
 
-- (MCOErrorCode) lastSMTPResponseCode;
+- (MCOErrorCode) lastSMTPResponseCode; //Not used
 
 - (MCOErrorCode) connect;
    
