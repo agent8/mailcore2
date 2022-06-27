@@ -7,17 +7,11 @@
 //
 
 #import "MCOIMAPSyncSession.h"
-
-
 #import "MCOObjectWrapper.h"
-#import "MCOIMAPMessageRenderingOperation.h"
 #import "MCOIMAPIdentity.h"
-
 #import "MCOUtils.h"
-
-#import <MailCore/MCAsync.h>
-
-#include "MCIMAPMessageRenderingOperation.h"
+#import "MCIMAPSession.h"
+#import "MCIMAPIdentity.h"
 
 
 using namespace mailcore;
@@ -71,8 +65,8 @@ private:
     
     _session = new IMAPSession();
     
-    MCOConnectionLogger _connectionLogger;
-    MCOIMAPSyncSessionLogger * _loggerBridge;
+    _connectionLogger = NULL;
+    _loggerBridge = NULL;
     
     mErrCode = ErrorNone;
     

@@ -9,10 +9,7 @@
 
 #import "MCOSMTPSyncSession.h"
 #import "MCOUtils.h"
-#import "MCOSMTPOperation.h"
-#import "MCOOperation+Private.h"
 #import "MCOAddress.h"
-#import "MCOSMTPOperation+Private.h"
 #include "MCSMTPSession.h"
 
 
