@@ -737,6 +737,7 @@
 		A1FA45081C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
 		A1FA45091C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
 		A1FA450A1C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
+		AA3D4DB9286B01820002E877 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
 		BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD6272981A13FF2A00129AA8 /* test-all-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD6272961A13FF2A00129AA8 /* test-all-mac.mm */; };
@@ -4575,6 +4576,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA3D4DB9286B01820002E877 /* MCOIMAPSyncSession.mm in Sources */,
 				5C123A9C1D65C2C300102898 /* MCOIMAPFetchContentToFileOperation.mm in Sources */,
 				5C123A9D1D65C2C300102898 /* MCIMAPFetchContentToFileOperation.cpp in Sources */,
 				5C123A9B1D65C2B800102898 /* MCDataDecoderUtils.cpp in Sources */,
