@@ -534,6 +534,7 @@
 		5C123A9C1D65C2C300102898 /* MCOIMAPFetchContentToFileOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 810DB7901C68F50600017B12 /* MCOIMAPFetchContentToFileOperation.mm */; };
 		5C123A9D1D65C2C300102898 /* MCIMAPFetchContentToFileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 810DB78B1C68F4E200017B12 /* MCIMAPFetchContentToFileOperation.cpp */; };
 		5C68468C239E021F001B8965 /* MCHTMLRenderer.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = C63CD67C16BDCDD400DB18F1 /* MCHTMLRenderer.h */; };
+		5C713909238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
 		5C71390A238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
 		5C71390B238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
 		5C71390C238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
@@ -4977,6 +4978,7 @@
 				C63CD68216BDCDD400DB18F1 /* MCSizeFormatter.cpp in Sources */,
 				C63CD68616BE148B00DB18F1 /* MCHTMLRendererCallback.cpp in Sources */,
 				84CFA98F19F724E500FE35D2 /* MCNNTPFetchServerTimeOperation.cpp in Sources */,
+				5C713909238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */,
 				C63CD69116BE566E00DB18F1 /* MCHTMLCleaner.cpp in Sources */,
 				C64BB22116E34DCB000DB34C /* MCIMAPSyncResult.cpp in Sources */,
 				C64BB22B16E5C0A4000DB34C /* MCIMAPCapabilityOperation.cpp in Sources */,
