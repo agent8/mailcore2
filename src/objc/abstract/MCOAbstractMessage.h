@@ -28,7 +28,7 @@ namespace mailcore {
 #endif
 
 /** Header of the message. */
-@property (nonatomic, strong) MCOMessageHeader * header;
+@property (nonatomic, strong) MCOMessageHeader * _Nullable header;
 
 /** Returns the part with the given Content-ID.*/
 - (MCOAbstractPart *) partForContentID:(NSString *)contentID;

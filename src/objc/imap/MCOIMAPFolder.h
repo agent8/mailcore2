@@ -18,7 +18,7 @@
 @interface MCOIMAPFolder : NSObject <NSCopying>
 
 /** The folder's path, like for example INBOX.Archive */
-@property (nonatomic, copy) NSString * path;
+@property (nonatomic, copy) NSString * _Nullable path;
 
 /** It's the delimiter for each component of the path. Commonly . or / */
 @property (nonatomic, assign) char delimiter;

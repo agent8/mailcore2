@@ -48,16 +48,16 @@
 @property (nonatomic, assign) MCOMessageFlag originalFlags;
 
 /** Flag keywords of the message, mostly custom flags */
-@property (nonatomic, copy) NSArray * /* NSString */ customFlags;
+@property (nonatomic, copy) NSArray * /* NSString */ _Nullable customFlags;
 
 /** It's the last modification sequence value of the message synced from the server. See RFC4551 */
 @property (nonatomic, assign) uint64_t modSeqValue;
 
 /** Main MIME part of the message */
-@property (nonatomic, retain) MCOAbstractPart * mainPart;
+@property (nonatomic, retain) MCOAbstractPart * _Nullable mainPart;
 
 /** All Gmail labels of the message */
-@property (nonatomic, copy) NSArray * /* NSString */ gmailLabels;
+@property (nonatomic, copy) NSArray * /* NSString */ _Nullable gmailLabels;
 
 /** Gmail message ID of the message */
 @property (nonatomic, assign) uint64_t gmailMessageID;
