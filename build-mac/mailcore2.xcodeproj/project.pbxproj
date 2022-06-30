@@ -10,18 +10,13 @@
 		121B67882865A6FB0033D0BF /* MCOSMTPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121B67872865A6FB0033D0BF /* MCOSMTPSyncSession.mm */; };
 		121B67892865A6FB0033D0BF /* MCOSMTPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121B67872865A6FB0033D0BF /* MCOSMTPSyncSession.mm */; };
 		121B678A2865A6FB0033D0BF /* MCOSMTPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121B67872865A6FB0033D0BF /* MCOSMTPSyncSession.mm */; };
-		121B68452865D11C0033D0BF /* MCOSMTPSyncSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 121B67822865A6FB0033D0BF /* MCOSMTPSyncSession.h */; };
 		1263ED8421C6204A00E85F6E /* MCIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491E61C0C5F5700699CF5 /* MCIMAPCustomCommandOperation.h */; };
 		1263ED8521C6207D00E85F6E /* MCIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C64EA7F716A15A7800778456 /* MCIMAPCheckAccountOperation.h */; };
 		127F30A222F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
 		127F30A322F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
 		127F30AA22F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
-		127F30AB22F98CC5008C2455 /* MCIMAPFolderReport.h in Headers */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
-		127F30AC22F98CC5008C2455 /* MCIMAPFolderReport.h in Headers */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
 		127F30AD22F98D72008C2455 /* MCIMAPFolderReport.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
 		12DFA6262864838000411975 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
-		12DFA6292864838000411975 /* MCOIMAPSyncSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 12DFA6242864838000411975 /* MCOIMAPSyncSession.h */; };
-		12DFA62A2864838000411975 /* MCOIMAPSyncSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 12DFA6242864838000411975 /* MCOIMAPSyncSession.h */; };
 		2744B16A1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		2744B16B1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		27478E801A764698004AE621 /* MCAccountValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27478E7E1A764698004AE621 /* MCAccountValidator.cpp */; };
@@ -32,7 +27,6 @@
 		27478E871A76475F004AE621 /* MCAccountValidator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27478E7F1A764698004AE621 /* MCAccountValidator.h */; };
 		27478E881A7647AC004AE621 /* MCOAccountValidator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27478E821A7646F8004AE621 /* MCOAccountValidator.h */; };
 		27478E891A7647AC004AE621 /* MCAccountValidator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27478E7F1A764698004AE621 /* MCAccountValidator.h */; };
-		27780C2E19CF9CD100C77E44 /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
 		27780C3219CF9CD100C77E44 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6ED6D1917A1919500A4A14C /* Security.framework */; };
 		27780C3619CF9CD100C77E44 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = 84AF9E7D172DBAF600E60AA3 /* providers.json */; };
 		27780C3D19CF9D9800C77E44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27780C3C19CF9D9800C77E44 /* CFNetwork.framework */; };
@@ -535,8 +529,6 @@
 		5C713909238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
 		5C71390A238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
 		5C713911238F6F2400E2D64B /* MCIMAPPartParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C713903238F6F2300E2D64B /* MCIMAPPartParser.cpp */; };
-		5C713912238F6F2400E2D64B /* MCIMAPPartParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
-		5C713913238F6F2400E2D64B /* MCIMAPPartParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
 		5C713914238F780400E2D64B /* MCIMAPPartParser.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
 		5C713915238F782700E2D64B /* MCIMAPFolderReport.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
 		5C713916238F79D400E2D64B /* MCIMAPPartParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5C713908238F6F2300E2D64B /* MCIMAPPartParser.h */; };
@@ -729,6 +721,12 @@
 		A1FA45081C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
 		A1FA45091C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
 		A1FA450A1C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */; };
+		AA20B53F286D582600C5EF40 /* MCOSMTPSyncSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 121B67822865A6FB0033D0BF /* MCOSMTPSyncSession.h */; };
+		AA20B544286D584700C5EF40 /* MCOIMAPSyncSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 12DFA6242864838000411975 /* MCOIMAPSyncSession.h */; };
+		AA20B545286D587000C5EF40 /* MCOSMTPSyncSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 121B67822865A6FB0033D0BF /* MCOSMTPSyncSession.h */; };
+		AA20B546286D587000C5EF40 /* MCOIMAPSyncSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 12DFA6242864838000411975 /* MCOIMAPSyncSession.h */; };
+		AA20B547286D589900C5EF40 /* MCOSMTPSyncSession.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 121B67822865A6FB0033D0BF /* MCOSMTPSyncSession.h */; };
+		AA20B548286D589900C5EF40 /* MCOIMAPSyncSession.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 12DFA6242864838000411975 /* MCOIMAPSyncSession.h */; };
 		AA3D4DB9286B01820002E877 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
 		AA3D4EC3286B10070002E877 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
 		BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
@@ -1346,7 +1344,6 @@
 		C6BA2C141705F4E6003F0E9E /* MCOIMAPBaseOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6F61FB41702AB2F0073032E /* MCOIMAPBaseOperation.mm */; };
 		C6BD288F170BD71100A91AC1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288E170BD71100A91AC1 /* Cocoa.framework */; };
 		C6BD28A3170BD84F00A91AC1 /* libMailCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C64EA537169E772200778456 /* libMailCore.a */; };
-		C6BD28AB170BDB6B00A91AC1 /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
 		C6BD28AC170BDEA200A91AC1 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BD288D170BD71100A91AC1 /* MailCore.framework */; };
 		C6BEC1AA1B1256BA00546519 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
 		C6BEC1AB1B1256C100546519 /* MCHTMLCleaner.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C63CD69016BE566E00DB18F1 /* MCHTMLCleaner.h */; };
@@ -1607,6 +1604,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AA20B547286D589900C5EF40 /* MCOSMTPSyncSession.h in Copy Files (244 items) */,
+				AA20B548286D589900C5EF40 /* MCOIMAPSyncSession.h in Copy Files (244 items) */,
 				5C68468C239E021F001B8965 /* MCHTMLRenderer.h in Copy Files (244 items) */,
 				5C713915238F782700E2D64B /* MCIMAPFolderReport.h in Copy Files (244 items) */,
 				5C713914238F780400E2D64B /* MCIMAPPartParser.h in Copy Files (244 items) */,
@@ -1877,6 +1876,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AA20B544286D584700C5EF40 /* MCOIMAPSyncSession.h in CopyFiles */,
+				AA20B53F286D582600C5EF40 /* MCOSMTPSyncSession.h in CopyFiles */,
 				5C713934238FE89B00E2D64B /* MCHTMLRenderer.h in CopyFiles */,
 				5C713916238F79D400E2D64B /* MCIMAPPartParser.h in CopyFiles */,
 				127F30AD22F98D72008C2455 /* MCIMAPFolderReport.h in CopyFiles */,
@@ -2123,6 +2124,8 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AA20B545286D587000C5EF40 /* MCOSMTPSyncSession.h in CopyFiles */,
+				AA20B546286D587000C5EF40 /* MCOIMAPSyncSession.h in CopyFiles */,
 				F38221A61C7B62E900E00721 /* MCONNTPPostOperation.h in CopyFiles */,
 				F38221A51C7B629B00E00721 /* MCNNTPPostOperation.h in CopyFiles */,
 				817FA52A1C69038F006146BD /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */,
@@ -4124,10 +4127,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				121B68452865D11C0033D0BF /* MCOSMTPSyncSession.h in Headers */,
-				12DFA6292864838000411975 /* MCOIMAPSyncSession.h in Headers */,
-				127F30AB22F98CC5008C2455 /* MCIMAPFolderReport.h in Headers */,
-				5C713912238F6F2400E2D64B /* MCIMAPPartParser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4135,9 +4134,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12DFA62A2864838000411975 /* MCOIMAPSyncSession.h in Headers */,
-				127F30AC22F98CC5008C2455 /* MCIMAPFolderReport.h in Headers */,
-				5C713913238F6F2400E2D64B /* MCIMAPPartParser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4542,7 +4538,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27780C2E19CF9CD100C77E44 /* MCOFramework.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5378,7 +5373,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6BD28AB170BDB6B00A91AC1 /* MCOFramework.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
