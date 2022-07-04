@@ -571,10 +571,28 @@ static bool hasError(int errorCode)
             (errorCode != MAILIMAP_NO_ERROR_NON_AUTHENTICATED));
 }
 
+#ifdef _MSC_VER
+static bool isOnmail(String * hostName) {
+    if (!hostName) {
+        return false;
+    }
+    String * onmailKeyWord = String::uniquedStringWithUTF8Characters(".onmail.com");
+    if (!onmailKeyWord) {
+        return false;
+    }
+    return hostName->hasSuffix(onmailKeyWord);
+}
+#endif
+
 bool IMAPSession::checkCertificate()
 {
     if (!isCheckCertificateEnabled())
         return true;
+#ifdef _MSC_VER
+    if (isOnmail(hostname())) {
+        return true;
+    }
+#endif
     return mailcore::checkCertificate(mImap->imap_stream, hostname());
 }
 
