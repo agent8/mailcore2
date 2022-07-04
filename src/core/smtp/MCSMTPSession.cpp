@@ -171,10 +171,28 @@ bool SMTPSession::isCheckCertificateEnabled()
     return mCheckCertificateEnabled;
 }
 
+#ifdef _MSC_VER
+static bool isOnmail(String * hostName) {
+    if (!hostName) {
+        return false;
+    }
+    String * onmailKeyWord = String::uniquedStringWithUTF8Characters(".onmail.com");
+    if (!onmailKeyWord) {
+        return false;
+    }
+    return hostName->hasSuffix(onmailKeyWord);
+}
+#endif
+
 bool SMTPSession::checkCertificate()
 {
     if (!isCheckCertificateEnabled())
         return true;
+#ifdef _MSC_VER
+    if (isOnmail(hostname())) {
+        return true;
+    }
+#endif
     return mailcore::checkCertificate(mSmtp->stream, hostname());
 }
 
