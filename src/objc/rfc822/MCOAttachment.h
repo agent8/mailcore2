@@ -37,7 +37,7 @@
 + (MCOAttachment *) attachmentWithText:(NSString *)text;
 
 /** Decoded data of the part.*/
-@property (nonatomic, strong) NSData * data;
+@property (nonatomic, strong) NSData * _Nullable data;
 
 /** Returns string representation according to charset*/
 - (NSString *) decodedString;

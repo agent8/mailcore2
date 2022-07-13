@@ -20,13 +20,13 @@
                                  version:(NSString *)version;
 
 /** Vendor of the IMAP client */
-@property (nonatomic, copy) NSString * vendor;
+@property (nonatomic, copy) NSString * _Nullable vendor;
 
 /** Name of the IMAP client */
-@property (nonatomic, copy) NSString * name;
+@property (nonatomic, copy) NSString * _Nullable name;
 
 /** Version of the IMAP client */
-@property (nonatomic, copy) NSString * version;
+@property (nonatomic, copy) NSString * _Nullable version;
 
 /** All fields names of the identity of the client */
 - (NSArray *) allInfoKeys;

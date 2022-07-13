@@ -17,7 +17,7 @@
 @interface MCOIMAPNamespaceItem : NSObject <NSCopying>
 
 /** This is the prefix for this namespace item */
-@property (nonatomic, copy) NSString * prefix;
+@property (nonatomic, copy) NSString * _Nullable prefix;
 
 /** This is the delimiter of the path for this namespace item */
 @property (nonatomic, assign) char delimiter;

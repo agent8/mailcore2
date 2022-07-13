@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) MCOIMAPBaseOperationItemProgressBlock progress;
 
 /** Extra headers to request. Must set requestKind | IMAPMessagesRequestKindExtraHeaders */
-@property (nonatomic, copy) NSArray * extraHeaders;
+@property (nonatomic, copy) NSArray * _Nullable extraHeaders;
 
 /** 
  Starts the asynchronous fetch operation.

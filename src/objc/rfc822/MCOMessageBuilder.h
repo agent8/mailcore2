@@ -35,21 +35,21 @@
 @interface MCOMessageBuilder : MCOAbstractMessage <NSCopying>
 
 /** Main HTML content of the message.*/
-@property (nonatomic, copy, setter=setHTMLBody:) NSString * htmlBody;
+@property (nonatomic, copy, setter=setHTMLBody:) NSString * _Nullable htmlBody;
 
 /** Plain text content of the message.*/
-@property (nonatomic, copy) NSString * textBody;
+@property (nonatomic, copy) NSString * _Nullable textBody;
 
-@property (nonatomic, copy) MCOAttachment * extraBody;
+@property (nonatomic, copy) MCOAttachment * _Nullable extraBody;
 
 /** List of file attachments.*/
-@property (nonatomic, copy) NSArray * /* MCOAttachment */ attachments;
+@property (nonatomic, copy) NSArray * /* MCOAttachment */ _Nullable attachments;
 
 /** List of related file attachments (included as cid: link in the HTML part).*/
-@property (nonatomic, copy) NSArray * /* MCOAttachment */ relatedAttachments;
+@property (nonatomic, copy) NSArray * /* MCOAttachment */ _Nullable relatedAttachments;
 
 /** Prefix for the boundary identifier. Default value is nil.*/
-@property (nonatomic, copy) NSString * boundaryPrefix;
+@property (nonatomic, copy) NSString * _Nullable boundaryPrefix;
 
 /** Add an attachment.*/
 - (void) addAttachment:(MCOAttachment *)attachment;
