@@ -16,6 +16,7 @@
 		127F30A322F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
 		127F30AA22F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
 		127F30AD22F98D72008C2455 /* MCIMAPFolderReport.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
+		12A877B328869140004EF8F5 /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
 		12DFA6262864838000411975 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
 		2744B16A1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		2744B16B1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
@@ -5373,6 +5374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12A877B328869140004EF8F5 /* MCOFramework.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
