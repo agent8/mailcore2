@@ -2522,6 +2522,8 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
     msg_att_context->mLastFetchedSequenceNumber = mLastFetchedSequenceNumber;
 }
 
+static const long FETCH_MESSAGE_TIMEOUT = 600;      // 10 minutes
+
 IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequestKind requestKind, String * partID, bool fetchByUID,
                                             struct mailimap_set * imapset, IndexSet * uidsFilter, IndexSet * numbersFilter,
                                             uint64_t modseq, HashMap * mapping,
@@ -2717,7 +2719,9 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     
     mBodyProgressEnabled = false;
     vanished = NULL;
-    
+
+    const long timeBegin = time(NULL);
+
     if (fetchByUID) {
         if ((modseq != 0) && (mCondstoreEnabled || mQResyncEnabled)) {
             if (mQResyncEnabled) {
@@ -2747,7 +2751,9 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
             r = mailimap_fetch(mImap, imapset, fetch_type, &fetch_result);
         }
     }
-    
+
+    const long timeEnd = time(NULL);
+
     vanishedMessages = NULL;
     if (vanished != NULL) {
         vanishedMessages = indexSetFromSet(vanished->qr_known_uids);
@@ -2776,6 +2782,13 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
 //        return NULL;
 //    }
     else if (hasError(r)) {
+        if (r == MAILIMAP_ERROR_PARSE && (timeEnd - timeBegin) > FETCH_MESSAGE_TIMEOUT) {
+            MCLog("error parse, fetchMessages timed out");
+            mShouldDisconnect = true;
+            * pError = ErrorParse;
+            return NULL;
+        }
+
         if ((r == MAILIMAP_ERROR_PARSE || r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0) {
             // For AT&T account, the response is NO, but the body struct is returned.
             // No need to release the fetch_result. No need to do the MboxMailWorkaround.
