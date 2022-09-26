@@ -2522,7 +2522,7 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
     msg_att_context->mLastFetchedSequenceNumber = mLastFetchedSequenceNumber;
 }
 
-static const long FETCH_MESSAGE_TIMEOUT = 600;      // 10 minutes
+static const long FETCH_MESSAGE_TIMEOUT = 300;      // 5 minutes
 
 IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequestKind requestKind, String * partID, bool fetchByUID,
                                             struct mailimap_set * imapset, IndexSet * uidsFilter, IndexSet * numbersFilter,
