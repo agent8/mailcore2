@@ -116,6 +116,10 @@ namespace mailcore {
         virtual Array * /* IMAPMessage */ fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesRequestKind requestKind,
                                                                      IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                                      Array * extraHeaders, ErrorCode * pError);
+        virtual Array * /* IMAPMessage */ fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesRequestKind requestKind,
+                                                                     String * partID,
+                                                                     IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                                                     Array * extraHeaders, ErrorCode * pError);
 
         //Weicheng
         virtual Array * /* IMAPMessage */ fetchMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,

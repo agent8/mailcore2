@@ -116,8 +116,8 @@ void IMAPFetchMessagesOperation::main()
             }
         }
         else {
-            mMessages = session()->session()->fetchMessagesByUIDWithExtraHeaders(folder(), mKind, mPartID, mIndexes, this,
-                                                                                 mExtraHeaders, &error);
+            mMessages = session()->session()->fetchMessagesByUIDAndCheck(folder(), mKind, mPartID, mIndexes, this,
+                                                                         mExtraHeaders, &error);
         }
     }
     else {
