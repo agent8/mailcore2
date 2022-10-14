@@ -16,6 +16,18 @@
 
 using namespace mailcore;
 
+@implementation MCOIMAPFetchMessageResult
+
+- (instancetype) init {
+    self = [super init];
+    _errorCode = MCOErrorNone;
+    _messages = nil;
+    return self;
+}
+
+@end
+
+
 @interface MCOIMAPSyncSession ()
 
 
@@ -196,5 +208,48 @@ MCO_OBJC_SYNTHESIZE_BOOL(setVoIPEnabled, isVoIPEnabled)
     _session->disconnect();
 }
 
+- (MCOIMAPFetchMessageResult *) fetchMessagesByNumber:(MCOIndexSet *)numbers
+                                               folder:(NSString *)folder
+                                          requestKind:(MCOIMAPMessagesRequestKind)requestKind
+                                               partID:(NSString *)partID
+                                         extraHeaders:(NSArray *)extraHeaders
+{
+    mailcore::String * mcFolder = [folder mco_mcString];
+    IMAPMessagesRequestKind mcRequestKind = (IMAPMessagesRequestKind) requestKind;
+    mailcore::String * mcPartID = [partID mco_mcString];
+    mailcore::IndexSet * mcNumbers = MCO_FROM_OBJC(mailcore::IndexSet, numbers);
+    mailcore::Array * mcExtraHeaders = [extraHeaders mco_mcArray];
+    mailcore::ErrorCode mcError = mailcore::ErrorNone;
+
+    mailcore::Array * mcMessages = _session->fetchMessagesByNumberWithExtraHeaders(mcFolder, mcRequestKind, mcPartID, mcNumbers, NULL, mcExtraHeaders, &mcError);
+
+    MCOIMAPFetchMessageResult * result = [MCOIMAPFetchMessageResult new];
+    result.errorCode = (MCOErrorCode)mcError;
+    result.messages = [NSArray mco_arrayWithMCArray:mcMessages];
+
+    return result;
+}
+
+- (MCOIMAPFetchMessageResult *) fetchMessagesByUID:(MCOIndexSet *)uids
+                                            folder:(NSString *)folder
+                                       requestKind:(MCOIMAPMessagesRequestKind)requestKind
+                                            partID:(NSString *)partID
+                                      extraHeaders:(NSArray *)extraHeaders
+{
+    mailcore::String * mcFolder = [folder mco_mcString];
+    IMAPMessagesRequestKind mcRequestKind = (IMAPMessagesRequestKind) requestKind;
+    mailcore::String * mcPartID = [partID mco_mcString];
+    mailcore::IndexSet * mcUids = MCO_FROM_OBJC(mailcore::IndexSet, uids);
+    mailcore::Array * mcExtraHeaders = [extraHeaders mco_mcArray];
+    mailcore::ErrorCode mcError = mailcore::ErrorNone;
+
+    mailcore::Array * mcMessages = _session->fetchMessagesByUIDWithExtraHeaders(mcFolder, mcRequestKind, mcPartID, mcUids, NULL, mcExtraHeaders, &mcError);
+
+    MCOIMAPFetchMessageResult * result = [MCOIMAPFetchMessageResult new];
+    result.errorCode = (MCOErrorCode)mcError;
+    result.messages = [NSArray mco_arrayWithMCArray:mcMessages];
+
+    return result;
+}
 
 @end

@@ -17,6 +17,7 @@
 @class MCOIMAPOperation;
 @class MCOIMAPNamespace;
 @class MCOIMAPIdentity;
+@class MCOIndexSet;
 
 /**
  This is the main IMAP class from which all operations are created
@@ -24,6 +25,12 @@
  After calling a method that returns an operation you must call start: on the instance
  to begin the operation.
 */
+
+@interface MCOIMAPFetchMessageResult : NSObject
+@property (nonatomic, assign) MCOErrorCode errorCode;
+@property (nonatomic, copy) NSArray * messages;
+@end
+
 
 @interface MCOIMAPSyncSession : NSObject
 
@@ -114,6 +121,18 @@
 - (MCOErrorCode) connect;
                          
 - (void) disconnect;
+
+- (MCOIMAPFetchMessageResult *) fetchMessagesByNumber:(MCOIndexSet *)numbers
+                                               folder:(NSString *)folder
+                                          requestKind:(MCOIMAPMessagesRequestKind)requestKind
+                                               partID:(NSString *)partID
+                                         extraHeaders:(NSArray *)extraHeaders;
+
+- (MCOIMAPFetchMessageResult *) fetchMessagesByUID:(MCOIndexSet *)uids
+                                            folder:(NSString *)folder
+                                       requestKind:(MCOIMAPMessagesRequestKind)requestKind
+                                            partID:(NSString *)partID
+                                      extraHeaders:(NSArray *)extraHeaders;
 
 @end
 
