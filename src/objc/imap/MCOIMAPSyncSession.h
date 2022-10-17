@@ -18,6 +18,7 @@
 @class MCOIMAPNamespace;
 @class MCOIMAPIdentity;
 @class MCOIndexSet;
+@class MCOIMAPFolderStatus;
 
 /**
  This is the main IMAP class from which all operations are created
@@ -31,6 +32,10 @@
 @property (nonatomic, copy) NSArray * messages;
 @end
 
+@interface MCOIMAPFolderStatusResult : NSObject
+@property (nonatomic, assign) MCOErrorCode errorCode;
+@property (nonatomic, copy) MCOIMAPFolderStatus * status;
+@end
 
 @interface MCOIMAPSyncSession : NSObject
 
@@ -119,8 +124,16 @@
 - (MCOErrorCode) loginIfNeeded; //not used
 
 - (MCOErrorCode) connect;
-                         
+
 - (void) disconnect;
+
+- (MCOErrorCode) select:(NSString *)folder;
+
+- (MCOErrorCode) selectIfNeeded:(NSString *)folder;
+
+- (MCOIMAPFolderStatusResult *) folderStatus:(NSString *)folder;
+
+- (unsigned int) lastFolderMessageCount;
 
 - (MCOIMAPFetchMessageResult *) fetchMessagesByNumber:(MCOIndexSet *)numbers
                                                folder:(NSString *)folder

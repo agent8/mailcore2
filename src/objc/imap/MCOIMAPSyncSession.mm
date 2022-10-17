@@ -28,6 +28,17 @@ using namespace mailcore;
 @end
 
 
+@implementation MCOIMAPFolderStatusResult
+
+- (instancetype) init {
+    self = [super init];
+    _errorCode = MCOErrorNone;
+    _status = nil;
+    return self;
+}
+
+@end
+
 @interface MCOIMAPSyncSession ()
 
 
@@ -206,6 +217,34 @@ MCO_OBJC_SYNTHESIZE_BOOL(setVoIPEnabled, isVoIPEnabled)
                          
 - (void) disconnect {
     _session->disconnect();
+}
+
+- (MCOErrorCode) select:(NSString *)folder {
+    mailcore::String * mcFolder = [folder mco_mcString];
+    ErrorCode mcError = ErrorNone;
+    _session->select(mcFolder, &mcError);
+    return (MCOErrorCode)mcError;
+}
+
+- (MCOErrorCode) selectIfNeeded:(NSString *)folder {
+    mailcore::String * mcFolder = [folder mco_mcString];
+    ErrorCode mcError = ErrorNone;
+    _session->selectIfNeeded(mcFolder, &mcError);
+    return (MCOErrorCode)mcError;
+}
+
+- (MCOIMAPFolderStatusResult *) folderStatus:(NSString *)folder {
+    mailcore::String * mcFolder = [folder mco_mcString];
+    ErrorCode mcError = ErrorNone;
+    IMAPFolderStatus * mcFolderStatus = _session->folderStatus(mcFolder, &mcError);
+    MCOIMAPFolderStatusResult * result = [MCOIMAPFolderStatusResult new];
+    result.errorCode = (MCOErrorCode)mcError;
+    result.status = MCO_TO_OBJC(mcFolderStatus);
+    return result;
+}
+
+- (unsigned int) lastFolderMessageCount {
+    return _session->lastFolderMessageCount();
 }
 
 - (MCOIMAPFetchMessageResult *) fetchMessagesByNumber:(MCOIndexSet *)numbers
