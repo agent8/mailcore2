@@ -2836,6 +2836,13 @@ Array * IMAPSession::fetchMessagesByUID(String * folder, IMAPMessagesRequestKind
     return fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
 }
 
+Array * IMAPSession::fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesRequestKind requestKind,
+                                                IndexSet * uids, IMAPProgressCallback * progressCallback,
+                                                Array * extraHeaders, ErrorCode * pError)
+{
+    return fetchMessagesByUIDAndCheck(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
+}
+
 // respMsgs must be an array of IMAPMessage
 // the returned vector is sorted
 static std::vector<uint32_t> getLostUids(IndexSet * reqUids, Array * respMsgs)
@@ -2906,6 +2913,7 @@ static int compareImapMsgByUid(void * a, void * b, void * context)
 // If any, retry to fetch the lost messages one by one.
 // Max count of messages to retry is 10.
 Array * IMAPSession::fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesRequestKind requestKind,
+                                                String * partID,
                                                 IndexSet * uids, IMAPProgressCallback * progressCallback,
                                                 Array * extraHeaders, ErrorCode * pError)
 {
@@ -2920,7 +2928,7 @@ Array * IMAPSession::fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesReq
         return respMsgs;
     }
 
-    respMsgs = fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, uids, progressCallback, extraHeaders, pError);
+    respMsgs = fetchMessagesByUIDWithExtraHeaders(folder, requestKind, partID, uids, progressCallback, extraHeaders, pError);
     if (*pError != ErrorNone && *pError != ErrorFetch) {
         return respMsgs;
     }
@@ -2938,7 +2946,7 @@ Array * IMAPSession::fetchMessagesByUIDAndCheck(String * folder, IMAPMessagesReq
         clearStreamBufferOfLastCommand();
         IndexSet * singleUidSet = IndexSet::indexSetWithIndex(*r_it);
         ErrorCode errCode = ErrorNone;
-        Array * msgs = fetchMessagesByUIDWithExtraHeaders(folder, requestKind, NULL, singleUidSet, progressCallback, extraHeaders, &errCode);
+        Array * msgs = fetchMessagesByUIDWithExtraHeaders(folder, requestKind, partID, singleUidSet, progressCallback, extraHeaders, &errCode);
         if (msgs != nullptr && msgs->count() == 1) {
             if (respMsgs == nullptr) {
                 respMsgs = Array::array();

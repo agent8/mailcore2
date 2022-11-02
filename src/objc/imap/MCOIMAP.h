@@ -46,5 +46,6 @@
 #import <MailCore/MCOIMAPCustomCommandOperation.h>
 #import <MailCore/MCOIMAPCheckAccountOperation.h>
 #import <MailCore/MCOIMAPSyncSession.h>
+#import <MailCore/MCOIMAPPartParser.h>
 
 #endif

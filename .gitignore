@@ -52,3 +52,5 @@ build-windows/mailcore2/test/x64/Debug
 cocoapods-build
 
 .vs
+.vscode/
+

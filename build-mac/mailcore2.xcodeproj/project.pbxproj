@@ -16,7 +16,6 @@
 		127F30A322F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
 		127F30AA22F98CC5008C2455 /* MCIMAPFolderReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127F30A022F98CC4008C2455 /* MCIMAPFolderReport.cpp */; };
 		127F30AD22F98D72008C2455 /* MCIMAPFolderReport.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
-		12A877B328869140004EF8F5 /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
 		12DFA6262864838000411975 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
 		2744B16A1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
 		2744B16B1A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2744B1681A7A4637009E9E67 /* MCMXRecordResolverOperation.cpp */; };
@@ -730,6 +729,18 @@
 		AA20B548286D589900C5EF40 /* MCOIMAPSyncSession.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = 12DFA6242864838000411975 /* MCOIMAPSyncSession.h */; };
 		AA3D4DB9286B01820002E877 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
 		AA3D4EC3286B10070002E877 /* MCOIMAPSyncSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */; };
+		AA90937228F6672D00E154D3 /* MCOIMAPPartParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = AA90936C28F6672D00E154D3 /* MCOIMAPPartParser.mm */; };
+		AA90937328F6672D00E154D3 /* MCOIMAPPartParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = AA90936C28F6672D00E154D3 /* MCOIMAPPartParser.mm */; };
+		AA90937428F6672D00E154D3 /* MCOIMAPPartParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = AA90936C28F6672D00E154D3 /* MCOIMAPPartParser.mm */; };
+		AA90937528F6674E00E154D3 /* MCOIMAPPartParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA90937128F6672D00E154D3 /* MCOIMAPPartParser.h */; };
+		AA90937628F6676700E154D3 /* MCOIMAPPartParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AA90937128F6672D00E154D3 /* MCOIMAPPartParser.h */; };
+		AA90937728F6677600E154D3 /* MCOIMAPPartParser.h in Copy Files (244 items) */ = {isa = PBXBuildFile; fileRef = AA90937128F6672D00E154D3 /* MCOIMAPPartParser.h */; };
+		AA90937828F6679F00E154D3 /* MCOIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
+		AA90937928F667A700E154D3 /* MCOIMAPCheckAccountOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */; };
+		AA90937A28F667CE00E154D3 /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		AA90937B28F667E500E154D3 /* MCOIMAPCustomCommandOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A1B491EA1C0C5F8700699CF5 /* MCOIMAPCustomCommandOperation.h */; };
+		AA90937C28F6684500E154D3 /* MCIMAPFolderReport.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 127F30A122F98CC5008C2455 /* MCIMAPFolderReport.h */; };
+		AAF2B10F28869522003AEA1E /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
 		BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */ = {isa = PBXBuildFile; fileRef = BD49963519FEC6DD000945BC /* ConvertUTF.c */; };
 		BD6272981A13FF2A00129AA8 /* test-all-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD6272961A13FF2A00129AA8 /* test-all-mac.mm */; };
@@ -1605,6 +1616,7 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AA90937728F6677600E154D3 /* MCOIMAPPartParser.h in Copy Files (244 items) */,
 				AA20B547286D589900C5EF40 /* MCOSMTPSyncSession.h in Copy Files (244 items) */,
 				AA20B548286D589900C5EF40 /* MCOIMAPSyncSession.h in Copy Files (244 items) */,
 				5C68468C239E021F001B8965 /* MCHTMLRenderer.h in Copy Files (244 items) */,
@@ -1877,6 +1889,9 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AA90937B28F667E500E154D3 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
+				AA90937828F6679F00E154D3 /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
+				AA90937528F6674E00E154D3 /* MCOIMAPPartParser.h in CopyFiles */,
 				AA20B544286D584700C5EF40 /* MCOIMAPSyncSession.h in CopyFiles */,
 				AA20B53F286D582600C5EF40 /* MCOSMTPSyncSession.h in CopyFiles */,
 				5C713934238FE89B00E2D64B /* MCHTMLRenderer.h in CopyFiles */,
@@ -2125,6 +2140,10 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				AA90937C28F6684500E154D3 /* MCIMAPFolderReport.h in CopyFiles */,
+				AA90937A28F667CE00E154D3 /* MCOIMAPCustomCommandOperation.h in CopyFiles */,
+				AA90937928F667A700E154D3 /* MCOIMAPCheckAccountOperation.h in CopyFiles */,
+				AA90937628F6676700E154D3 /* MCOIMAPPartParser.h in CopyFiles */,
 				AA20B545286D587000C5EF40 /* MCOSMTPSyncSession.h in CopyFiles */,
 				AA20B546286D587000C5EF40 /* MCOIMAPSyncSession.h in CopyFiles */,
 				F38221A61C7B62E900E00721 /* MCONNTPPostOperation.h in CopyFiles */,
@@ -2485,6 +2504,8 @@
 		A1D35B521C8A832600D3EC11 /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "../../libetpan/build-mac/libetpan.xcodeproj"; sourceTree = "<group>"; };
 		A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPCheckAccountOperation.h; sourceTree = "<group>"; };
 		A1FA45071C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPCheckAccountOperation.mm; sourceTree = "<group>"; };
+		AA90936C28F6672D00E154D3 /* MCOIMAPPartParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPPartParser.mm; sourceTree = "<group>"; };
+		AA90937128F6672D00E154D3 /* MCOIMAPPartParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPPartParser.h; sourceTree = "<group>"; };
 		BD49963519FEC6DD000945BC /* ConvertUTF.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ConvertUTF.c; sourceTree = "<group>"; };
 		BD49963619FEC6DD000945BC /* ConvertUTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertUTF.h; sourceTree = "<group>"; };
 		BD6272961A13FF2A00129AA8 /* test-all-mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "test-all-mac.mm"; sourceTree = "<group>"; };
@@ -4043,6 +4064,8 @@
 		F8EA941316BAED500011AC6F /* imap */ = {
 			isa = PBXGroup;
 			children = (
+				AA90937128F6672D00E154D3 /* MCOIMAPPartParser.h */,
+				AA90936C28F6672D00E154D3 /* MCOIMAPPartParser.mm */,
 				12DFA61F2864838000411975 /* MCOIMAPSyncSession.mm */,
 				12DFA6242864838000411975 /* MCOIMAPSyncSession.h */,
 				A1FA45061C1AEAB200BAFD7E /* MCOIMAPCheckAccountOperation.h */,
@@ -4793,6 +4816,7 @@
 				3D9C2E201B96637E008F57C6 /* MCJSONParser.cpp in Sources */,
 				3D9C2E211B96637E008F57C6 /* MCONNTPOperation.mm in Sources */,
 				3D9C2E221B96637E008F57C6 /* MCObjectMac.mm in Sources */,
+				AA90937428F6672D00E154D3 /* MCOIMAPPartParser.mm in Sources */,
 				3D9C2E231B96637E008F57C6 /* MCAutoreleasePoolMac.mm in Sources */,
 				3D9C2E241B96637E008F57C6 /* MCOMailProvider.mm in Sources */,
 				3D9C2E251B96637E008F57C6 /* MCOMailProvidersManager.mm in Sources */,
@@ -5059,6 +5083,7 @@
 				84D73768199BFFFC005124E5 /* MCONNTPOperation.mm in Sources */,
 				C668E2C71735C8D500A2BB47 /* MCObjectMac.mm in Sources */,
 				C668E2CC1735CB8900A2BB47 /* MCAutoreleasePoolMac.mm in Sources */,
+				AA90937228F6672D00E154D3 /* MCOIMAPPartParser.mm in Sources */,
 				C6CF62B9175324CE006398B9 /* MCOMailProvider.mm in Sources */,
 				C6CF62BB175324CE006398B9 /* MCOMailProvidersManager.mm in Sources */,
 				84D7378F199C02A8005124E5 /* MCONNTPDisconnectOperation.mm in Sources */,
@@ -5346,6 +5371,7 @@
 				C668E2C81735C8D500A2BB47 /* MCObjectMac.mm in Sources */,
 				C668E2CD1735CB8900A2BB47 /* MCAutoreleasePoolMac.mm in Sources */,
 				C6CF62BA175324CE006398B9 /* MCOMailProvider.mm in Sources */,
+				AA90937328F6672D00E154D3 /* MCOIMAPPartParser.mm in Sources */,
 				C6CF62BC175324CE006398B9 /* MCOMailProvidersManager.mm in Sources */,
 				BD7C0F471B545CE2003337DF /* MCZipMac.mm in Sources */,
 				84D73790199C02A8005124E5 /* MCONNTPDisconnectOperation.mm in Sources */,
@@ -5374,7 +5400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12A877B328869140004EF8F5 /* MCOFramework.mm in Sources */,
+				AAF2B10F28869522003AEA1E /* MCOFramework.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
