@@ -197,7 +197,7 @@ struct sortData {
     void * context;
 };
 
-#if defined(__MACH__) || defined(_MSC_VER)
+#if defined(__MACH__) || defined(_MSC_VER) || defined(ANDROID) || defined(__ANDROID__)
 static int sortCompare(struct sortData * data, Object ** pa, Object ** pb)
 #else
 static int sortCompare(Object ** pa, Object ** pb, struct sortData * data)
