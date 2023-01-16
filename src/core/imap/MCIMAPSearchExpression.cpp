@@ -376,6 +376,14 @@ IMAPSearchExpression * IMAPSearchExpression::searchNot(IMAPSearchExpression * no
     return (IMAPSearchExpression *) expr->autorelease();
 }
 
+IMAPSearchExpression * IMAPSearchExpression::searchRaw(String * searchExpr)
+{
+    IMAPSearchExpression * expr = new IMAPSearchExpression();
+    expr->mKind = IMAPSearchKindRaw;
+    MC_SAFE_REPLACE_COPY(String, expr->mValue, searchExpr);
+    return (IMAPSearchExpression *) expr->autorelease();
+}
+
 IMAPSearchKind IMAPSearchExpression::kind()
 {
     return mKind;
