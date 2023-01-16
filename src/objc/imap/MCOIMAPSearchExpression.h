@@ -360,6 +360,8 @@
  */
 + (MCOIMAPSearchExpression *) searchNot:(MCOIMAPSearchExpression *)expression;
 
++ (MCOIMAPSearchExpression *) searchRaw:(NSString *)expr;
+
 @end
 
 #endif
