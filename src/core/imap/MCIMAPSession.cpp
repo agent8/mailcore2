@@ -3763,6 +3763,10 @@ static struct mailimap_search_key * searchKeyFromSearchExpression(IMAPSearchExpr
         {
             return mailimap_search_key_new_not(searchKeyFromSearchExpression(expression->leftExpression()));
         }
+        case IMAPSearchKindRaw:
+        {
+            return mailimap_search_key_new_raw(strdup(expression->value()->UTF8Characters()));
+        }
 
         default:
         MCAssert(0);

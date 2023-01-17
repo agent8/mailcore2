@@ -239,4 +239,9 @@
     return MCO_TO_OBJC(result);
 }
 
++ (MCOIMAPSearchExpression *) searchRaw:(NSString *)expr
+{
+    return MCO_TO_OBJC(mailcore::IMAPSearchExpression::searchRaw([expr mco_mcString]));
+}
+
 @end
