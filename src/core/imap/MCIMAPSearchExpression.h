@@ -62,6 +62,7 @@ namespace mailcore {
         static IMAPSearchExpression * searchAnd(IMAPSearchExpression * left, IMAPSearchExpression * right);
         static IMAPSearchExpression * searchOr(IMAPSearchExpression * left, IMAPSearchExpression * right);
         static IMAPSearchExpression * searchNot(IMAPSearchExpression * notExpr);
+        static IMAPSearchExpression * searchRaw(String * expr);
         
         
     public: // subclass behavior
