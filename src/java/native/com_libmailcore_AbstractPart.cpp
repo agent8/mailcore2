@@ -10,6 +10,8 @@ using namespace mailcore;
 #define javaType nativeType
 
 MC_JAVA_SYNTHESIZE_SCALAR(jint, PartType, setPartType, partType)
+MC_JAVA_SYNTHESIZE_SCALAR(jint, Encoding, setEncoding, encoding)
+MC_JAVA_SYNTHESIZE_SCALAR(jlong, long, setSize, size)
 MC_JAVA_SYNTHESIZE_STRING(setFilename, filename)
 MC_JAVA_SYNTHESIZE_STRING(setMimeType, mimeType)
 MC_JAVA_SYNTHESIZE_STRING(setCharset, charset)
@@ -59,6 +61,15 @@ JNIEXPORT jobject JNICALL Java_com_libmailcore_AbstractPart_allContentTypeParame
 {
     MC_POOL_BEGIN;
     jobject result = MC_JAVA_BRIDGE_GET(allContentTypeParametersNames);
+    MC_POOL_END;
+    return result;
+}
+
+JNIEXPORT jlong JNICALL Java_com_libmailcore_AbstractPart_decodedSize
+  (JNIEnv * env, jobject obj)
+{
+    MC_POOL_BEGIN;
+    jlong result = MC_JAVA_BRIDGE_GET_SCALAR(jlong, decodedSize);
     MC_POOL_END;
     return result;
 }
