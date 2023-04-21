@@ -193,6 +193,21 @@ JNIEXPORT jstring JNICALL Java_com_libmailcore_AbstractPart_contentTypeParameter
 JNIEXPORT jobject JNICALL Java_com_libmailcore_AbstractPart_allContentTypeParametersNames
   (JNIEnv *, jobject);
 
+JNIEXPORT void JNICALL Java_com_libmailcore_AbstractPart_setSize
+  (JNIEnv *, jobject, jlong);  
+
+JNIEXPORT jlong JNICALL Java_com_libmailcore_AbstractPart_size
+  (JNIEnv *, jobject);  
+
+JNIEXPORT void JNICALL Java_com_libmailcore_AbstractPart_setEncoding
+  (JNIEnv *, jobject, jint);  
+
+JNIEXPORT jint JNICALL Java_com_libmailcore_AbstractPart_encoding
+  (JNIEnv *, jobject);  
+
+JNIEXPORT jlong JNICALL Java_com_libmailcore_AbstractPart_decodedSize
+  (JNIEnv *, jobject);      
+
 #ifdef __cplusplus
 }
 #endif
