@@ -2773,6 +2773,9 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
 //        return NULL;
 //    }
     else if (hasError(r)) {
+        if (r == MAILIMAP_ERROR_PARSE) {
+            clearStreamBufferOfLastCommand();
+        }
         bool fetchOnlyUid = (requestKind == IMAPMessagesRequestKindUid ||
                              requestKind == (IMAPMessagesRequestKindUid | IMAPMessagesRequestKindGmailMessageID));
         if ((r == MAILIMAP_ERROR_PARSE || r == MAILIMAP_ERROR_FETCH || r == MAILIMAP_ERROR_UID_FETCH) && messages->count() > 0 && !fetchOnlyUid) {
