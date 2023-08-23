@@ -7,52 +7,6 @@
 //
 
 #import "MCOMessageView.h"
-#import "MCOCIDURLProtocol.h"
-
-static NSString * mainJavascript = @"\
-var imageElements = function() {\
-	var imageNodes = document.getElementsByTagName('img');\
-	return [].slice.call(imageNodes);\
-};\
-\
-var findCIDImageURL = function() {\
-	var images = imageElements();\
-	\
-	var imgLinks = [];\
-	for (var i = 0; i < images.length; i++) {\
-		var url = images[i].getAttribute('src');\
-		if (url.indexOf('cid:') == 0 || url.indexOf('x-mailcore-image:') == 0)\
-			imgLinks.push(url);\
-	}\
-	return JSON.stringify(imgLinks);\
-};\
-\
-var replaceImageSrc = function(info) {\
-	var images = imageElements();\
-	\
-	for (var i = 0; i < images.length; i++) {\
-		var url = images[i].getAttribute('src');\
-		if (url.indexOf(info.URLKey) == 0) {\
-			images[i].setAttribute('src', info.LocalPathKey);\
-			break;\
-		}\
-	}\
-};\
-";
-
-static NSString * mainStyle = @"\
-body {\
-  font-family: Helvetica;\
-  font-size: 14px;\
-  word-wrap: break-word;\
-  -webkit-text-size-adjust:none;\
-  -webkit-nbsp-mode: space;\
-}\
-\
-pre {\
-  white-space: pre-wrap;\
-}\
-";
 
 @interface MCOMessageView () <MCOHTMLRendererIMAPDelegate>
 
@@ -62,7 +16,7 @@ pre {\
     UIWebView * _webView;
     NSString * _folder;
     MCOAbstractMessage * _message;
-    id <MCOMessageViewDelegate> _delegate;
+    __weak id <MCOMessageViewDelegate> _delegate;
     BOOL _prefetchIMAPImagesEnabled;
     BOOL _prefetchIMAPAttachmentsEnabled;
 }
@@ -76,27 +30,27 @@ pre {\
 {
     self = [super initWithFrame:frame];
     
-    _webView = [[UIWebView alloc] initWithFrame:[self bounds]];
-    [_webView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
-    [_webView setDelegate:self];
-    [self addSubview:_webView];
+    if(self) {
+        _webView = [[UIWebView alloc] initWithFrame:[self bounds]];
+        [_webView setAutoresizingMask:(UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth)];
+        [_webView setDelegate:self];
+        
+        [self addSubview:_webView];
+    }
     
     return self;
 }
 
 - (void) dealloc
 {
-    [_message release];
-    [_folder release];
-    [_webView release];
-    
-    [super dealloc];
+    _message = nil;
+    _folder = nil;
+    _webView = nil;
 }
 
 - (void) setMessage:(MCOAbstractMessage *)message
 {
-    [_message release];
-    _message = [message retain];
+    _message = message;
     
     [_webView stopLoading];
     [self _refresh];
@@ -135,17 +89,31 @@ pre {\
 	}
 	
 	NSMutableString * html = [NSMutableString string];
-    [html appendFormat:@"<html><head><script>%@</script><style>%@</style></head>"
-        @"<body>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'>"
-        @"</iframe></html>", mainJavascript, mainStyle, content];
+	NSURL * jsURL = [[NSBundle mainBundle] URLForResource:@"MCOMessageViewScript" withExtension:@"js"];
+	[html appendFormat:@"<html><head><script src=\"%@\"></script></head><body'>%@</body><iframe src='x-mailcore-msgviewloaded:' style='width: 0px; height: 0px; border: none;'></iframe></html>",
+	 [jsURL absoluteString], content];
 	[_webView loadHTMLString:html baseURL:nil];
+}
+
+- (BOOL) _isCID:(NSURL *)url
+{
+	NSString *theScheme = [url scheme];
+	if ([theScheme caseInsensitiveCompare:@"cid"] == NSOrderedSame)
+        return YES;
+    return NO;
+}
+
+- (BOOL) _isXMailcoreImage:(NSURL *)url
+{
+	NSString *theScheme = [url scheme];
+	if ([theScheme caseInsensitiveCompare:@"x-mailcore-image"] == NSOrderedSame)
+        return YES;
+    return NO;
 }
 
 - (void) _loadImages
 {
 	NSString * result = [_webView stringByEvaluatingJavaScriptFromString:@"findCIDImageURL()"];
-    NSLog(@"----------");
-    NSLog(@"%@", result);
 	NSData * data = [result dataUsingEncoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	NSArray * imagesURLStrings = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
@@ -155,10 +123,12 @@ pre {\
 		NSURL * url;
 		
 		url = [NSURL URLWithString:urlString];
-		if ([MCOCIDURLProtocol isCID:url]) {
+		if ([self _isCID:url]) {
+            NSLog(@"url is cidurl:%@", url);
 			part = [self _partForCIDURL:url];
 		}
-		else if ([MCOCIDURLProtocol isXMailcoreImage:url]) {
+		else if ([self _isXMailcoreImage:url]) {
+            NSLog(@"url is x-mailcore-img:%@", url);
 			NSString * specifier = [url resourceSpecifier];
 			NSString * partUniqueID = specifier;
 			part = [self _partForUniqueID:partUniqueID];
@@ -172,8 +142,8 @@ pre {\
 		
 		void (^replaceImages)(NSError *error) = ^(NSError *error) {
 			NSData * downloadedData = [[self delegate] MCOMessageView:self dataForPartWithUniqueID:partUniqueID];
-			NSData * previewData = [[self delegate] MCOMessageView:self previewForData:downloadedData isHTMLInlineImage:[MCOCIDURLProtocol isCID:url]];
-			NSString * filename = [NSString stringWithFormat:@"%u", (unsigned int) downloadedData.hash];
+			NSData * previewData = [[self delegate] MCOMessageView:self previewForData:downloadedData isHTMLInlineImage:[self _isCID:url]];
+			NSString * filename = [NSString stringWithFormat:@"%lu", (unsigned long)urlString.hash];
 			NSURL * cacheURL = [self _cacheJPEGImageData:previewData withFilename:filename];
 			
 			NSDictionary * args = @{ @"URLKey": urlString, @"LocalPathKey": cacheURL.absoluteString };
@@ -286,7 +256,7 @@ pre {\
     }
     
     if (![[self delegate] respondsToSelector:@selector(MCOMessageView:canPreviewPart:)]) {
-        return NO;
+        return false;
     }
     return [[self delegate] MCOMessageView:self canPreviewPart:part];
 }

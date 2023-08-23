@@ -22,6 +22,7 @@ extern NSString * const OAuthEnabledKey;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *hostnameTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *fetchFullMessageSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *useOAuth2Switch;
 
 @property (nonatomic, weak) id<SettingsViewControllerDelegate> delegate;
 - (IBAction)done:(id)sender;

@@ -8,8 +8,6 @@
 
 #include <MailCore/MailCore.h>
 
-#import <UIKit/UIKit.h>
-
 @protocol MCOMessageViewDelegate;
 
 @interface MCOMessageView : UIView <UIWebViewDelegate>
@@ -17,7 +15,7 @@
 @property (nonatomic, copy) NSString * folder;
 @property (nonatomic, strong) MCOAbstractMessage * message;
 
-@property (nonatomic, assign) id <MCOMessageViewDelegate> delegate;
+@property (nonatomic, weak) id <MCOMessageViewDelegate> delegate;
 
 @property (nonatomic, assign) BOOL prefetchIMAPImagesEnabled;
 @property (nonatomic, assign) BOOL prefetchIMAPAttachmentsEnabled;

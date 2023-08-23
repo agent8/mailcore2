@@ -704,24 +704,18 @@ void IMAPSession::connect(ErrorCode * pError)
             * pError = ErrorTLSNotAvailable;
             goto close;
         }
-        if (!checkCertificate()) {
-            MCLog("StartTLS ssl connect certificate ERROR %d", r);
-            * pError = ErrorCertificate;
-            goto close;
-        }
-
         break;
 
         case ConnectionTypeTLS:
         r = mailimap_ssl_connect_voip(mImap, MCUTF8(mHostname), mPort, isVoIPEnabled());
-        MCLog("TLS ssl connect %s %u %u", MCUTF8(mHostname), mPort, r);
+        MCLog("ssl connect %s %u %u", MCUTF8(mHostname), mPort, r);
         if (hasError(r)) {
             MCLog("connect error %i", r);
             * pError = ErrorConnection;
             goto close;
         }
         if (!checkCertificate()) {
-            MCLog("TLS ssl connect certificate ERROR %d", r);
+            MCLog("ssl connect certificate ERROR %d", r);
             * pError = ErrorCertificate;
             goto close;
         }
