@@ -155,6 +155,8 @@ typedef NS_OPTIONS(NSInteger, MCOIMAPMessagesRequestKind) {
     MCOIMAPMessagesRequestKindPlainBody      = 1 << 11,
     /** Bcc field, FullHeaders not include Bcc */
     MCOIMAPMessagesRequestKindHeaderBcc      = 1 << 12,
+    /** Unlike Full headers this will fetch all the non-parsed headers */
+    MCOIMAPMessagesRequestKindAllHeaders     = 1 << 13,
 };
 
 /** It defines the behavior of the STORE flags request.*/
