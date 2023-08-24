@@ -38,4 +38,6 @@ public class IMAPMessagesRequestKind {
     public final static int IMAPMessagesRequestKindPlainBody      = 1 << 11;
     /** Bcc field, FullHeaders not include Bcc */
     public final static int IMAPMessagesRequestKindHeaderBcc      = 1 << 12;
+    /** Request all headers */
+    public final static int IMAPMessagesRequestKindAllHeaders     = 1 << 13;
 }
