@@ -1,5 +1,6 @@
 #if _MSC_VER
 #include <libetpan/win_etpan.h>
+#include <fstream>
 #endif
 #include "MCWin32.h" // should be first include.
 
@@ -546,6 +547,53 @@ static void mmapDeallocator(char * bytes, unsigned int length) {
     }
 }
 
+#if defined(_MSC_VER)
+
+Data * Data::dataWithContentsOfFile(String * filename)
+{
+    if (!filename) {
+        return NULL;
+    }
+
+    const char * filenameUtf8 = filename->fileSystemRepresentation();
+    if (!filenameUtf8) {
+        return NULL;
+    }
+
+    try {
+        std::ifstream fs;
+        fs.open(filenameUtf8, std::ios::in | std::ios::binary);
+        if (!fs.is_open()) {
+            return NULL;
+        }
+
+        fs.seekg(0, std::ios::end);
+        const int length = fs.tellg();
+        if (length < 1) {
+            fs.close();
+            return NULL;
+        }
+
+        char * buf = new char[length];
+        memset(buf, 0, length * sizeof(char));
+
+        fs.seekg(0, std::ios::beg);
+        fs.read(buf, length);
+        fs.close();
+
+        Data * data = Data::dataWithBytes(buf, (unsigned int)length);
+
+        delete[] buf;
+        buf = NULL;
+
+        return data;
+    } catch (const std::exception & e) {
+        return NULL;
+    }
+}
+
+#else
+
 Data * Data::dataWithContentsOfFile(String * filename)
 {
     int r;
@@ -576,6 +624,8 @@ Data * Data::dataWithContentsOfFile(String * filename)
     data->takeBytesOwnership((char *)bytes, length, mmapDeallocator);
     return data;
 }
+
+#endif
 
 Data * Data::decodedDataUsingEncoding(Encoding encoding)
 {
