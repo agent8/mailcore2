@@ -291,6 +291,9 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 else if (partContainsMimeType(subpart, MCSTR("text/calendar"))){
                     preferedCalendar = subpart;
                 }
+                else {
+                    parsePart(subpart, NULL, NULL, attachments, inlineAttachments, multipart->charset());
+                }
             }
             if (!preferedHTML && preferedPlain) {
                 preferedHTML = preferedPlain;
