@@ -1508,6 +1508,8 @@
 		DAD28C8C1783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD28C891783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp */; };
 		DAE42E89178F7E1800E0DB8F /* MCOIMAPMessageRenderingOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DA89896B178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.h */; };
 		DAE42E8A178F7E2200E0DB8F /* MCOIMAPMessageRenderingOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DA89896B178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.h */; };
+		EFAE64BD2BC547A7005BC22C /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
+		EFAE6AD82BC558D4005BC22C /* MailCore.h in Headers */ = {isa = PBXBuildFile; fileRef = C64EA7A4169F2A3E00778456 /* MailCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F382219F1C7A626700E00721 /* MCNNTPPostOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F382219E1C7A626700E00721 /* MCNNTPPostOperation.cpp */; };
 		F38221A01C7A626700E00721 /* MCNNTPPostOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F382219E1C7A626700E00721 /* MCNNTPPostOperation.cpp */; };
 		F38221A31C7AAD8100E00721 /* MCONNTPPostOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = F38221A21C7AAD8100E00721 /* MCONNTPPostOperation.mm */; };
@@ -4158,6 +4160,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFAE6AD82BC558D4005BC22C /* MailCore.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4562,6 +4565,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFAE64BD2BC547A7005BC22C /* MCOFramework.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
