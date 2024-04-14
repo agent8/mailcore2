@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1508,6 +1508,9 @@
 		DAD28C8C1783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAD28C891783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp */; };
 		DAE42E89178F7E1800E0DB8F /* MCOIMAPMessageRenderingOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DA89896B178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.h */; };
 		DAE42E8A178F7E2200E0DB8F /* MCOIMAPMessageRenderingOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DA89896B178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.h */; };
+		EF737D0F2BCBDCEF0017A394 /* ctemplate-ios.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF737D0A2BCBDCEE0017A394 /* ctemplate-ios.xcframework */; };
+		EF737D112BCBDD250017A394 /* Tidy.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF737D102BCBDD250017A394 /* Tidy.xcframework */; };
+		EF7380472BCCBCA60017A394 /* sasl2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF7380422BCCBCA60017A394 /* sasl2.xcframework */; };
 		EFAE64BD2BC547A7005BC22C /* MCOFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = C6BD28A9170BDB6B00A91AC1 /* MCOFramework.mm */; };
 		EFAE6AD82BC558D4005BC22C /* MailCore.h in Headers */ = {isa = PBXBuildFile; fileRef = C64EA7A4169F2A3E00778456 /* MailCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F382219F1C7A626700E00721 /* MCNNTPPostOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F382219E1C7A626700E00721 /* MCNNTPPostOperation.cpp */; };
@@ -3023,6 +3026,9 @@
 		DAACAD5017886807000B4517 /* MCHTMLRendererIMAPDataCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCHTMLRendererIMAPDataCallback.h; sourceTree = "<group>"; };
 		DAD28C891783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCHTMLBodyRendererTemplateCallback.cpp; sourceTree = "<group>"; };
 		DAD28C8A1783CFFC00F2BB8F /* MCHTMLBodyRendererTemplateCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCHTMLBodyRendererTemplateCallback.h; sourceTree = "<group>"; };
+		EF737D0A2BCBDCEE0017A394 /* ctemplate-ios.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "ctemplate-ios.xcframework"; path = "deps/ctemplate-ios.xcframework"; sourceTree = "<group>"; };
+		EF737D102BCBDD250017A394 /* Tidy.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Tidy.xcframework; path = deps/Tidy.xcframework; sourceTree = "<group>"; };
+		EF7380422BCCBCA60017A394 /* sasl2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = sasl2.xcframework; path = deps/sasl2.xcframework; sourceTree = "<group>"; };
 		F382219D1C7A60A800E00721 /* MCNNTPPostOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCNNTPPostOperation.h; sourceTree = "<group>"; };
 		F382219E1C7A626700E00721 /* MCNNTPPostOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCNNTPPostOperation.cpp; sourceTree = "<group>"; };
 		F38221A11C7AAD8100E00721 /* MCONNTPPostOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCONNTPPostOperation.h; sourceTree = "<group>"; };
@@ -3059,6 +3065,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DF6799B1F60FB8F00D4BDC4 /* libetpan-ios.a in Frameworks */,
+				EF737D0F2BCBDCEF0017A394 /* ctemplate-ios.xcframework in Frameworks */,
+				EF737D112BCBDD250017A394 /* Tidy.xcframework in Frameworks */,
+				EF7380472BCCBCA60017A394 /* sasl2.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3849,6 +3858,9 @@
 		C64EA78E169F259200778456 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EF7380422BCCBCA60017A394 /* sasl2.xcframework */,
+				EF737D102BCBDD250017A394 /* Tidy.xcframework */,
+				EF737D0A2BCBDCEE0017A394 /* ctemplate-ios.xcframework */,
 				C600B6221A244CC3000728F1 /* CFNetwork.framework */,
 				C6B5AE1119F63496001352A6 /* Foundation.framework */,
 				C6B5AE0F19F6347C001352A6 /* Security.framework */,
@@ -4516,7 +4528,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT/../scripts/edo-get-ios.sh\"\n";
+			shellScript = "
+";
 		};
 		C64EA780169E867600778456 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5470,7 +5483,13 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				"IOS_HEADERS_SEARCH_PATHS[arch=*]" = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OSX_HEADERS_SEARCH_PATHS = "";
+				OSX_LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5507,7 +5526,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OSX_HEADERS_SEARCH_PATHS = "";
+				OSX_LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5910,7 +5933,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OSX_HEADERS_SEARCH_PATHS = "";
+				OSX_LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -5954,7 +5981,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = ../unittest/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -6023,8 +6054,8 @@
 					"\"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\"",
 					/usr/include/libxml2,
 				);
-				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
-				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Externals/icu4c/lib\"",
 					"\"$(SRCROOT)/../Externals/ctemplate/lib\"",
@@ -6223,7 +6254,11 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OSX_HEADERS_SEARCH_PATHS = "";
+				OSX_LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -6267,7 +6302,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = ../unittest/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -6336,8 +6375,8 @@
 					"\"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\"",
 					/usr/include/libxml2,
 				);
-				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
-				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Externals/icu4c/lib\"",
 					"\"$(SRCROOT)/../Externals/ctemplate/lib\"",
@@ -6366,8 +6405,8 @@
 					"\"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\"",
 					/usr/include/libxml2,
 				);
-				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
-				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Externals/icu4c/lib\"",
 					"\"$(SRCROOT)/../Externals/ctemplate/lib\"",
@@ -6396,8 +6435,8 @@
 					"\"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\"",
 					/usr/include/libxml2,
 				);
-				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
-				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"  /usr/include/libxml2";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Externals/icu4c/lib\"",
 					"\"$(SRCROOT)/../Externals/ctemplate/lib\"",
@@ -6755,7 +6794,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = ../unittest/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -6787,7 +6830,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = ../unittest/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
