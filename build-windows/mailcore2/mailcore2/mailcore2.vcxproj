@@ -442,6 +442,7 @@ build_headers.bat
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -465,6 +466,7 @@ build_headers.bat
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>false</OmitFramePointers>
+      <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -486,6 +488,7 @@ build_headers.bat
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -513,6 +516,7 @@ build_headers.bat
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
