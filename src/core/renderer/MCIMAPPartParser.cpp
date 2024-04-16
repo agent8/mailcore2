@@ -29,6 +29,9 @@ static bool isTextPart(AbstractPart * part)
             else if (MCSTR("text/html")->isEqualCaseInsensitive(mimeType)) {
                 return true;
             }
+            else if (MCSTR("text/x-amp-html")->isEqualCaseInsensitive(mimeType)) {
+                return true;
+            }
         }
         return false;
     }
@@ -36,6 +39,9 @@ static bool isTextPart(AbstractPart * part)
         return true;
     }
     else if (MCSTR("text/html")->isEqualCaseInsensitive(mimeType)) {
+        return true;
+    }
+    else if (MCSTR("text/x-amp-html")->isEqualCaseInsensitive(mimeType)) {
         return true;
     }
     else {
@@ -275,6 +281,7 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
             AbstractPart * preferedHTML = NULL;
             AbstractPart * preferedPlain = NULL;
             AbstractPart * preferedCalendar = NULL;
+            AbstractPart * preferedAmpHtml = NULL;
             AbstractMultipart * multipart = (AbstractMultipart *)part;
             unsigned int partCount = multipart->parts()->count();
             if (partCount <= 0) {
@@ -291,6 +298,9 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
                 else if (partContainsMimeType(subpart, MCSTR("text/calendar"))){
                     preferedCalendar = subpart;
                 }
+                else if (partContainsMimeType(subpart, MCSTR("text/x-amp-html"))) {
+                    preferedAmpHtml = subpart;
+                }
                 else {
                     parsePart(subpart, NULL, NULL, attachments, inlineAttachments, multipart->charset());
                 }
@@ -300,6 +310,10 @@ void IMAPPartParser::parsePart(AbstractPart * part, Array * htmlParts, Array * p
             }
             if (!preferedPlain && preferedHTML) {
                 preferedPlain = preferedHTML;
+            }
+            if (!preferedHTML && !preferedPlain) {
+                preferedHTML = preferedAmpHtml;
+                preferedPlain = preferedAmpHtml;
             }
             //Note: preferedHTML&preferedPlain should be 1,1 or 0,0; never be 0,1 or 1,0
             if (preferedHTML && preferedPlain) {
