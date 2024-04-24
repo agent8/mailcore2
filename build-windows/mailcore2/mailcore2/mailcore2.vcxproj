@@ -438,7 +438,7 @@ build_headers.bat
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_LIB;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)include\x86;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\x86;$(SolutionDir)include;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -461,7 +461,7 @@ build_headers.bat
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WIN64;MAILCORE_DLL;ZLIB_LIB;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)include\x64;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\x64;$(SolutionDir)include;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -484,7 +484,7 @@ build_headers.bat
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MAILCORE_DLL;ZLIB_LIB;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)include\x86;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\x86;$(SolutionDir)include;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -511,7 +511,7 @@ build_headers.bat
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_WIN64;MAILCORE_DLL;ZLIB_LIB;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)include\x64;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\x64;$(SolutionDir)include;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
