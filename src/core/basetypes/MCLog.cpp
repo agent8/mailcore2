@@ -1,7 +1,3 @@
-#include "MCWin32.h" // should be included first.
-
-#include "MCDefines.h"
-#include "MCLog.h"
 
 #include <stdarg.h>
 #include <string.h>
@@ -21,6 +17,10 @@
 #endif
 
 #include <mutex>
+
+#include "MCWin32.h" // should be included first.
+#include "MCDefines.h"
+#include "MCLog.h"
 
 static pid_t sPid = -1;
 int MCLogEnabled = 0;
