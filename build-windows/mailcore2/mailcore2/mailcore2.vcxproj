@@ -352,32 +352,32 @@ build_headers.bat
     <ProjectGuid>{AAD35E01-77E4-43CB-BBB4-F7F6692EA829}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mailcore2</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -443,6 +443,7 @@ build_headers.bat
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -467,6 +468,7 @@ build_headers.bat
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <OmitFramePointers>false</OmitFramePointers>
       <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -486,7 +488,7 @@ build_headers.bat
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include\x86;$(SolutionDir)include;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ProgramDataBaseFileName>$(SolutionDir)output\$(Configuration)\$(Platform)\$(ProjectName).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -512,7 +514,7 @@ build_headers.bat
       <PreprocessorDefinitions>_WIN64;MAILCORE_DLL;ZLIB_LIB;_WINDLL;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include\x64;$(SolutionDir)include;$(ProjectDir)..\..\..\src\core\basetypes;$(ProjectDir)..\..\..\src\core\zip;$(ProjectDir)..\..\..\src\core\zip\minizip;$(ProjectDir)..\..\..\src\core\renderer;$(ProjectDir)..\..\..\src\core/rfc822;$(ProjectDir)..\..\..\src\core/imap;$(ProjectDir)..\..\..\src\core\abstract;$(ProjectDir)..\..\..\src\core\security;$(ProjectDir)..\..\..\src\core\imap;$(ProjectDir)..\..\..\src\core\pop;$(ProjectDir)..\..\..\src\core\nntp;$(ProjectDir)..\..\..\src\core\smtp</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4819;4068;4996;4244;4018;4005;4101;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
