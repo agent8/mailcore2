@@ -239,10 +239,9 @@ static struct mailmime * get_other_text_part(MessageBuilder * builder,
 }
 
 static mailmime_content * get_default_content_type() {
-    char * extension = strdup("unknown");
-    struct mailmime_discrete_type * discrete_type = mailmime_discrete_type_new(MAILMIME_DISCRETE_TYPE_EXTENSION, extension);
+    struct mailmime_discrete_type * discrete_type = mailmime_discrete_type_new(MAILMIME_DISCRETE_TYPE_APPLICATION, nullptr);
     struct mailmime_type * mime_type = mailmime_type_new(MAILMIME_TYPE_DISCRETE_TYPE, discrete_type, nullptr);
-    char * subtype = strdup("unknown");
+    char * subtype = strdup("octet-stream");
     clist * parameters_list = clist_new();
     struct mailmime_content * content = mailmime_content_new(mime_type, subtype, parameters_list);
     return content;
