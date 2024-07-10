@@ -238,6 +238,15 @@ static struct mailmime * get_other_text_part(MessageBuilder * builder,
     return get_text_part(builder, mime_type, charset, content_id, description, text, length, MAILMIME_MECHANISM_QUOTED_PRINTABLE, contentTypeParameters);
 }
 
+static mailmime_content * get_default_content_type() {
+    struct mailmime_discrete_type * discrete_type = mailmime_discrete_type_new(MAILMIME_DISCRETE_TYPE_APPLICATION, nullptr);
+    struct mailmime_type * mime_type = mailmime_type_new(MAILMIME_TYPE_DISCRETE_TYPE, discrete_type, nullptr);
+    char * subtype = strdup("octet-stream");
+    clist * parameters_list = clist_new();
+    struct mailmime_content * content = mailmime_content_new(mime_type, subtype, parameters_list);
+    return content;
+}
+
 static struct mailmime * get_file_part(MessageBuilder * builder,
                                        const char * filename, const char * mime_type, int is_inline,
                                        const char * content_id,
@@ -267,7 +276,10 @@ static struct mailmime * get_file_part(MessageBuilder * builder,
                                                          disposition_name, NULL, NULL, NULL, (size_t) -1);
     }
     content = mailmime_content_new_with_str(mime_type);
-    
+    if (!content) {
+        content = get_default_content_type();
+    }
+
     encoding_type = MAILMIME_MECHANISM_BASE64;
     encoding = mailmime_mechanism_new(encoding_type, NULL);
     dup_content_id = NULL;
