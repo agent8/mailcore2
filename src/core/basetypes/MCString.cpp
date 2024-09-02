@@ -361,7 +361,8 @@ static char * etpan_make_quoted_printable(const char * display_charset,
             }
             
             if (* end != '\0') {
-                mmap_string_append_c(mmapstr, ' ');
+                // modified by Edison. (Jira: ECANDR-7149)
+                // mmap_string_append_c(mmapstr, ' ');
                 mmap_string_append_len(mmapstr, end, cur - end);
             }
         }
