@@ -1025,7 +1025,11 @@ void IMAPSession::login(ErrorCode * pError)
                  response->locationOfStringCaseInsensitive(MCSTR("locked")) != -1 ||
                  response->locationOfStringCaseInsensitive(MCSTR("IMAP")) != -1)) {
             * pError = ErrorGmailIMAPNotEnabled;
-        } else {
+        }
+        else if (response->locationOfStringCaseInsensitive(MCSTR("blacklisted IP")) != -1) {
+            * pError = ErrorIpBlocked;
+        }
+        else {
             * pError = ErrorInvalidAccount;
         }
         return;
