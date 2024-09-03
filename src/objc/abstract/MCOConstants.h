@@ -435,6 +435,8 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorOutlookLoginViaWebBrowser,
     /** Tiscali Simple Mail Error */
     MCOErrorTiscaliSimplePassword,
+    /** IP address is blocked by server */
+    MCOErrorIpBlocked,
     /** The count of all errors */
     MCOErrorCodeCount,
 };
