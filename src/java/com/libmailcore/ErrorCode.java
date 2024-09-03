@@ -93,4 +93,6 @@ public class ErrorCode {
     public final static int ErrorGmailApplicationSpecificPasswordRequired = 40; // 40
     /** NNTP: error when requesting date */
     public final static int ErrorServerDate = 41;
+    /** IMAP: Error when login failed that caused by blacklist ip */
+    public final static int ErrorIpBlocked = 42;
 }
