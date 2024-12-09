@@ -2455,11 +2455,11 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                         msg->setPartData(Data::dataWithBytes(bytes, (unsigned int) length));
                         hasBody = true;
                     } else {
-                        String * charset = discoverCharset((AbstractPart*)msg->mainPart());
+                        // String * charset = discoverCharset((AbstractPart*)msg->mainPart());
                         // used utf-7 to decode string which has '+' will generate unrecognizable characters
-                        if (charset != NULL && charset->caseInsensitiveCompare(MCSTR("utf-7")) != 0) {
-                            msg->header()->setDefaultCharset(charset);
-                        }
+                        // if (charset != NULL && charset->caseInsensitiveCompare(MCSTR("utf-7")) != 0) {
+                        //     msg->header()->setDefaultCharset(charset);
+                        // }
                         msg->header()->importHeadersData(Data::dataWithBytes(bytes, (unsigned int) length));
                         hasHeader = true;
                     }
