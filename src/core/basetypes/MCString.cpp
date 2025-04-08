@@ -1027,6 +1027,9 @@ const char * String::UTF8Characters()
 {
     const UTF16 * source = (const UTF16 *) mUnicodeChars;
     UTF8 * target = (UTF8 *) malloc(mLength * 6 + 1);
+    if (!target) {
+        return nullptr;
+    }
     UTF8 * targetStart = target;
     ConvertUTF16toUTF8(&source, source + mLength,
                        &targetStart, targetStart + mLength * 6 + 1, lenientConversion);
