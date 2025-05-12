@@ -5009,7 +5009,18 @@ void IMAPSession::enableCompression(ErrorCode * pError)
         * pError = ErrorCompression;
         return;
     }
-    
+
+    if (r == MAILIMAP_NO_ERROR && mImap && mImap->imap_stream && mImap->imap_stream->read_buffer_len > 0) {
+        if (mHostname) {
+            const char * hostU8 = mHostname->UTF8Characters();
+            if (hostU8) {
+                if (strcmp(hostU8, "netsol-imap-oxcs.hostingplatform.com") == 0) {
+                    mImap->imap_stream->read_buffer_len = 0;
+                }
+            }
+        }
+    }
+
     * pError = ErrorNone;
 }
 
