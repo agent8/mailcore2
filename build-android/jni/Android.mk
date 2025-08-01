@@ -88,6 +88,7 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE    := icu4c
 LOCAL_SRC_FILES := $(ICU4C_PATH)/libs/$(TARGET_ARCH_ABI)/libicu4c.a
+$(warning "LOCAL_SRC_FILES = $(LOCAL_SRC_FILES)")
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -121,10 +122,14 @@ LOCAL_SRC_FILES := \
     $(async_imap_src_files) $(async_nntp_src_files) $(async_pop_src_files) $(async_smtp_src_files)
 LOCAL_CPPFLAGS := -frtti
 LOCAL_CFLAGS := -DNOCRYPT
+
 # LOCAL_LDLIBS := -lz -llog \
 #      -lc++_shared -L$(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libs/$(TARGET_ARCH_ABI)
-LOCAL_LDLIBS := -lz -llog \
-     -lgnustl_shared -L$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)
+#zsx
+#LOCAL_LDLIBS := -lz -llog \
+#     -lgnustl_shared -L$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)
+LOCAL_LDLIBS := -lz -llog
+
 LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 LOCAL_STATIC_LIBRARIES := etpan sasl2 ssl crypto icu4c xml2 tidy ctemplate
 include $(BUILD_SHARED_LIBRARY)
