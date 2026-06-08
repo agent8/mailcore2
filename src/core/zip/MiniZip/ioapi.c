@@ -16,7 +16,14 @@
 
 #include "ioapi.h"
 
-#if defined(__APPLE__) || defined(ANDROID) || defined(__ANDROID__)
+#if defined(__APPLE__)
+#define off64_t off_t
+#define fopen64 fopen
+#define ftello64 ftello
+#define fseeko64 fseeko
+#endif
+
+#if defined(ANDROID) || defined(__ANDROID__)
 #define off64_t off_t
 #define fopen64 fopen
 #define ftello64 ftell
