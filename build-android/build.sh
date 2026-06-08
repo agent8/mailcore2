@@ -52,7 +52,7 @@ function build {
     mkdir -p "$current_dir/bin/jni/$TARGET_ARCH_ABI"
     cp "$current_dir/libs/$TARGET_ARCH_ABI/libMailCore.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
     # cp "$ANDROID_NDK/sources/cxx-stl/llvm-libc++/libs/$TARGET_ARCH_ABI/libc++_shared.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
-    cp "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/libs/$TARGET_ARCH_ABI/libgnustl_shared.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
+    #cp "$ANDROID_NDK/sources/cxx-stl/gnu-libstdc++/4.9/libs/$TARGET_ARCH_ABI/libgnustl_shared.so" "$current_dir/bin/jni/$TARGET_ARCH_ABI"
     rm -rf "$current_dir/obj"
     rm -rf "$current_dir/libs"
 }
@@ -76,7 +76,8 @@ cd "$current_dir/third-party"
 
 # Start building.
 ANDROID_PLATFORM=android-21
-archs="armeabi armeabi-v7a x86 arm64-v8a x86_64"
+#archs="armeabi armeabi-v7a x86 arm64-v8a x86_64" zsh
+archs="armeabi-v7a arm64-v8a"
 for arch in $archs ; do
   TARGET_ARCH_ABI=$arch
   build
@@ -85,7 +86,7 @@ done
 ANDROID_PLATFORM=android-25
 cd "$current_dir/../src/java"
 mkdir -p "$current_dir/bin"
-javac -d "$current_dir/bin" -source 1.6 -target 1.6 -classpath $ANDROID_SDK/platforms/$ANDROID_PLATFORM/android.jar com/libmailcore/*.java
+javac -d "$current_dir/bin" -classpath $ANDROID_SDK/platforms/$ANDROID_PLATFORM/android.jar com/libmailcore/*.java
 cd "$current_dir/bin"
 jar cf classes.jar .
 rm -rf "$current_dir/bin/com"

@@ -275,8 +275,8 @@ LOCAL_CPPFLAGS := -frtti
 LOCAL_CFLAGS := -DNOCRYPT -DHAVE_CONFIG_H=1
 # LOCAL_LDLIBS := -lz -llog \
 #      -lc++_shared -L$(ANDROID_NDK)/sources/cxx-stl/llvm-libc++/libs/$(TARGET_ARCH_ABI)
-LOCAL_LDLIBS := -lz -llog \
-     -lgnustl_shared -L$(ANDROID_NDK)/sources/cxx-stl/gnu-libstdc++/4.9/libs/$(TARGET_ARCH_ABI)
+LOCAL_LDLIBS := -lz -llog
+
 LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 LOCAL_STATIC_LIBRARIES := sasl2 ssl crypto icu4c xml2 tidy ctemplate
 include $(BUILD_SHARED_LIBRARY)
