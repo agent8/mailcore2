@@ -3,7 +3,9 @@
 Download the latest [build for Android](http://d.etpan.org/mailcore2-deps/mailcore2-android/)
 
 ### Build for Android ###
-Mailcore library depends on the libetpan library.
+Mailcore library depends on the libetpan library and some third party library(zipped in the third-party-all-abi.zip).
+$ cd mailcore2/build-android/
+Unzip the third-party-all-abi.zip file to the third-party directory;
 $ cp libetpan/build-android/dependencies/cyrus-sasl/cyrus-sasl-android-4.zip mailcore2/build-android/third-party/
 $ cp libetpan/build-android/dependencies/openssl/openssl-android-3.zip mailcore2/build-android/third-party/
 $ cp libetpan/build-android/libetpan-android-6.zip mailcore2/build-android/third-party/
@@ -12,9 +14,7 @@ $ cp libetpan/build-android/libetpan-android-6.zip mailcore2/build-android/third
 -$ unzip openssl-android-3.zip
 -$ unzip libetpan-android-6.zip
 
-```
-$ cd mailcore2/build-android/
-Unzip the third-party-all-abi.zip file to the third-party directory;
+``
 
 Unzip all the .zip files(ctemplate-android-3.zip, iconv-android-1.zip, libxml2-android-3.zip, tidy-html5-android-3.zip, icu4c-android-3.zip);
 Don't need to recompile these libraries, we just use these libraries directly.
