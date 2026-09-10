@@ -3,7 +3,7 @@
 Download the latest [build for Android](http://d.etpan.org/mailcore2-deps/mailcore2-android/)
 
 ### Build for Android ###
-Mailcore library depends on the libetpan library.
+Mailcore library depends on the libetpan library.(Refer to the README.md in folder libetpan/build-andorid/README.md for the compiling steps of libetpan)
 $ cp libetpan/build-android/dependencies/cyrus-sasl/cyrus-sasl-android-4.zip mailcore2/build-android/third-party/
 $ cp libetpan/build-android/dependencies/openssl/openssl-android-3.zip mailcore2/build-android/third-party/
 $ cp libetpan/build-android/libetpan-android-6.zip mailcore2/build-android/third-party/
